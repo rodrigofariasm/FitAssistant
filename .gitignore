@@ -5,3 +5,13 @@
 .DS_Store
 /build
 /captures
+/gradle
+gradlew
+gradlew.bat
+local.properties
+settings.gradle
+build.gradle
+app/app.iml
+FitAssistant.iml
+.idea
+gradle.properties
