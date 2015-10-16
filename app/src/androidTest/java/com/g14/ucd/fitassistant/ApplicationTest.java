@@ -1,4 +1,4 @@
-package com.example.rodrigofarias.fitassistant;
+package com.g14.ucd.fitassistant;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

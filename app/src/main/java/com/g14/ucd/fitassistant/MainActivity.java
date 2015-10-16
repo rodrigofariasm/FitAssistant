@@ -1,4 +1,4 @@
-package com.example.rodrigofarias.fitassistant;
+package com.g14.ucd.fitassistant;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-//Primeiro Commit
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
