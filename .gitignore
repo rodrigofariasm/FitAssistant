@@ -6,7 +6,7 @@
 # Package Files #
 *.war
 *.ear
-
+*.bin
 *.iml
 /.idea/workspace.xml
 /.idea/libraries
