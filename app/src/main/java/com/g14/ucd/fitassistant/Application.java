@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseInstallation;
+import com.parse.ParseObject;
 
 /**
  * Created by rodrigofarias on 10/16/15.
@@ -23,7 +24,7 @@ public class Application extends android.app.Application {
         super.onCreate();
 
         Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "6RkiEquhut1FmiAGjZ7bINdRLI02r5GAFFxVdXdK", "RAQIhDUzSDYAIzNBMw6i5gLPyf3cuT3zEXSuS5a1");
+        Parse.initialize(this, "IWa3fIqg1uxV59ZpqqqKwm5E7FUIWINYe6GYUGnF", "vdBuoTC4AJfADhwdxwwTapoUGoY84Idc4o9uF6FT");
         preferences = getSharedPreferences("com.parse.les142", Context.MODE_PRIVATE);
         configHelper = new ConfigHelper();
         configHelper.fetchConfigIfNeeded();
@@ -32,7 +33,6 @@ public class Application extends android.app.Application {
         // If you would like objects to be private by default, remove this line.
         defaultACL.setPublicReadAccess(true);
         ParseACL.setDefaultACL(defaultACL, true);
-
 
         ParseInstallation pi = ParseInstallation.getCurrentInstallation();
 
