@@ -1,1 +1,4 @@
 /build
+.DS_Store
+.gradle/2.4/taskArtifacts/cache.properties.lock
+app/app.iml

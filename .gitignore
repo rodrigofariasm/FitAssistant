@@ -19,7 +19,11 @@ out/
 /gradle
 local.properties
 appTest/appTest.iml
+<<<<<<< HEAD
 build/intermediates/gradle_project_sync_data.bin
 .DS_Store
 .gradle/2.4/taskArtifacts/cache.properties.lock
 app/app.iml
+=======
+build.gradle
+>>>>>>> 190a5fe3429200ce8f664303e8caf38334b2e79a
