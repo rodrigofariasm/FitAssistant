@@ -1,4 +1,31 @@
-/build
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.war
+*.ear
+*.bin
+*.iml
+/.idea/workspace.xml
+/.idea/libraries
+
+/.idea/workspace.xml
+/.idea/libraries
+out/
+.idea/
+/captures
+/gradle
+local.properties
+appTest/appTest.iml
+build/intermediates/gradle_project_sync_data.bin
 .DS_Store
 .gradle/2.4/taskArtifacts/cache.properties.lock
 app/app.iml
+build.gradle
+build/*
+*.iml
+.gradle/2.4/taskArtifacts/cache.properties.lock
+app/build.gradle
+build/intermediates/gradle_project_sync_data.bin
