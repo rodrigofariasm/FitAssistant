@@ -1,8 +1,8 @@
 package com.g14.ucd.fitassistant;
 
-import com.parse.ParsePush;
 import android.util.Log;
 import com.parse.*;
+
 /**
  * Created by rodrigofarias on 10/17/15.
  */

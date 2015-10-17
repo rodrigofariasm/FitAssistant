@@ -19,3 +19,4 @@ out/
 /gradle
 local.properties
 appTest/appTest.iml
+build.gradle
