@@ -72,7 +72,7 @@ public class LoginActivity extends Activity {
         StringBuilder validationErrorMessage = new StringBuilder(getString(string.error_intro));
         if (username.length() == 0) {
             validationError = true;
-            validationErrorMessage.append(getString(string.error_blank_username));
+            validationErrorMessage.append(getString(string.error_blank_email));
         }
         if (password.length() == 0) {
             if (validationError) {
