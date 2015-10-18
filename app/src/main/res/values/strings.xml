@@ -14,16 +14,16 @@
     <!--- String para login e cadastrar -->
     <string name="title_activity_login">Enter</string>
     <string name="title_activity_signup">Sign In</string>
-    <string name="prompt_username">User</string>
+    <string name="prompt_email">User</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_password_again">Confirm password</string>
     <string name="error_intro">"Please "</string>
-    <string name="error_blank_username">type an username</string>
+    <string name="error_blank_email">type an email</string>
     <string name="error_blank_password">type a password</string>
     <string name="error_mismatched_passwords">put the passwords again</string>
     <string name="error_join">" and "</string>
     <string name="error_end">.</string>
-    <string name="invalid_login_credentials">incorrect username or password</string>
+    <string name="invalid_login_credentials">incorrect email or password</string>
     <string name="error_size_password">the password has to be at least 6 characters</string>
     <string name="progress_login">Connecting</string>
     <string name="progress_signup">Signing In</string>

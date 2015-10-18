@@ -66,9 +66,9 @@ public class SignUpActivity extends Activity{
         StringBuilder validationErrorMessage = new StringBuilder();
         if (username.length() == 0) {
             validationError = true;
-            validationErrorMessage.append(getString(R.string.error_blank_username));
+            validationErrorMessage.append(getString(R.string.error_blank_email));
         }
-        if (password.length() < 5) {
+        if (password.length() < 6) {
             if (validationError) {
                 validationErrorMessage.append(getString(R.string.error_join));
             }
@@ -103,6 +103,7 @@ public class SignUpActivity extends Activity{
 
         // Set up a new Parse user
         ParseUser user = new ParseUser();
+        user.setEmail(username);
         user.setUsername(username);
         user.setPassword(password);
         final boolean finalValidationError = validationError;
