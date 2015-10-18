@@ -7,10 +7,10 @@ import java.util.ArrayList;
  */
 public class Meal {
 
-    public Enum type;
+    public MealEnum type;
     public ArrayList<String> options;
 
-    public Meal(Enum type, ArrayList<String> options) {
+    public Meal(MealEnum type, ArrayList<String> options) {
         this.type = type;
         this.options = options;
     }
@@ -19,7 +19,7 @@ public class Meal {
         return type;
     }
 
-    public void setType(Enum type) {
+    public void setType(MealEnum type) {
         this.type = type;
     }
 
