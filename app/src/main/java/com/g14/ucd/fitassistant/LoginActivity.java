@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,23 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
-import com.facebook.FacebookSdk;
-import com.parse.ParseAnalytics;
-import com.parse.ParseException;
-import com.parse.ParseInstallation;
-import com.parse.ParseObject;
-import com.parse.RefreshCallback;
-import com.parse.SaveCallback;
-
 import static com.g14.ucd.fitassistant.R.*;
 
 
@@ -104,22 +91,26 @@ public class LoginActivity extends Activity {
         ParseUser.logInInBackground(username, password, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
+                boolean verified = user.getBoolean("emailVerified");
                 dialog.dismiss();
                 if (e != null) {
                     // Show the error message
-                    if (e.getMessage().equals("invalid login credentials")){
                         Toast.makeText(LoginActivity.this, string.invalid_login_credentials, Toast.LENGTH_LONG).show();
+                        Log.d("login", e.getMessage().toString());
+                }else {
+                    if(!verified){
+                        Toast.makeText(LoginActivity.this, string.email_not_verified, Toast.LENGTH_LONG).show();
+                    }else {
+                        Intent intent = new Intent(LoginActivity.this, DispatchActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        pInst = new Installation();
+                        pInst.install();
+
+                        startActivity(intent);
                     }
-
-                } else {
-                    // Start an intent for the dispatch activity
-                    Intent intent = new Intent(LoginActivity.this, DispatchActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    pInst = new Installation();
-                    pInst.install();
-
-                    startActivity(intent);
                 }
+
+
             }
         });
     }

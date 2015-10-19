@@ -22,15 +22,17 @@
     <string name="error_mismatched_passwords">put the passwords again</string>
     <string name="error_join">" and "</string>
     <string name="error_end">.</string>
-    <string name="invalid_login_credentials">incorrect email or password</string>
+    <string name="invalid_login_credentials">Incorrect email or password</string>
     <string name="error_size_password">the password has to be at least 6 characters</string>
     <string name="progress_login">Connecting</string>
     <string name="progress_signup">Signing In</string>
     <string name="logout">Log Out</string>
-
+    <string name="signup_verification">You need to verify your account, you will receive a verification email soon. Thank You!</string>
+    <string name="email_not_verified">User not verified</string>
 
     <!--- String para Dietas -->
     <string name="diet">Diet</string>
     <string name="title_activity_diet">DietActivity</string>
+
 
 </resources>
