@@ -113,10 +113,11 @@ public class SignUpActivity extends Activity{
                 dialog.dismiss();
                 if (e != null || finalValidationError) {
                     // Show the error message
+
                     Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 } else {
                     // Start an intent for the dispatch activity
-
+                    Toast.makeText(SignUpActivity.this, R.string.signup_verification, Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(SignUpActivity.this, DispatchActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     pInst = new Installation();

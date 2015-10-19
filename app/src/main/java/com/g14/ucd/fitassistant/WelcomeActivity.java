@@ -62,13 +62,15 @@ public class WelcomeActivity extends Activity {
                 } else if (user.isNew()) {
                     Log.d("MyApp", "User signed up and logged in through Facebook!");
                     Intent intent = new Intent(WelcomeActivity.this, DispatchActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     Installation pInst = new Installation();
                     pInst.install();
-
                     startActivity(intent);
                 } else {
                     Log.d("MyApp", "User logged in through Facebook!");
+                    Intent intent = new Intent(WelcomeActivity.this, DispatchActivity.class);
+                    Installation pInst = new Installation();
+                    pInst.install();
+                    startActivity(intent);
                 }
             }
         });
@@ -79,5 +81,4 @@ public class WelcomeActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
     }
-
 }
