@@ -3,8 +3,15 @@ package com.g14.ucd.fitassistant;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
+import com.parse.ParseUser;
+
 import static com.g14.ucd.fitassistant.R.*;
 
 /**
@@ -34,5 +41,43 @@ public class WelcomeActivity extends Activity {
                 startActivity(new Intent(WelcomeActivity.this, SignUpActivity.class));
             }
         });
+        Button loginWithFacebookButton = (Button) findViewById(id.login_facebook_button);
+        loginWithFacebookButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                loginWithFB();
+            }
+
+        });
+
+
+
     }
+
+    private void loginWithFB() {
+        ParseFacebookUtils.logInWithReadPermissionsInBackground(this, null, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException err) {
+                if (user == null) {
+                    Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
+                } else if (user.isNew()) {
+                    Log.d("MyApp", "User signed up and logged in through Facebook!");
+                    Intent intent = new Intent(WelcomeActivity.this, DispatchActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Installation pInst = new Installation();
+                    pInst.install();
+
+                    startActivity(intent);
+                } else {
+                    Log.d("MyApp", "User logged in through Facebook!");
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
+    }
+
 }

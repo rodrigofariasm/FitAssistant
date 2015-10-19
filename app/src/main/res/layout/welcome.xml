@@ -11,23 +11,33 @@
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="128dp"
-        android:text="@string/login" />
+        android:text="@string/login"
+        android:layout_alignRight="@+id/signup_button"
+        android:layout_alignEnd="@+id/signup_button"
+        android:layout_alignLeft="@+id/signup_button"
+        android:layout_alignStart="@+id/signup_button" />
     <Button
         android:id="@+id/signup_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
         android:layout_below="@id/login_button"
-        android:text="@string/signup" />
+        android:text="@string/signup"
+        android:layout_alignRight="@+id/login_facebook_button"
+        android:layout_alignEnd="@+id/login_facebook_button"
+        android:layout_alignLeft="@+id/welcometextview_2"
+        android:layout_alignStart="@+id/welcometextview_2" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_facebook_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/welcometextview_2"
+        android:layout_alignEnd="@+id/welcometextview_2" />
+
 
     <TextView
         android:id="@+id/welcometextview_1"

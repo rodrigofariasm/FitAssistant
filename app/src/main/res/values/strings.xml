@@ -7,6 +7,7 @@
     <string name="powered_by">G14-UCD</string>
     <string name="signup">Sign Up</string>
     <string name="AndroidProgramming">Android Programming</string>
+    <string name="facebook_app_id">1649882351961392</string>
 
 
     <!--- String para login e cadastrar -->
@@ -26,6 +27,7 @@
     <string name="progress_login">Connecting</string>
     <string name="progress_signup">Signing In</string>
     <string name="logout">Log Out</string>
+
 
     <!--- String para Dietas -->
     <string name="diet">Diet</string>

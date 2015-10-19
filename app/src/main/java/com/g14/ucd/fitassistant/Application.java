@@ -5,8 +5,12 @@ import android.content.SharedPreferences;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.facebook.FacebookSdk;
+
+
 
 /**
  * Created by rodrigofarias on 10/16/15.
@@ -22,9 +26,10 @@ public class Application extends android.app.Application {
     @Override
     public void onCreate(){
         super.onCreate();
-
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "IWa3fIqg1uxV59ZpqqqKwm5E7FUIWINYe6GYUGnF", "vdBuoTC4AJfADhwdxwwTapoUGoY84Idc4o9uF6FT");
+        ParseFacebookUtils.initialize(this);
+
         preferences = getSharedPreferences("com.parse.les142", Context.MODE_PRIVATE);
         configHelper = new ConfigHelper();
         configHelper.fetchConfigIfNeeded();
@@ -35,7 +40,9 @@ public class Application extends android.app.Application {
         ParseACL.setDefaultACL(defaultACL, true);
 
         ParseInstallation pi = ParseInstallation.getCurrentInstallation();
-
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        // Initialize the SDK before executing any other operations,
+        // especially, if you're using Facebook UI elements.
 
 
     }

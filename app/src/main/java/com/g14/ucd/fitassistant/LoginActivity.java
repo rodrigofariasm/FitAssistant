@@ -5,15 +5,24 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.facebook.FacebookSdk;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
@@ -33,12 +42,13 @@ public class LoginActivity extends Activity {
     private EditText passwordEditText;
     Installation pInst;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(layout.activity_login);
-
         // Set up the login form.
         usernameEditText = (EditText) findViewById(id.username);
         passwordEditText = (EditText) findViewById(id.password);
@@ -53,6 +63,8 @@ public class LoginActivity extends Activity {
                 return false;
             }
         });
+        super.onCreate(savedInstanceState);
+
 
         // Set up the submit button click handler
         Button actionButton = (Button) findViewById(id.login_button);
