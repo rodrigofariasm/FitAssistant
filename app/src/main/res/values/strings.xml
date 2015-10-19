@@ -31,6 +31,16 @@
 
     <!--- String para Dietas -->
     <string name="diet">Diet</string>
-    <string name="title_activity_diet">DietActivity</string>
+    <string name="title_activity_diet">Diet</string>
+    <string name="add_diet">+ Diet</string>
+    <string name="view_diet">view</string>
+    <string name="no_diet_message">You don\'t have diet. Please create one.</string>
+    <string name="title_activity_new_diet">New Diet</string>
+    <string name="new_option">+ option</string>
+    <string name="save_diet">Save</string>
+
+
+
+    <string name="option">Option</string>
 
 </resources>

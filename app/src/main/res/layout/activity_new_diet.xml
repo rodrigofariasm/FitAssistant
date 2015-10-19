@@ -1,0 +1,103 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.g14.ucd.fitassistant.NewDietActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/new_diet_layout">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="Name"
+            android:ems="15"
+            android:id="@+id/editText_name_diet"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Breakfast"
+            android:id="@+id/textView_breakfast"
+            android:layout_below="@+id/editText_name_diet"
+            android:layout_alignParentTop="@id/editText_name_diet" />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_option"
+            android:id="@+id/button_new_opt_breakfast"
+            android:onClick="addNewOption"
+            android:layout_below="@id/textView_breakfast"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Lunch"
+            android:id="@+id/textView_lunch"
+            android:layout_below="@id/button_new_opt_breakfast"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_option"
+            android:id="@+id/button_new_opt_lunch"
+            android:onClick="addNewOption"
+            android:layout_below="@id/textView_lunch"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Dinner"
+            android:id="@+id/textView_dinner"
+            android:layout_below="@id/button_new_opt_lunch"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_option"
+            android:id="@+id/button_new_opt_dinner"
+            android:onClick="addNewOption"
+            android:layout_below="@id/textView_dinner"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Snack"
+            android:id="@+id/textView_snack"
+            android:layout_below="@id/button_new_opt_dinner"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_option"
+            android:id="@+id/button_new_opt_snack"
+            android:onClick="addNewOption"
+            android:layout_below="@id/textView_snack"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save_diet"
+            android:id="@+id/button_save_diet"
+            android:onClick="saveDiet"
+            android:layout_below="@id/button_new_opt_snack"
+            android:layout_alignRight="@+id/editText_name_diet"
+            android:layout_alignEnd="@+id/editText_name_diet" />
+
+    </RelativeLayout>
+</ScrollView>

@@ -1,25 +1,33 @@
 package com.g14.ucd.fitassistant.models;
 
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+
 import java.util.ArrayList;
 
 /**
  * Created by Leticia on 17/10/2015.
  */
-public class Meal {
+@ParseClassName("Meal")
+public class Meal extends ParseObject{
 
-    public MealEnum type;
+    public int type;
     public ArrayList<String> options;
 
-    public Meal(MealEnum type, ArrayList<String> options) {
+    public Meal(int type, ArrayList<String> options) {
         this.type = type;
         this.options = options;
     }
 
-    public Enum getType() {
+    public Meal(){
+        options = new ArrayList<String>();
+    }
+
+    public int getType() {
         return type;
     }
 
-    public void setType(MealEnum type) {
+    public void setType(int type) {
         this.type = type;
     }
 

@@ -1,16 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context=".DietActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.g14.ucd.fitassistant.NewDietActivity">
+    <item android:id="@+id/action_settings" android:title="@string/action_settings"
+        android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/diet_option" android:title="@string/diet"
         android:orderInCategory="200" app:showAsAction="never"/>
     <item android:id="@+id/logout_option" android:title="@string/logout"
         android:orderInCategory="200" app:showAsAction="never"/>
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
-
-    <item android:id="@+id/add_diet" android:title="@string/add_diet"
-        android:orderInCategory="100" app:showAsAction="ifRoom"
-       />
-
 
 </menu>

@@ -3,10 +3,25 @@ package com.g14.ucd.fitassistant;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.g14.ucd.fitassistant.models.Diet;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DietActivity extends AppCompatActivity {
 
@@ -14,6 +29,44 @@ public class DietActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diet);
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Diet");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> diets, ParseException exception) {
+                if (exception == null) { // found diets
+                    listDiets(diets);
+                    hideButtons();
+                } else {
+                    Log.d("FitAssistant", "Error: " + exception.getMessage());
+                }
+            }
+        });
+    }
+
+    private void listDiets(List<ParseObject> diets){
+        List<String> viewDiets = new ArrayList<String>();
+
+        for(ParseObject diet : diets){
+            String name = diet.getString("name");
+            viewDiets.add(name);
+        }
+
+        ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(
+                this, // The current context (this activity)
+                R.layout.list_item_diet, // The name of the layout ID.
+                R.id.list_item_name_diet, // The ID of the textview to populate.
+                viewDiets);
+
+        ListView listView = (ListView) findViewById(R.id.listView_diets);
+        listView.setAdapter(mAdapter);
+    }
+
+    private void hideButtons(){
+        Button addbutton = (Button) findViewById(R.id.button_add_diet);
+        addbutton.setVisibility(View.INVISIBLE);
+        TextView noDietMessage = (TextView) findViewById(R.id.no_diet_message);
+        noDietMessage.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -38,6 +91,9 @@ public class DietActivity extends AppCompatActivity {
             case R.id.diet_option:
                 openDietActivity();
                 return true;
+            case R.id.add_diet:
+                addNewDiet();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -46,13 +102,20 @@ public class DietActivity extends AppCompatActivity {
     private void logout() {
         ParseUser.logOut();
         Intent intent = new Intent(DietActivity.this, DispatchActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
     private void openDietActivity() {
         Intent intent = new Intent(DietActivity.this, DietActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    public void addNewDiet(View v){
+        addNewDiet();
+    }
+
+    private void addNewDiet(){
+        Intent intent = new Intent(DietActivity.this, NewDietActivity.class);
         startActivity(intent);
     }
 }

@@ -7,7 +7,6 @@ import java.util.ArrayList;
  */
 public class Gym extends Activity {
 
-    public final String NAME_GYM = "GYM";
     public ArrayList<Exercise> exercises;
 
     public Gym(ArrayList<Exercise> exercises){
@@ -16,7 +15,7 @@ public class Gym extends Activity {
 
     @Override
     public String getName(){
-        return NAME_GYM;
+        return ActivitiesTypeEnum.GYM.getValue();
     }
 
     @Override
