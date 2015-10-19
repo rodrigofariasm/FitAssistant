@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">FitAssistant</string>
 
-    <string name="hello_world">Hello world!</string>
-
     <string name="action_settings">Settings</string>
     <string name="title_activity_dispatch">DispatchActivity</string>
     <string name="login">Login</string>
@@ -28,5 +26,9 @@
     <string name="progress_login">Connecting</string>
     <string name="progress_signup">Signing In</string>
     <string name="logout">Log Out</string>
+
+    <!--- String para Dietas -->
+    <string name="diet">Diet</string>
+    <string name="title_activity_diet">DietActivity</string>
 
 </resources>
