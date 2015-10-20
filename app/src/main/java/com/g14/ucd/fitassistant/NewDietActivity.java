@@ -1,5 +1,6 @@
 package com.g14.ucd.fitassistant;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -70,28 +71,28 @@ public class NewDietActivity extends AppCompatActivity {
         switch (view.getId()){
             case R.id.button_new_opt_breakfast:
                 editText.setId(generateIdOption(MealEnum.BREAKFAST, countIdBreakfast));
-                editText.setText("Breakfast option " + (countIdBreakfast + 1));
+                editText.setHint("Breakfast option " + (countIdBreakfast + 1));
                 relativeLayout.addView(editText);
                 changeLayout(MealEnum.BREAKFAST, R.id.textView_breakfast, countIdBreakfast, editText);
                 countIdBreakfast++;
                 break;
             case R.id.button_new_opt_lunch:
                 editText.setId(generateIdOption(MealEnum.LUNCH, countIdLunch));
-                editText.setText("lunch option " + (countIdLunch + 1));
+                editText.setHint("Lunch option " + (countIdLunch + 1));
                 relativeLayout.addView(editText);
                 changeLayout(MealEnum.LUNCH, R.id.textView_lunch, countIdLunch, editText);
                 countIdLunch++;
                 break;
             case R.id.button_new_opt_dinner:
                 editText.setId(generateIdOption(MealEnum.DINNER, countIdDinner));
-                editText.setText("dinner option " + (countIdDinner + 1));
+                editText.setHint("Dinner option " + (countIdDinner + 1));
                 relativeLayout.addView(editText);
                 changeLayout(MealEnum.DINNER, R.id.textView_dinner, countIdDinner, editText);
                 countIdDinner++;
                 break;
             case R.id.button_new_opt_snack:
                 editText.setId(generateIdOption(MealEnum.SNACK, countIdSnack));
-                editText.setText("snack option " + (countIdSnack + 1));
+                editText.setHint("Snack option " + (countIdSnack + 1));
                 relativeLayout.addView(editText);
                 changeLayout(MealEnum.SNACK, R.id.textView_snack, countIdSnack, editText);
                 countIdSnack++;
@@ -105,6 +106,8 @@ public class NewDietActivity extends AppCompatActivity {
 
     private void changeLayout(MealEnum type, int textViewId,int count, EditText editText){
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) editText.getLayoutParams();
+        editText.setHintTextColor(Color.BLACK);
+        editText.setTextColor(Color.BLACK);
         if(count == 0){
             layoutParams.addRule(RelativeLayout.BELOW,textViewId);
         } else {
