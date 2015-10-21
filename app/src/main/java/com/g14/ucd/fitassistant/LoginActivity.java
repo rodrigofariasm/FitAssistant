@@ -91,18 +91,16 @@ public class LoginActivity extends Activity {
         ParseUser.logInInBackground(username, password, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
-                boolean verified = user.getBoolean("emailVerified");
                 dialog.dismiss();
                 if (e != null) {
                     // Show the error message
                         Toast.makeText(LoginActivity.this, string.invalid_login_credentials, Toast.LENGTH_LONG).show();
-                        Log.d("login", e.getMessage().toString());
                 }else {
+                    boolean verified = user.getBoolean("emailVerified");
                     if(!verified){
                         Toast.makeText(LoginActivity.this, string.email_not_verified, Toast.LENGTH_LONG).show();
                     }else {
                         Intent intent = new Intent(LoginActivity.this, DispatchActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         pInst = new Installation();
                         pInst.install();
 
