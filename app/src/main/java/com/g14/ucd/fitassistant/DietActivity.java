@@ -34,7 +34,7 @@ public class DietActivity extends AppCompatActivity {
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> diets, ParseException exception) {
-                if (exception == null) { // found diets
+                if (exception == null && diets!=null) { // found diets
                     listDiets(diets);
                     hideButtons();
                 } else {

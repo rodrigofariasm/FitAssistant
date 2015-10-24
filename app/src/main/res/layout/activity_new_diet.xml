@@ -20,13 +20,22 @@
             android:id="@+id/editText_name_diet"
             android:layout_marginTop="10dp"/>
 
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="Description"
+            android:ems="15"
+            android:id="@+id/editText_description_diet"
+            android:layout_below="@id/editText_name_diet"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Breakfast"
             android:id="@+id/textView_breakfast"
-            android:layout_below="@+id/editText_name_diet"
+            android:layout_below="@+id/editText_description_diet"
             android:layout_alignParentTop="@id/editText_name_diet" />
 
 

@@ -2,10 +2,12 @@ package com.g14.ucd.fitassistant.models;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -14,33 +16,51 @@ import java.util.Set;
 @ParseClassName("Diet")
 public class Diet extends ParseObject{
 
-    public String name;
-    public String description;
-    public Set<Meal> meals;
-    public boolean active;
-
-
-    public Diet(String name, String description, Set<Meal> meals) {
-        this.name = name;
-        this.description = description;
-        this.meals = meals;
-    }
-
-    public Diet(){
-        this.meals = new HashSet<Meal>();
-    }
-
     public String getName() {
-        return name;
+        return getString("name");
     }
 
     public void setName(String name) {
-        this.name = name;
+        put("name",name);
     }
 
-    public boolean isActive() { return active; }
+    public String getDescription() {
+        return getString("description");
+    }
 
-    public void setActive(boolean active) { this.active = active; }
+    public void setDescription(String description) {
+        put("description",description);
+    }
+
+    public boolean isActive() {
+        return getBoolean("isActive");
+    }
+
+    public void setActive(boolean active) {
+        put("isActive", active);
+    }
+
+    public List<Integer> getIdsMeals(){
+        return getList("meals");
+    }
+
+    public void setMeals(List<Integer> meals){
+        put("meals",meals);
+    }
+
+    public void addMeal(Integer ID){
+        List<Integer> meals = getIdsMeals();
+        if(meals == null){
+            setMeals(new ArrayList<Integer>());
+        }
+        meals.add(ID);
+    }
+
+    public void removeMeal(Integer ID){
+        List<Integer> meals = getIdsMeals();
+        meals.remove(ID);
+        setMeals(meals);
+    }
 
     public ParseUser getUser(){
         return getParseUser("user");
@@ -50,5 +70,9 @@ public class Diet extends ParseObject{
         if(value != null){
             put("user",value);
         }
+    }
+
+    public static ParseQuery<Diet> getQuery() {
+        return ParseQuery.getQuery(Diet.class);
     }
 }
