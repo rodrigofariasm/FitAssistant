@@ -1,17 +1,22 @@
 package com.g14.ucd.fitassistant;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -36,7 +41,7 @@ public class DietActivity extends AppCompatActivity {
         setContentView(R.layout.activity_diet);
 
         ParseQuery<Diet> query = ParseQuery.getQuery("Diet");
-
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<Diet>() {
             @Override
             public void done(List<Diet> diets, ParseException exception) {
@@ -52,33 +57,12 @@ public class DietActivity extends AppCompatActivity {
     }
 
 
-    private TableRow createButtons(String objId){
-        Button delete = new Button(getBaseContext());
-        delete.setText("x");
-        delete.setTag(objId);
-        Button update = new Button(getBaseContext());
-        update.setText("update");
-        delete.setTag(objId);
-        Button view = new Button(getBaseContext());
-        view.setText("view");
-        delete.setTag(objId);
-        TableRow buttons = new TableRow(getBaseContext());
-        buttons.addView(delete);
-        buttons.addView(update);
-        buttons.addView(view);
-
-        return buttons;
-    }
-
     private void listDiets(List<Diet> diets){
         List<String> viewDiets = new ArrayList<String>();
-        TableLayout tableButtons = (TableLayout) findViewById(R.id.buttons_table);
 
         for(Diet diet : diets){
             String name = diet.getString("name");
-            System.out.print("Diet: " + name);
             viewDiets.add(name);
-            tableButtons.addView(createButtons(diet.getObjectId()));
         }
 
         ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(
@@ -86,6 +70,7 @@ public class DietActivity extends AppCompatActivity {
                 R.layout.list_item_diet, // The name of the layout ID.
                 R.id.list_item_name_diet, // The ID of the textview to populate.
                 viewDiets);
+
 
         ListView listView = (ListView) findViewById(R.id.listView_diets);
         listView.setAdapter(mAdapter);
