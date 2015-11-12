@@ -16,7 +16,9 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/button_add_diet"
+        android:layout_alignEnd="@+id/button_add_diet" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -37,6 +39,8 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:onClick="addNewDiet"/>
+
+
 
 </RelativeLayout>
 

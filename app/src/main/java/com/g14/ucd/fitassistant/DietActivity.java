@@ -9,12 +9,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.g14.ucd.fitassistant.models.Diet;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -30,26 +35,50 @@ public class DietActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diet);
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Diet");
-        query.whereEqualTo("user", ParseUser.getCurrentUser());
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> diets, ParseException exception) {
-                if (exception == null && diets!=null) { // found diets
-                    listDiets(diets);
+        ParseQuery<Diet> query = ParseQuery.getQuery("Diet");
+
+        query.findInBackground(new FindCallback<Diet>() {
+            @Override
+            public void done(List<Diet> diets, ParseException exception) {
+                if (exception == null && diets.size() > 0) { // found diets
                     hideButtons();
-                } else {
+                    listDiets(diets);
+                    Log.d("FitAssistant", "êêê + " + diets.size());
+                } else if (exception != null) {
                     Log.d("FitAssistant", "Error: " + exception.getMessage());
                 }
             }
         });
     }
 
-    private void listDiets(List<ParseObject> diets){
-        List<String> viewDiets = new ArrayList<String>();
 
-        for(ParseObject diet : diets){
+    private TableRow createButtons(String objId){
+        Button delete = new Button(getBaseContext());
+        delete.setText("x");
+        delete.setTag(objId);
+        Button update = new Button(getBaseContext());
+        update.setText("update");
+        delete.setTag(objId);
+        Button view = new Button(getBaseContext());
+        view.setText("view");
+        delete.setTag(objId);
+        TableRow buttons = new TableRow(getBaseContext());
+        buttons.addView(delete);
+        buttons.addView(update);
+        buttons.addView(view);
+
+        return buttons;
+    }
+
+    private void listDiets(List<Diet> diets){
+        List<String> viewDiets = new ArrayList<String>();
+        TableLayout tableButtons = (TableLayout) findViewById(R.id.buttons_table);
+
+        for(Diet diet : diets){
             String name = diet.getString("name");
+            System.out.print("Diet: " + name);
             viewDiets.add(name);
+            tableButtons.addView(createButtons(diet.getObjectId()));
         }
 
         ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(
@@ -60,7 +89,11 @@ public class DietActivity extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.listView_diets);
         listView.setAdapter(mAdapter);
+
+
     }
+
+
 
     private void hideButtons(){
         Button addbutton = (Button) findViewById(R.id.button_add_diet);

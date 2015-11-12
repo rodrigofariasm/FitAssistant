@@ -40,24 +40,24 @@ public class Diet extends ParseObject{
         put("isActive", active);
     }
 
-    public List<Integer> getIdsMeals(){
+    public List<String> getIdsMeals(){
         return getList("meals");
     }
 
-    public void setMeals(List<Integer> meals){
+    public void setMeals(List<String> meals){
         put("meals",meals);
     }
 
-    public void addMeal(Integer ID){
-        List<Integer> meals = getIdsMeals();
+    public void addMeal(String ID){
+        List<String> meals = getIdsMeals();
         if(meals == null){
-            setMeals(new ArrayList<Integer>());
+            setMeals(new ArrayList<String>());
         }
         meals.add(ID);
     }
 
-    public void removeMeal(Integer ID){
-        List<Integer> meals = getIdsMeals();
+    public void removeMeal(String ID){
+        List<String> meals = getIdsMeals();
         meals.remove(ID);
         setMeals(meals);
     }
@@ -75,4 +75,5 @@ public class Diet extends ParseObject{
     public static ParseQuery<Diet> getQuery() {
         return ParseQuery.getQuery(Diet.class);
     }
+
 }

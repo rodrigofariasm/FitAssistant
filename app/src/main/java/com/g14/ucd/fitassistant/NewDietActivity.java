@@ -40,6 +40,7 @@ public class NewDietActivity extends AppCompatActivity {
     EditText descriptionField;
     EditText nameField;
     private Map<Integer,List<Integer>> idOptions;
+    String newDietId;
 
 
     @Override
@@ -47,8 +48,9 @@ public class NewDietActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_diet);
 
-        newDiet = null;
+        newDiet = new Diet();
         meal = null;
+        newDietId = null;
         descriptionField = (EditText) findViewById(R.id.editText_description_diet);
         nameField = (EditText) findViewById(R.id.editText_name_diet);
         idOptions = new HashMap<Integer,List<Integer>>();
@@ -77,7 +79,7 @@ public class NewDietActivity extends AppCompatActivity {
     }
 
     private int generateIdOption(int code)    {
-        if(!idOptions.containsKey(code)){
+        if(!idOptions.containsKey(code) || idOptions.get(code).size() == 0){
             return code * 100;
         } else {
             int positionlast = idOptions.get(code).size();
@@ -226,32 +228,35 @@ public class NewDietActivity extends AppCompatActivity {
     }
 
     public void saveDiet(View view){
-        newDiet = new Diet();
         newDiet.setUser(ParseUser.getCurrentUser());
         newDiet.setDescription(descriptionField.getText().toString());
         newDiet.setName(nameField.getText().toString());
-        newDiet.setMeals(new ArrayList<Integer>());
+        newDiet.setMeals(new ArrayList<String>());
 
-        for(int mealID : idOptions.keySet()){
+        for (int mealType : idOptions.keySet()) {
             meal = new Meal();
-            meal.setType(mealID);
+            ArrayList<String> options = new ArrayList<String>();
+            for (int option : idOptions.get(mealType)) {
+                EditText optionText = (EditText) findViewById(option);
+                options.add(optionText.getText().toString());
+            }
+            meal.addAllUnique("options", options);
+            meal.setType(mealType);
             meal.setUser(ParseUser.getCurrentUser());
-            meal.setDietID(newDiet.getInt("dietID"));
-            meal.setOptions(idOptions.get(mealID));
-            newDiet.addMeal(mealID);
+
             // Save the meal
             meal.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
-                    finish();
+                    newDiet.addMeal(meal.getObjectId());
                 }
             });
         }
 
         ParseACL acl = new ParseACL();
         // Give private read access
-        acl.setPublicWriteAccess(false);
-        acl.setPublicReadAccess(false);
+        acl.setPublicWriteAccess(true);
+        acl.setPublicReadAccess(true);
         newDiet.setACL(acl);
         newDiet.pinInBackground();
 

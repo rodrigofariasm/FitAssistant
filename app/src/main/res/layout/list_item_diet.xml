@@ -10,15 +10,7 @@
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:gravity="center_vertical"
         android:id="@+id/list_item_name_diet">
-    </TextView>
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/view_diet"
-        android:id="@+id/button_view_diet"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+    </TextView>
 
 </RelativeLayout>
