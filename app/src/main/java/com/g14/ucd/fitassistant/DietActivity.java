@@ -72,13 +72,11 @@ public class DietActivity extends AppCompatActivity {
 
     private void listDiets(List<Diet> diets){
         List<String> viewDiets = new ArrayList<String>();
-        TableLayout tableButtons = (TableLayout) findViewById(R.id.buttons_table);
 
         for(Diet diet : diets){
             String name = diet.getString("name");
             System.out.print("Diet: " + name);
             viewDiets.add(name);
-            tableButtons.addView(createButtons(diet.getObjectId()));
         }
 
         ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(

@@ -39,6 +39,8 @@
     <string name="title_activity_new_diet">New Diet</string>
     <string name="new_option">+ option</string>
     <string name="save_diet">Save</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 
 
 
@@ -46,6 +48,15 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array
+        name="drawer_string_array">
+        <item>Make a Schedule</item>
+        <item>Make a Diet</item>
+        <item>Plan Exercises</item>
+        <item>Plan Gym</item>
+        <item>Set Your Goals</item>
+    </string-array>
 
 
 </resources>
