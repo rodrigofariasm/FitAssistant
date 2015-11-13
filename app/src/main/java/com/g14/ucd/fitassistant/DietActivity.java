@@ -22,6 +22,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.g14.ucd.fitassistant.models.Diet;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.Parse;
@@ -30,6 +31,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,31 +48,23 @@ public class DietActivity extends AppCompatActivity {
             @Override
             public void done(List<Diet> diets, ParseException exception) {
                 if (exception == null && diets.size() > 0) { // found diets
-                    hideButtons();
                     listDiets(diets);
-                    Log.d("FitAssistant", "êêê + " + diets.size());
                 } else if (exception != null) {
                     Log.d("FitAssistant", "Error: " + exception.getMessage());
+                } else {
+                    showButtons();
                 }
             }
         });
     }
 
-
     private void listDiets(List<Diet> diets){
-        List<String> viewDiets = new ArrayList<String>();
 
-        for(Diet diet : diets){
-            String name = diet.getString("name");
-            viewDiets.add(name);
-        }
-
-        ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(
+       ListAdapter mAdapter = new ListAdapter(
                 this, // The current context (this activity)
                 R.layout.list_item_diet, // The name of the layout ID.
                 R.id.list_item_name_diet, // The ID of the textview to populate.
-                viewDiets);
-
+                diets);
 
         ListView listView = (ListView) findViewById(R.id.listView_diets);
         listView.setAdapter(mAdapter);
@@ -79,12 +73,11 @@ public class DietActivity extends AppCompatActivity {
     }
 
 
-
-    private void hideButtons(){
+    private void showButtons(){
         Button addbutton = (Button) findViewById(R.id.button_add_diet);
-        addbutton.setVisibility(View.INVISIBLE);
+        addbutton.setVisibility(View.VISIBLE);
         TextView noDietMessage = (TextView) findViewById(R.id.no_diet_message);
-        noDietMessage.setVisibility(View.INVISIBLE);
+        noDietMessage.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -109,6 +102,9 @@ public class DietActivity extends AppCompatActivity {
             case R.id.diet_option:
                 openDietActivity();
                 return true;
+            case R.id.exercise_option:
+                openExerciseActivity();
+                return true;
             case R.id.add_diet:
                 addNewDiet();
                 return true;
@@ -128,6 +124,11 @@ public class DietActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void openExerciseActivity() {
+        Intent intent = new Intent(DietActivity.this, ExerciseActivity.class);
+        startActivity(intent);
+    }
+
     public void addNewDiet(View v){
         addNewDiet();
     }
@@ -136,4 +137,58 @@ public class DietActivity extends AppCompatActivity {
         Intent intent = new Intent(DietActivity.this, NewDietActivity.class);
         startActivity(intent);
     }
+
+    public void updateDiet(View v){
+        final String objectId = (String) v.getTag();
+        Log.d("TAG: objectId", objectId);
+
+        ParseQuery<Diet> query = ParseQuery.getQuery("Diet");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.getInBackground(objectId, new GetCallback<Diet>() {
+            @Override
+            public void done(Diet diet, final ParseException exception) {
+                if (exception == null) { // found diet
+                    Intent intent = new Intent(DietActivity.this, NewDietActivity.class);
+                    intent.putExtra("diet", objectId);
+                    startActivity(intent);
+                } else if (exception != null) {
+                    Log.d("FitAssistant", "Error finding diet with id " + objectId + ": " + exception.getMessage());
+                }
+            }
+        });
+
+
+    }
+
+    public void viewDiet(View v){
+
+    }
+
+    public void deleteDiet(View v){
+        final String objectId = (String) v.getTag();
+        Log.d("TAG: objectId",objectId);
+
+        ParseQuery<Diet> query = ParseQuery.getQuery("Diet");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.getInBackground(objectId, new GetCallback<Diet>() {
+            @Override
+            public void done(Diet diet, final ParseException exception) {
+                if (exception == null) { // found diets
+
+                    diet.deleteInBackground(new DeleteCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(exception != null){
+                                Log.d("FitAssistant", "Error deleting diet: " + e.getMessage());
+                            }
+                        }
+                    });
+
+                } else if (exception != null) {
+                    Log.d("FitAssistant","Error finding diet with id "+ objectId + ": "+ exception.getMessage());
+                }
+            }
+        });
+    }
+
 }

@@ -19,10 +19,12 @@ import android.widget.TextView;
 import com.g14.ucd.fitassistant.models.Diet;
 import com.g14.ucd.fitassistant.models.Meal;
 import com.g14.ucd.fitassistant.models.MealEnum;
+import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -48,12 +50,80 @@ public class NewDietActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_diet);
 
-        newDiet = new Diet();
-        meal = null;
-        newDietId = null;
-        descriptionField = (EditText) findViewById(R.id.editText_description_diet);
-        nameField = (EditText) findViewById(R.id.editText_name_diet);
-        idOptions = new HashMap<Integer,List<Integer>>();
+        if(!isUpdate()){
+            newDiet = new Diet();
+            meal = null;
+            newDietId = null;
+            descriptionField = (EditText) findViewById(R.id.editText_description_diet);
+            nameField = (EditText) findViewById(R.id.editText_name_diet);
+            idOptions = new HashMap<Integer, List<Integer>>();
+        } else {
+            fillFields();
+        }
+    }
+
+    private boolean isUpdate(){
+        //Para recuperar os dados do Bundle em outra Activity
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            final String objectId = extras.getString("diet");
+            if (objectId != null) {
+                ParseQuery<Diet> query = ParseQuery.getQuery("Diet");
+                query.whereEqualTo("user", ParseUser.getCurrentUser());
+                query.getInBackground(objectId, new GetCallback<Diet>() {
+                    @Override
+                    public void done(Diet diet, final ParseException exception) {
+                        if (exception == null) { // found diet
+                            newDiet = diet;
+                        } else if (exception != null) {
+                            Log.d("FitAssistant", "Error finding diet with id " + objectId + ": " + exception.getMessage());
+                        }
+                    }
+                });
+            }
+        }
+        return false;
+    }
+
+    private void fillFields(){
+        if(newDiet != null){
+            EditText name = (EditText) findViewById(R.id.editText_name_diet);
+            EditText description = (EditText) findViewById(R.id.editText_description_diet);
+
+            for(final String idMeal : newDiet.getIdsMeals()){
+                ParseQuery<Meal> query = ParseQuery.getQuery("Meal");
+                query.whereEqualTo("user", ParseUser.getCurrentUser());
+                query.getInBackground(idMeal, new GetCallback<Meal>() {
+                    @Override
+                    public void done(Meal meal, final ParseException exception) {
+                        if (exception == null) { // found diet
+                            Button button = (Button) findViewById(getButtonOptionId(meal.getType()));
+                            for(String option : meal.getOptions()){
+                                addNewOption(button,option, idMeal);
+                            }
+                        } else if (exception != null) {
+                            Log.d("FitAssistant", "Error finding meal: " + exception.getMessage());
+                        }
+                    }
+                });
+            }
+
+
+        }
+    }
+
+    private int getButtonOptionId(int code){
+        switch (code){
+            case 1:
+                return R.id.button_new_opt_breakfast;
+            case 2:
+                return R.id.button_new_opt_lunch;
+            case 3:
+                return R.id.button_new_opt_dinner;
+            case 4:
+                return R.id.button_new_opt_snack;
+        }
+        return code;
     }
 
     @Override
@@ -88,9 +158,12 @@ public class NewDietActivity extends AppCompatActivity {
 
     }
 
+    public void addNewOption(View view) {
+        addNewOption(view,null,null);
+    }
     /* Method to add new Edit text box for options in the categories of the diet
     **/
-    public void addNewOption(View view){
+    public void addNewOption(View view, String option, String mealId){
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.new_diet_layout);
         EditText editText = new EditText(getBaseContext());
 
@@ -106,33 +179,36 @@ public class NewDietActivity extends AppCompatActivity {
             }
         });
         relativeLayout.addView(buttonDelete);
+
+        if(option != null && mealId != null){ // if is update diet the option will be filled already
+            editText.setText(option);
+            editText.setTag(mealId);
+        } else{
+            editText.setHint("option");
+        }
         relativeLayout.addView(editText);
 
         switch (view.getId()){
             case R.id.button_new_opt_breakfast:
                 editText.setId(generateIdOption(MealEnum.BREAKFAST.getCode()));
-                editText.setHint("Breakfast option ");
                 buttonDelete.setId(generateIdOption(MealEnum.BREAKFAST.getCode()) * 10);
                 addMealValue(MealEnum.BREAKFAST.getCode(), editText.getId());
                 changeLayout(MealEnum.BREAKFAST.getCode(), R.id.textView_breakfast, editText, buttonDelete);
                 break;
             case R.id.button_new_opt_lunch:
                 editText.setId(generateIdOption(MealEnum.LUNCH.getCode()));
-                editText.setHint("Lunch option ");
                 buttonDelete.setId(generateIdOption(MealEnum.LUNCH.getCode()) * 10);
                 addMealValue(MealEnum.LUNCH.getCode(), editText.getId());
                 changeLayout(MealEnum.LUNCH.getCode(), R.id.textView_lunch, editText,buttonDelete);
                 break;
             case R.id.button_new_opt_dinner:
                 editText.setId(generateIdOption(MealEnum.DINNER.getCode()));
-                editText.setHint("Dinner option ");
                 buttonDelete.setId(generateIdOption(MealEnum.DINNER.getCode()) * 10);
                 addMealValue(MealEnum.DINNER.getCode(), editText.getId());
                 changeLayout(MealEnum.DINNER.getCode(), R.id.textView_dinner, editText,buttonDelete);
                 break;
             case R.id.button_new_opt_snack:
                 editText.setId(generateIdOption(MealEnum.SNACK.getCode()));
-                editText.setHint("Snack option ");
                 buttonDelete.setId(generateIdOption(MealEnum.SNACK.getCode()) * 10);
                 addMealValue(MealEnum.SNACK.getCode(), editText.getId());
                 changeLayout(MealEnum.SNACK.getCode(), R.id.textView_snack, editText, buttonDelete);
@@ -223,7 +299,7 @@ public class NewDietActivity extends AppCompatActivity {
         }else{
             viewBellow = (View) findViewById(idOptions.get(code).get(positionDeleted));
             Button deleteButton = (Button) findViewById(viewBellow.getId()*10);
-            changeLayout(code,textViewId,viewBellow,deleteButton);
+            changeLayout(code, textViewId, viewBellow, deleteButton);
         }
     }
 
@@ -233,28 +309,9 @@ public class NewDietActivity extends AppCompatActivity {
         newDiet.setName(nameField.getText().toString());
         newDiet.setMeals(new ArrayList<String>());
 
-        for (int mealType : idOptions.keySet()) {
-            meal = new Meal();
-            ArrayList<String> options = new ArrayList<String>();
-            for (int option : idOptions.get(mealType)) {
-                EditText optionText = (EditText) findViewById(option);
-                options.add(optionText.getText().toString());
-            }
-            meal.addAllUnique("options", options);
-            meal.setType(mealType);
-            meal.setUser(ParseUser.getCurrentUser());
-
-            // Save the meal
-            meal.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    newDiet.addMeal(meal.getObjectId());
-                }
-            });
-        }
+        saveMeal();
 
         ParseACL acl = new ParseACL();
-        // Give private read access
         acl.setPublicWriteAccess(true);
         acl.setPublicReadAccess(true);
         newDiet.setACL(acl);
@@ -270,5 +327,37 @@ public class NewDietActivity extends AppCompatActivity {
 
         Intent intent = new Intent(NewDietActivity.this,DietActivity.class);
 
+    }
+
+    private void saveMeal(){
+        for (int mealType : idOptions.keySet()) {
+            String mealId = null;
+            ArrayList<String> options = new ArrayList<String>();
+            for (int option : idOptions.get(mealType)) {
+                EditText optionText = (EditText) findViewById(option);
+                options.add(optionText.getText().toString());
+                if(option % 100 == 0 && optionText.getTag() != null){
+                    mealId = (String) optionText.getTag();
+                }
+            }
+
+            if(mealId == null){
+                meal = new Meal();
+            } else {
+                meal.setObjectId(mealId);
+            }
+
+            meal.addAllUnique("options", options);
+            meal.setType(mealType);
+            meal.setUser(ParseUser.getCurrentUser());
+
+            // Save the meal
+            meal.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    newDiet.addMeal(meal.getObjectId());
+                }
+            });
+        }
     }
 }

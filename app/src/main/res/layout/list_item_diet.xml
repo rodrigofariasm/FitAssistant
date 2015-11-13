@@ -25,7 +25,8 @@
         android:layout_toLeftOf="@+id/button_update"
         android:layout_toStartOf="@+id/button_update"
         android:layout_alignBottom="@+id/list_item_name_diet"
-        android:layout_alignTop="@+id/button_update" />
+        android:layout_alignTop="@+id/button_update"
+        android:onClick="viewDiet"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -34,7 +35,8 @@
         android:id="@+id/button_update"
         android:layout_alignTop="@+id/button_delete"
         android:layout_toLeftOf="@+id/button_delete"
-        android:layout_toStartOf="@+id/button_delete" />
+        android:layout_toStartOf="@+id/button_delete"
+        android:onClick="updateDiet"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -43,7 +45,8 @@
         android:id="@+id/button_delete"
         android:layout_alignBottom="@+id/list_item_name_diet"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:onClick="deleteDiet"/>
 
 
 </RelativeLayout>

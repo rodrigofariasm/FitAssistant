@@ -1,33 +1,28 @@
 package com.g14.ucd.fitassistant.models;
 
+import com.parse.ParseClassName;
+import com.parse.ParseGeoPoint;
+
 /**
  * Created by Natália on 17/10/2015.
  */
+@ParseClassName("Other")
 public class Other extends Activity{
 
-    public String description;
-    public String location;
-
-    public Other(String name, int type, String description,String location){
-        this.name = name;
-        this.type = type;
-        this.description = description;
-        this.location = location;
-    }
-
     public String getDescription() {
-        return description;
+        return getString("description");
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        put("description",description);
     }
 
-    public String getLocation() {
-        return location;
+    public ParseGeoPoint getLocation() {
+        return getParseGeoPoint("location");
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setLocation(ParseGeoPoint location) {
+        put("location", location);
     }
+
 }

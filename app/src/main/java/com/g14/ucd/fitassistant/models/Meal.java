@@ -24,7 +24,7 @@ public class Meal extends ParseObject{
         put("type",type);
     }
 
-    public List<Object> getOptions() {
+    public List<String> getOptions() {
         return getList("options");
     }
 
