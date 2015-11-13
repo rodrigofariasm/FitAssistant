@@ -57,8 +57,6 @@ public class NewDietActivity extends AppCompatActivity {
             descriptionField = (EditText) findViewById(R.id.editText_description_diet);
             nameField = (EditText) findViewById(R.id.editText_name_diet);
             idOptions = new HashMap<Integer, List<Integer>>();
-        } else {
-            fillFields();
         }
     }
 
@@ -67,6 +65,7 @@ public class NewDietActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             final String objectId = extras.getString("diet");
+            Log.d("FitAssistant: ", "ObjectID: " + objectId);
             if (objectId != null) {
                 ParseQuery<Diet> query = ParseQuery.getQuery("Diet");
                 query.whereEqualTo("user", ParseUser.getCurrentUser());
@@ -75,6 +74,7 @@ public class NewDietActivity extends AppCompatActivity {
                     public void done(Diet diet, final ParseException exception) {
                         if (exception == null) { // found diet
                             newDiet = diet;
+                            fillFields();
                         } else if (exception != null) {
                             Log.d("FitAssistant", "Error finding diet with id " + objectId + ": " + exception.getMessage());
                         }
@@ -89,6 +89,8 @@ public class NewDietActivity extends AppCompatActivity {
         if(newDiet != null){
             EditText name = (EditText) findViewById(R.id.editText_name_diet);
             EditText description = (EditText) findViewById(R.id.editText_description_diet);
+            name.setText(newDiet.getName());
+            description.setText(newDiet.getDescription());
 
             for(final String idMeal : newDiet.getIdsMeals()){
                 ParseQuery<Meal> query = ParseQuery.getQuery("Meal");
