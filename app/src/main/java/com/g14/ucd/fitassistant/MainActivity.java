@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.facebook.appevents.AppEventsLogger;
+import com.g14.ucd.fitassistant.models.Exercise;
 import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
@@ -63,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.diet_option:
                 openDietActivity();
                 return true;
+            case R.id.exercise_option:
+                openExerciseActivity();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -93,6 +97,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void openDietActivity() {
         Intent intent = new Intent(MainActivity.this, DietActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    private void openExerciseActivity() {
+        Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }

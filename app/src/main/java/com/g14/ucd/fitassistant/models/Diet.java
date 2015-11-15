@@ -40,28 +40,6 @@ public class Diet extends ParseObject{
         put("isActive", active);
     }
 
-    public List<String> getIdsMeals(){
-        return getList("meals");
-    }
-
-    public void setMeals(List<String> meals){
-        put("meals",meals);
-    }
-
-    public void addMeal(String ID){
-        List<String> meals = getIdsMeals();
-        if(meals == null){
-            setMeals(new ArrayList<String>());
-        }
-        meals.add(ID);
-    }
-
-    public void removeMeal(Integer ID){
-        List<String> meals = getIdsMeals();
-        meals.remove(ID);
-        setMeals(meals);
-    }
-
     public ParseUser getUser(){
         return getParseUser("user");
     }

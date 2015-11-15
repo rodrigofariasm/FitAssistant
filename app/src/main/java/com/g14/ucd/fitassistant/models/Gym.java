@@ -13,7 +13,7 @@ public class Gym extends Activity {
 
     @Override
     public void setName(String name){
-        put("name",ActivitiesTypeEnum.GYM.getValue());
+        put("name",ActivitiesTypeEnum.GYM.getValue() + " - " + name);
     }
 
     @Override

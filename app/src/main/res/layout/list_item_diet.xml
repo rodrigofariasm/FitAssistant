@@ -17,10 +17,10 @@
         android:layout_toStartOf="@+id/button_view">
     </TextView>
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="O"
+        android:src="@drawable/ic_view_blue"
         android:id="@+id/button_view"
         android:layout_toLeftOf="@+id/button_update"
         android:layout_toStartOf="@+id/button_update"
@@ -28,20 +28,20 @@
         android:layout_alignTop="@+id/button_update"
         android:onClick="viewDiet"/>
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="U"
+        android:src="@drawable/ic_edit_blue"
         android:id="@+id/button_update"
         android:layout_alignTop="@+id/button_delete"
         android:layout_toLeftOf="@+id/button_delete"
         android:layout_toStartOf="@+id/button_delete"
         android:onClick="updateDiet"/>
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="X"
+        android:src="@drawable/ic_trash_blue"
         android:id="@+id/button_delete"
         android:layout_alignBottom="@+id/list_item_name_diet"
         android:layout_alignParentRight="true"

@@ -4,4 +4,8 @@
     tools:context="com.g14.ucd.fitassistant.NewExerciseActivity">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/exercise_option" android:title="@string/exercise"
+        android:orderInCategory="200" app:showAsAction="never"/>
+    <item android:id="@+id/logout_option" android:title="@string/logout"
+        android:orderInCategory="200" app:showAsAction="never"/>
 </menu>

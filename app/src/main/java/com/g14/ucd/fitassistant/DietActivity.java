@@ -22,6 +22,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.g14.ucd.fitassistant.models.Diet;
+import com.g14.ucd.fitassistant.models.Meal;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -175,17 +176,18 @@ public class DietActivity extends AppCompatActivity {
             public void done(Diet diet, final ParseException exception) {
                 if (exception == null) { // found diets
 
-                    diet.deleteInBackground(new DeleteCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if(exception != null){
-                                Log.d("FitAssistant", "Error deleting diet: " + e.getMessage());
-                            }
-                        }
-                    });
-
+                    ParseQuery<Meal> query = ParseQuery.getQuery("Meal");
+                    query.whereEqualTo("user", ParseUser.getCurrentUser());
+                    query.whereEqualTo("dietId", diet.getObjectId());
+                    try {
+                        List<Meal> meals = query.find();
+                        ParseObject.deleteAll(meals);
+                        diet.delete();
+                    } catch (ParseException e) {
+                        Log.d("FitAssistant", "Error deleting diet" + e.getMessage());
+                    }
                 } else if (exception != null) {
-                    Log.d("FitAssistant","Error finding diet with id "+ objectId + ": "+ exception.getMessage());
+                    Log.d("FitAssistant", "Error finding diet with id " + objectId + ": " + exception.getMessage());
                 }
             }
         });

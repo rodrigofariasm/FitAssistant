@@ -12,19 +12,24 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.g14.ucd.fitassistant.models.Diet;
 import com.g14.ucd.fitassistant.models.Meal;
 import com.g14.ucd.fitassistant.models.MealEnum;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -38,10 +43,9 @@ import bolts.Task;
 public class NewDietActivity extends AppCompatActivity {
 
     private Diet newDiet;
-    private Meal meal;
+    private List<Meal> meals;
     EditText descriptionField;
     EditText nameField;
-    private Map<Integer,List<Integer>> idOptions;
     String newDietId;
 
 
@@ -50,17 +54,16 @@ public class NewDietActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_diet);
 
-        if(!isUpdate()){
+        if (!isUpdate()) {
             newDiet = new Diet();
-            meal = null;
+            meals = new ArrayList<Meal>();
             newDietId = null;
             descriptionField = (EditText) findViewById(R.id.editText_description_diet);
             nameField = (EditText) findViewById(R.id.editText_name_diet);
-            idOptions = new HashMap<Integer, List<Integer>>();
         }
     }
 
-    private boolean isUpdate(){
+    private boolean isUpdate() {
         //Para recuperar os dados do Bundle em outra Activity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -85,37 +88,37 @@ public class NewDietActivity extends AppCompatActivity {
         return false;
     }
 
-    private void fillFields(){
-        if(newDiet != null){
+    private void fillFields() {
+        if (newDiet != null) {
             EditText name = (EditText) findViewById(R.id.editText_name_diet);
             EditText description = (EditText) findViewById(R.id.editText_description_diet);
             name.setText(newDiet.getName());
             description.setText(newDiet.getDescription());
 
-            for(final String idMeal : newDiet.getIdsMeals()){
-                ParseQuery<Meal> query = ParseQuery.getQuery("Meal");
-                query.whereEqualTo("user", ParseUser.getCurrentUser());
-                query.getInBackground(idMeal, new GetCallback<Meal>() {
-                    @Override
-                    public void done(Meal meal, final ParseException exception) {
-                        if (exception == null) { // found diet
+            ParseQuery<Meal> query = ParseQuery.getQuery("Meal");
+            query.whereEqualTo("user", ParseUser.getCurrentUser());
+            query.whereEqualTo("dietId", newDiet.getObjectId());
+            query.findInBackground(new FindCallback<Meal>() {
+                @Override
+                public void done(List<Meal> meals, ParseException exception) {
+                    if (exception == null) { // found meals
+                        for (Meal meal : meals) {
                             Button button = (Button) findViewById(getButtonOptionId(meal.getType()));
-                            for(String option : meal.getOptions()){
-                                addNewOption(button,option, idMeal);
+                            for (String option : meal.getOptions()) {
+                                addNewOption(button, option, meal.getObjectId());
                             }
-                        } else if (exception != null) {
-                            Log.d("FitAssistant", "Error finding meal: " + exception.getMessage());
                         }
+                    } else if (exception != null) {
+                        Log.d("FitAssistant", "Error finding meals of diets: " + exception.getMessage());
                     }
-                });
-            }
 
-
+                }
+            });
         }
     }
 
-    private int getButtonOptionId(int code){
-        switch (code){
+    private int getButtonOptionId(int code) {
+        switch (code) {
             case 1:
                 return R.id.button_new_opt_breakfast;
             case 2:
@@ -150,216 +153,120 @@ public class NewDietActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private int generateIdOption(int code)    {
-        if(!idOptions.containsKey(code) || idOptions.get(code).size() == 0){
-            return code * 100;
-        } else {
-            int positionlast = idOptions.get(code).size();
-            return idOptions.get(code).get(positionlast - 1) + 1;
-        }
-
-    }
 
     public void addNewOption(View view) {
-        addNewOption(view,null,null);
+        addNewOption(view, null, null);
     }
+
     /* Method to add new Edit text box for options in the categories of the diet
     **/
-    public void addNewOption(View view, String option, String mealId){
-        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.new_diet_layout);
-        EditText editText = new EditText(getBaseContext());
+    public void addNewOption(View view, String option, String mealId) {
+        TableLayout tableoptions = null;
+        TableRow newRow = new TableRow(getBaseContext());
 
+        EditText editText = new EditText(getBaseContext());
         editText.setHintTextColor(Color.BLACK);
         editText.setTextColor(Color.BLACK);
+        newRow.addView(editText);
 
-        Button buttonDelete = new Button(getBaseContext());
-        buttonDelete.setText("x");
+        ImageButton buttonDelete = new ImageButton(getBaseContext());
+        buttonDelete.setImageResource(R.drawable.ic_trash_blue);
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 deleteOption(view);
             }
         });
-        relativeLayout.addView(buttonDelete);
+        newRow.addView(buttonDelete);
 
-        if(option != null && mealId != null){ // if is update diet the option will be filled already
+
+        if (option != null && mealId != null) { // if is update diet the option will be filled already
             editText.setText(option);
             editText.setTag(mealId);
-        } else{
+        } else {
             editText.setHint("option");
         }
-        relativeLayout.addView(editText);
 
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.button_new_opt_breakfast:
-                editText.setId(generateIdOption(MealEnum.BREAKFAST.getCode()));
-                buttonDelete.setId(generateIdOption(MealEnum.BREAKFAST.getCode()) * 10);
-                addMealValue(MealEnum.BREAKFAST.getCode(), editText.getId());
-                changeLayout(MealEnum.BREAKFAST.getCode(), R.id.textView_breakfast, editText, buttonDelete);
+                tableoptions = (TableLayout) findViewById(R.id.table_breakfast);
                 break;
             case R.id.button_new_opt_lunch:
-                editText.setId(generateIdOption(MealEnum.LUNCH.getCode()));
-                buttonDelete.setId(generateIdOption(MealEnum.LUNCH.getCode()) * 10);
-                addMealValue(MealEnum.LUNCH.getCode(), editText.getId());
-                changeLayout(MealEnum.LUNCH.getCode(), R.id.textView_lunch, editText,buttonDelete);
+                tableoptions = (TableLayout) findViewById(R.id.table_lunch);
                 break;
             case R.id.button_new_opt_dinner:
-                editText.setId(generateIdOption(MealEnum.DINNER.getCode()));
-                buttonDelete.setId(generateIdOption(MealEnum.DINNER.getCode()) * 10);
-                addMealValue(MealEnum.DINNER.getCode(), editText.getId());
-                changeLayout(MealEnum.DINNER.getCode(), R.id.textView_dinner, editText,buttonDelete);
+                tableoptions = (TableLayout) findViewById(R.id.table_dinner);
                 break;
             case R.id.button_new_opt_snack:
-                editText.setId(generateIdOption(MealEnum.SNACK.getCode()));
-                buttonDelete.setId(generateIdOption(MealEnum.SNACK.getCode()) * 10);
-                addMealValue(MealEnum.SNACK.getCode(), editText.getId());
-                changeLayout(MealEnum.SNACK.getCode(), R.id.textView_snack, editText, buttonDelete);
+                tableoptions = (TableLayout) findViewById(R.id.table_snack);
                 break;
         }
 
         buttonDelete.setTag(editText.getId());
-        RelativeLayout.LayoutParams viewLayoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-        viewLayoutParams.addRule(RelativeLayout.BELOW, editText.getId());
+        tableoptions.addView(newRow);
     }
 
-    private void addMealValue(int key, int option){
-        if(!idOptions.containsKey(key)){
-            idOptions.put(key, new ArrayList<Integer>());
-        }
-        idOptions.get(key).add(option);
+    public void deleteOption(View view) {
+        View row = (View) view.getParent();
+        TableLayout table = (TableLayout) row.getParent();
+        table.removeView(row);
     }
 
-    private void changeLayout(int code, int textViewId, View view, Button button){
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
-        RelativeLayout.LayoutParams layoutParamsButton = null;
-
-        if(button != null) {
-            layoutParamsButton = (RelativeLayout.LayoutParams) button.getLayoutParams();
-            layoutParamsButton.addRule(RelativeLayout.ALIGN_RIGHT, R.id.editText_name_diet);
-        }
-
-        Integer id = new Integer(view.getId());
-        List<Integer> ids = idOptions.get(code);
-        int position = ids.indexOf(id);
-        if(position == 0){
-            layoutParams.addRule(RelativeLayout.BELOW,textViewId);
-            if(button != null){
-                layoutParamsButton.addRule(RelativeLayout.BELOW,textViewId);
-            }
-        } else {
-            layoutParams.addRule(RelativeLayout.BELOW, ids.get(position - 1));
-            if(button != null) {
-                layoutParamsButton.addRule(RelativeLayout.BELOW, ids.get(position - 1));
-            }
-        }
-
-    }
-
-    public void deleteOption(View view){
-        Object tag = view.getTag();
-        int id = Integer.parseInt(tag.toString());
-        EditText optionDelete = (EditText) findViewById(id);
-        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.new_diet_layout);
-
-        int textViewId = 0;
-        int buttonOptionId = 0;
-        int code = id/100;
-        switch (code){
-            case 1:
-                textViewId = R.id.textView_breakfast;
-                buttonOptionId = R.id.button_new_opt_breakfast;
-                break;
-            case 2:
-                textViewId = R.id.textView_lunch;
-                buttonOptionId = R.id.button_new_opt_lunch;
-                break;
-            case 3:
-                textViewId = R.id.textView_dinner;
-                buttonOptionId = R.id.button_new_opt_dinner;
-                break;
-            case 4:
-                textViewId = R.id.textView_snack;
-                buttonOptionId = R.id.button_new_opt_snack;
-                break;
-        }
-
-        int positionDeleted = idOptions.get(code).indexOf(id);
-
-        relativeLayout.removeView(view);
-        relativeLayout.removeView(optionDelete);
-        idOptions.get(code).remove(positionDeleted); // removing the id of the option deletede from de array of ids
-
-        View viewBellow = null;
-        if(positionDeleted == idOptions.get(code).size()){
-            viewBellow = findViewById(buttonOptionId);
-            RelativeLayout.LayoutParams viewLayoutParams = (RelativeLayout.LayoutParams) viewBellow.getLayoutParams();
-            if(positionDeleted ==  0){
-                viewLayoutParams.addRule(RelativeLayout.BELOW, textViewId);
-            }else{
-                viewLayoutParams.addRule(RelativeLayout.BELOW, idOptions.get(code).get(positionDeleted-1));
-            }
-        }else{
-            viewBellow = (View) findViewById(idOptions.get(code).get(positionDeleted));
-            Button deleteButton = (Button) findViewById(viewBellow.getId()*10);
-            changeLayout(code, textViewId, viewBellow, deleteButton);
-        }
-    }
-
-    public void saveDiet(View view){
+    public void saveDiet(View view) {
         newDiet.setUser(ParseUser.getCurrentUser());
         newDiet.setDescription(descriptionField.getText().toString());
         newDiet.setName(nameField.getText().toString());
-        newDiet.setMeals(new ArrayList<String>());
-
-        saveMeal();
-
-        ParseACL acl = new ParseACL();
-        acl.setPublicWriteAccess(true);
-        acl.setPublicReadAccess(true);
-        newDiet.setACL(acl);
-        newDiet.pinInBackground();
-
-        // Save the diet
         newDiet.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                finish();
+                if (e == null) {
+                    createMeal(R.id.table_breakfast);
+                    createMeal(R.id.table_lunch);
+                    createMeal(R.id.table_dinner);
+                    createMeal(R.id.table_snack);
+                    try {
+                        ParseObject.saveAll(meals);
+                    } catch (ParseException parseE) {
+                        newDiet.deleteInBackground();
+                        Log.d("FITASSISTANT", "Error saving meals " + parseE.getMessage());
+                    }
+                }
             }
         });
-
-        Intent intent = new Intent(NewDietActivity.this,DietActivity.class);
+        Intent intent = new Intent(NewDietActivity.this, DietActivity.class);
 
     }
 
-    private void saveMeal(){
-        for (int mealType : idOptions.keySet()) {
-            String mealId = null;
-            ArrayList<String> options = new ArrayList<String>();
-            for (int option : idOptions.get(mealType)) {
-                EditText optionText = (EditText) findViewById(option);
-                options.add(optionText.getText().toString());
-                if(option % 100 == 0 && optionText.getTag() != null){
+
+    private void createMeal(int id) {
+        Log.d("FITASSISTANT.saveMeal", "newDietId:" + newDietId);
+        Log.d("FITASSISTANT.saveMeal", "newDietId:" + newDiet.getObjectId());
+
+        String mealId = null;
+        Meal meal = new Meal();
+
+        TableLayout table = (TableLayout) findViewById(id);
+        int size = table.getChildCount();
+        if(size > 1) { // if there's any option registred for the meal . proceed to save. 1 = textView with the type
+
+            for (int i = 1; i < size; i++) {
+                TableRow row = (TableRow) table.getChildAt(i);
+                EditText optionText = (EditText) row.getChildAt(0);
+                meal.addOption(optionText.getText().toString());
+                if (i == 1 && optionText.getTag() != null) {
                     mealId = (String) optionText.getTag();
                 }
             }
 
-            if(mealId == null){
-                meal = new Meal();
-            } else {
+            if (mealId != null) {
                 meal.setObjectId(mealId);
             }
 
-            meal.addAllUnique("options", options);
-            meal.setType(mealType);
+            meal.setType((Integer) table.getTag());
             meal.setUser(ParseUser.getCurrentUser());
+            meal.setDietID(newDiet.getObjectId());
+            meals.add(meal);
 
-            // Save the meal
-            meal.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    newDiet.addMeal(meal.getObjectId());
-                }
-            });
         }
     }
 }

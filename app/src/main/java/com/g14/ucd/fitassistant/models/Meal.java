@@ -14,7 +14,6 @@ import java.util.List;
  */
 @ParseClassName("Meal")
 public class Meal extends ParseObject{
-    List<String> options;
 
     public int getType() {
         return getInt("type");
@@ -33,24 +32,27 @@ public class Meal extends ParseObject{
     }
 
     public void addOption(String option){
-         if(options == null){
-             options = new ArrayList<String>();
+        List<String> options = getOptions();
+        if(options == null){
+            options = new ArrayList<String>();
          }
         options.add(option);
+        setOptions(options);
     }
 
     public void removeOption(String optionID){
+        List<String> options = getOptions();
         options.remove(optionID);
         setOptions(options);
     }
 
-    public int getDietID(){
+    public String getDietID(){
         try {
-            return fetchIfNeeded().getInt("dietID");
+            return fetchIfNeeded().getString("dietID");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return 1;
+        return null;
     }
 
     public void setDietID(String dietID){

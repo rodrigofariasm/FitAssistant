@@ -20,13 +20,91 @@
             android:id="@+id/editText_name_exercise"
             android:layout_marginTop="10dp"/>
 
+
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/radio_group_type"
+            android:layout_below="@id/editText_name_exercise"
+            android:layout_marginTop="20dp" >
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gym"
+                android:id="@+id/radioButtonGym"
+                android:onClick="onRadioButtonClicked"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Other"
+                android:id="@+id/radioButtonOther"
+                android:onClick="onRadioButtonClicked"/>
+        </RadioGroup>
+
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:hint="Description"
             android:ems="15"
-            android:id="@+id/editText_description_other"/>
+            android:id="@+id/editText_description_other"
+            android:layout_below="@id/radio_group_type"
+            android:visibility="invisible"
+            android:layout_marginTop="30dp"/>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/radio_group_type"
+            android:id="@+id/tableExercises"
+            android:visibility="invisible"
+            android:layout_marginTop="30dp" >
+
+            <TableRow><TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Name"
+                android:id="@+id/textView_name_gym_exercise"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Series"
+                android:id="@+id/textView_series_gym_exercise"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Repetitions"
+                    android:id="@+id/textView_repetitions_gym_exercise"
+                    android:layout_column="22" />
+            </TableRow>
+
+        </TableLayout>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_new_opt_gym_exercise"
+            android:onClick="addNewOption"
+            android:layout_below="@id/tableExercises"
+            android:visibility="invisible"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_action"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save_diet"
+            android:id="@+id/button_save_exercise"
+            android:onClick="saveActivity"
+            android:visibility="invisible"
+            android:layout_below="@id/button_new_opt_gym_exercise"
+            android:layout_alignRight="@+id/editText_name_exercise"/>
 
     </RelativeLayout>
 </ScrollView>

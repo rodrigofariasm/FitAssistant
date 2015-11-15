@@ -12,6 +12,7 @@
 
     <item android:id="@+id/add_diet" android:title="@string/add_diet"
         android:orderInCategory="100" app:showAsAction="ifRoom"
+        android:drawable="@drawable/ic_new_white"
        />
 
 

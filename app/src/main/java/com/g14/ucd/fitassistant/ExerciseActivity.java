@@ -127,7 +127,7 @@ public class ExerciseActivity extends AppCompatActivity {
     }
 
     private void addNewExercise(){
-        Intent intent = new Intent(ExerciseActivity.this, NewDietActivity.class); //TODO change
+        Intent intent = new Intent(ExerciseActivity.this, NewExerciseActivity.class);
         startActivity(intent);
     }
 }

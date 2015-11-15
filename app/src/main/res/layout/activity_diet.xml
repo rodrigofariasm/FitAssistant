@@ -31,11 +31,11 @@
         android:layout_marginTop="162dp"
         android:visibility="invisible"/>
 
-    <Button
+    <ImageButton
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/add_diet"
+        android:drawable="@drawable/ic_new_white"
         android:id="@+id/button_add_diet"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"

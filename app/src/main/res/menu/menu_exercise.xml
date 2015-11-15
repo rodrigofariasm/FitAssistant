@@ -12,7 +12,8 @@
         android:orderInCategory="100" app:showAsAction="never" />
 
     <item android:id="@+id/add_exercise" android:title="@string/add_exercise"
-    android:orderInCategory="100" app:showAsAction="ifRoom" />
+    android:orderInCategory="100" app:showAsAction="ifRoom"
+        android:drawable="@drawable/ic_new_white"/>
 
 </menu>
 
