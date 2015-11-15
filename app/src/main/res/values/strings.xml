@@ -13,7 +13,7 @@
     <!--- String para login e cadastrar -->
     <string name="title_activity_login">Enter</string>
     <string name="title_activity_signup">Sign In</string>
-    <string name="prompt_email">User</string>
+    <string name="prompt_email">Email, must be valid</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_password_again">Confirm password</string>
     <string name="error_intro">"Please "</string>
@@ -29,6 +29,11 @@
     <string name="logout">Log Out</string>
     <string name="signup_verification">You need to verify your account, you will receive a verification email soon. Thank You!</string>
     <string name="email_not_verified">User not verified</string>
+    <string name="prompt_lastname">Last name</string>
+    <string name="prompt_username">First name</string>
+    <string name="date_of_birth">Date of Birth</string>
+
+
 
     <!--- String para Dietas -->
     <string name="diet">Diet</string>
@@ -39,6 +44,8 @@
     <string name="title_activity_new_diet">New Diet</string>
     <string name="new_option">+ option</string>
     <string name="save_diet">Save</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 
 
 
@@ -51,6 +58,15 @@
     <string name="add_exercise">+ Exercise</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_new_exercise">NewExerciseActivity</string>
+
+    <string-array
+        name="drawer_string_array">
+        <item>Make a Schedule</item>
+        <item>Make a Diet</item>
+        <item>Plan Exercises</item>
+        <item>Plan Gym</item>
+        <item>Set Your Goals</item>
+    </string-array>
 
 
 </resources>

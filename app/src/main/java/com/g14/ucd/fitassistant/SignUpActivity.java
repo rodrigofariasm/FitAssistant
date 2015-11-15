@@ -2,28 +2,43 @@ package com.g14.ucd.fitassistant;
 
 import android.app.Activity;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.parse.*;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by rodrigofarias on 10/17/15.
  */
-public class SignUpActivity extends Activity{
-    private EditText usernameEditText;
+public class SignUpActivity extends FragmentActivity implements DatePickerDialog.OnDateSetListener{
+
+    private EditText firstnameEditText;
+    private EditText lastnameEditText;
+    private EditText emailEditText;
     private EditText passwordEditText;
     private EditText passwordAgainEditText;
+    static TextView dateEdit;
     private Installation pInst;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +46,10 @@ public class SignUpActivity extends Activity{
         setContentView(R.layout.activity_signup);
 
         // Set up the signup form.
-        usernameEditText = (EditText) findViewById(R.id.username_edit_text);
-
+        emailEditText = (EditText) findViewById(R.id.email_edit_text);
+        firstnameEditText= (EditText) findViewById(R.id.first_name_text);
+        lastnameEditText= (EditText) findViewById(R.id.last_name_text);
+        dateEdit = (TextView) findViewById(R.id.birth_text_view);
         passwordEditText = (EditText) findViewById(R.id.password_edit_text);
         passwordAgainEditText = (EditText) findViewById(R.id.password_again_edit_text);
         passwordAgainEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -57,10 +74,12 @@ public class SignUpActivity extends Activity{
     }
 
     private void signup() {
-        String username = usernameEditText.getText().toString().trim();
+        String username = firstnameEditText.getText().toString().trim()+ " " + lastnameEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
         String passwordAgain = passwordAgainEditText.getText().toString().trim();
-
+        String email = emailEditText.getText().toString().trim();
+        TextView dateBirth = (TextView) findViewById(R.id.birth_text_view);
+        Date birthday = new Date(dateBirth.getText().toString().trim());
         // Validate the sign up data
         boolean validationError = false;
         StringBuilder validationErrorMessage = new StringBuilder();
@@ -103,9 +122,11 @@ public class SignUpActivity extends Activity{
 
         // Set up a new Parse user
         ParseUser user = new ParseUser();
-        user.setEmail(username);
-        user.setUsername(username);
+        user.setEmail(email);
+        user.setUsername(email);
         user.setPassword(password);
+        user.put("date_of_birth", birthday);
+        user.put("name", username);
         final boolean finalValidationError = validationError;
         user.signUpInBackground(new SignUpCallback() {
             @Override
@@ -128,4 +149,37 @@ public class SignUpActivity extends Activity{
             }
         });
     }
+    public void showDatePickerDialog(View v) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "datepicker");
+    }
+
+
+
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+    }
+
+    public static class DatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            // Create a new instance of DatePickerDialog and return it
+            // Create a new instance of DatePickerDialog and return it
+            return new DatePickerDialog(getActivity(), this, year, month, day);
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            // Do something with the date chosen by the user
+            dateEdit.setText((month+1) + "/" + day + "/" + year);
+        }
+    }
+
+
 }
