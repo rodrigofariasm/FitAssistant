@@ -61,7 +61,7 @@
         android:id="@+id/image_view"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/mydiet"
+        android:src="@drawable/fitnessicon"
         />
         <ListView android:id="@+id/left_drawer_list_view"
             android:layout_width="200dp"

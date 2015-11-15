@@ -1,35 +1,49 @@
 package com.g14.ucd.fitassistant.models;
 
+import com.parse.ParseClassName;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+
 /**
  * Created by Natália on 17/10/2015.
  */
-public class Exercise {
-
-    public String name;
-    public int sections;
-    public int repetitions;
+@ParseClassName("Exercise")
+public class Exercise extends ParseObject{
 
     public int getSections() {
-        return sections;
+        return getInt("sections");
     }
 
     public void setSections(int sections) {
-        this.sections = sections;
+       put("sections", sections);
     }
 
     public String getName() {
-        return name;
+        return getString("name");
     }
 
     public void setName(String name) {
-        this.name = name;
+        put("name",name);
     }
 
     public int getRepetitions() {
-        return repetitions;
+        return getInt("repetitions");
     }
 
     public void setRepetitions(int repetitions) {
-        this.repetitions = repetitions;
+        put("repetitions",repetitions);
+    }
+
+    public String getActivityID() {
+        try {
+            return fetchIfNeeded().getString("activityID");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "erro";
+    }
+
+    public void setActivityID(String value) {
+        put("activityID", value);
     }
 }

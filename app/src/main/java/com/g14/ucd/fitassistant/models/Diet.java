@@ -56,7 +56,7 @@ public class Diet extends ParseObject{
         meals.add(ID);
     }
 
-    public void removeMeal(String ID){
+    public void removeMeal(Integer ID){
         List<String> meals = getIdsMeals();
         meals.remove(ID);
         setMeals(meals);

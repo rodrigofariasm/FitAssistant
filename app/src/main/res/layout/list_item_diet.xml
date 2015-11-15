@@ -9,8 +9,44 @@
         android:maxHeight="40dp"
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:gravity="center_vertical"
-        android:id="@+id/list_item_name_diet">
-
+        android:id="@+id/list_item_name_diet"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/button_view"
+        android:layout_toStartOf="@+id/button_view">
     </TextView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="O"
+        android:id="@+id/button_view"
+        android:layout_toLeftOf="@+id/button_update"
+        android:layout_toStartOf="@+id/button_update"
+        android:layout_alignBottom="@+id/list_item_name_diet"
+        android:layout_alignTop="@+id/button_update"
+        android:onClick="viewDiet"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="U"
+        android:id="@+id/button_update"
+        android:layout_alignTop="@+id/button_delete"
+        android:layout_toLeftOf="@+id/button_delete"
+        android:layout_toStartOf="@+id/button_delete"
+        android:onClick="updateDiet"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:id="@+id/button_delete"
+        android:layout_alignBottom="@+id/list_item_name_diet"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="deleteDiet"/>
+
 
 </RelativeLayout>

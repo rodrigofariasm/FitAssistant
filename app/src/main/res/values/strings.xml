@@ -51,8 +51,13 @@
 
     <string name="option">Option</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+<!-- String to exercises -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="exercise">Exercises</string>
+    <string name="no_exercise_message">You don\'t have exercises. Please create one.</string>
+    <string name="add_exercise">+ Exercise</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_new_exercise">NewExerciseActivity</string>
 
     <string-array
         name="drawer_string_array">
