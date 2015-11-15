@@ -13,7 +13,7 @@
     <!--- String para login e cadastrar -->
     <string name="title_activity_login">Enter</string>
     <string name="title_activity_signup">Sign In</string>
-    <string name="prompt_email">User</string>
+    <string name="prompt_email">Email, must be valid</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_password_again">Confirm password</string>
     <string name="error_intro">"Please "</string>
@@ -29,6 +29,11 @@
     <string name="logout">Log Out</string>
     <string name="signup_verification">You need to verify your account, you will receive a verification email soon. Thank You!</string>
     <string name="email_not_verified">User not verified</string>
+    <string name="prompt_lastname">Last name</string>
+    <string name="prompt_username">First name</string>
+    <string name="date_of_birth">Date of Birth</string>
+
+
 
     <!--- String para Dietas -->
     <string name="diet">Diet</string>

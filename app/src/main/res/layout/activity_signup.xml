@@ -14,14 +14,27 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/username_edit_text"
+                android:id="@+id/email_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_email"
-                android:inputType="textEmailAddress"
+                android:inputType="textEmailAddress|textAutoComplete"
                 android:maxLines="1"
                 android:singleLine="true" />
-
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/first_name_text"
+                android:hint="@string/prompt_username"
+                android:inputType="textAutoComplete|textCapWords"
+                android:singleLine="true"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/last_name_text"
+                android:hint="@string/prompt_lastname"
+                android:inputType="textAutoComplete|textCapWords"
+                android:singleLine="true"/>
             <EditText
                 android:id="@+id/password_edit_text"
                 android:layout_width="match_parent"
@@ -41,7 +54,24 @@
                 android:singleLine="true"
                 android:imeActionId="@+id/edittext_action_signup"
                 android:imeActionLabel="@string/signup"
+
                 android:imeOptions="actionUnspecified" />
+
+
+            <com.gc.materialdesign.views.ButtonRectangle
+                android:id="@+id/date_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#1E88E5"
+                android:text="@string/date_of_birth"
+                android:onClick="showDatePickerDialog"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:id="@+id/birth_text_view" />
 
             <Button
                 android:id="@+id/signup_button"
@@ -52,6 +82,7 @@
                 android:paddingLeft="32dp"
                 android:paddingRight="32dp"
                 android:text="@string/signup" />
+
         </LinearLayout>
     </ScrollView>
 
