@@ -11,10 +11,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+
+import com.g14.ucd.fitassistant.models.ActivitiesTypeEnum;
 import com.g14.ucd.fitassistant.models.FitActivity;
+import com.g14.ucd.fitassistant.models.Diet;
+import com.g14.ucd.fitassistant.models.Exercise;
+import com.g14.ucd.fitassistant.models.Meal;
 import com.gc.materialdesign.views.ButtonFloat;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -44,20 +51,12 @@ public class ExerciseActivity extends AppCompatActivity {
         });
 
     }
-
     private void listActivities(List<FitActivity> activities){
-        List<String> viewExercises = new ArrayList<String>();
-        for(FitActivity activity : activities){
-            String name = activity.getString("name");
-            viewExercises.add(name);
-
-        }
-
-        ArrayAdapter<String> mAdapter1 = new ArrayAdapter<String>(
+        ListAdapter mAdapter1 = new ListAdapter(
                 this, // The current context (this activity)
                 R.layout.list_item_diet, // The name of the layout ID.
                 R.id.list_item_name_diet, // The ID of the textview to populate.
-                viewExercises);
+                activities);
 
         ListView listView = (ListView) findViewById(R.id.listView_exercises);
         listView.setAdapter(mAdapter1);
@@ -128,4 +127,65 @@ public class ExerciseActivity extends AppCompatActivity {
         Intent intent = new Intent(ExerciseActivity.this, NewExerciseActivity.class);
         startActivity(intent);
     }
+
+    public void update(View view){
+        final String objectId = (String) view.getTag();
+        Log.d("TAG: objectId", objectId);
+
+        ParseQuery<FitActivity> query = ParseQuery.getQuery("Activity");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.getInBackground(objectId, new GetCallback<FitActivity>() {
+            @Override
+            public void done(FitActivity activity, final ParseException exception) {
+                if (exception == null) { // found diet
+                    Intent intent = new Intent(ExerciseActivity.this, NewDietActivity.class);
+                    intent.putExtra("activityId", objectId);
+                    startActivity(intent);
+                } else if (exception != null) {
+                    Log.d("FitAssistant", "Error finding diet with id " + objectId + ": " + exception.getMessage());
+                }
+            }
+        });
+    }
+
+    public void delete(View v){
+        final String objectId = (String) v.getTag();
+        Log.d("TAG: objectId",objectId);
+
+        ParseQuery<FitActivity> query = ParseQuery.getQuery("Activity");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.getInBackground(objectId, new GetCallback<FitActivity>() {
+            @Override
+            public void done(FitActivity activity, final ParseException exception) {
+                if (exception == null) { // found diets
+                    if(activity.getType() == ActivitiesTypeEnum.GYM.getCode()){
+                        ParseQuery<Exercise> query = ParseQuery.getQuery("Exercise");
+                        query.whereEqualTo("user", ParseUser.getCurrentUser());
+                        query.whereEqualTo("activityId", activity.getObjectId());
+                        try {
+                            List<Exercise> meals = query.find();
+                            ParseObject.deleteAll(meals);
+                            activity.delete();
+                        } catch (ParseException e) {
+                            Log.d("FitAssistant", "Error deleting gym activity" + e.getMessage());
+                        }
+                    } else {
+                        try {
+                            activity.delete();
+                        } catch (ParseException e) {
+                            Log.d("FitAssistant", "Error deleting other activity" + e.getMessage());
+                        }
+                    }
+                } else if (exception != null) {
+                    Log.d("FitAssistant", "Error finding diet with id " + objectId + ": " + exception.getMessage());
+                }
+            }
+        });
+    }
+
+    public void view(View view){
+
+    }
+
+
 }

@@ -141,7 +141,7 @@ public class DietActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void updateDiet(View v){
+    public void update(View v){
         final String objectId = (String) v.getTag();
         Log.d("TAG: objectId", objectId);
 
@@ -163,11 +163,11 @@ public class DietActivity extends AppCompatActivity {
 
     }
 
-    public void viewDiet(View v){
+    public void view(View v){
 
     }
 
-    public void deleteDiet(View v){
+    public void delete(View v){
         final String objectId = (String) v.getTag();
         Log.d("TAG: objectId",objectId);
 

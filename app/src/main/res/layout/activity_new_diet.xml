@@ -23,9 +23,10 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
+            android:inputType="textCapSentences"
             android:hint="Description"
             android:ems="15"
+
             android:id="@+id/editText_description_diet"
             android:layout_below="@id/editText_name_diet"/>
 

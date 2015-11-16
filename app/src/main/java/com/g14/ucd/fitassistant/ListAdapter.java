@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.g14.ucd.fitassistant.models.Diet;
@@ -47,9 +48,9 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
         T obj = (T) getItem(position);
         if(obj != null){
             TextView name = (TextView) v.findViewById(R.id.list_item_name_diet);
-            Button delete = (Button) v.findViewById(R.id.button_delete);
-            Button update = (Button) v.findViewById(R.id.button_update);
-            Button view = (Button) v.findViewById(R.id.button_view);
+            ImageButton delete = (ImageButton) v.findViewById(R.id.button_delete);
+            ImageButton update = (ImageButton) v.findViewById(R.id.button_update);
+            ImageButton view = (ImageButton) v.findViewById(R.id.button_view);
 
             String id = obj.getObjectId();
 

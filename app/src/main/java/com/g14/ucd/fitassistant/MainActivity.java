@@ -21,6 +21,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import com.facebook.AccessToken;
@@ -28,7 +30,12 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.appevents.AppEventsLogger;
+import com.g14.ucd.fitassistant.models.Day;
+import com.g14.ucd.fitassistant.models.Diet;
 import com.g14.ucd.fitassistant.models.Exercise;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
+    private GregorianCalendar today;
+    private Day dayToday;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +101,26 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+
+        today = new GregorianCalendar();
+        dayToday = null;
+
+        ParseQuery<Day> query = ParseQuery.getQuery("Day");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.whereEqualTo("monthDay", today.get(GregorianCalendar.DAY_OF_MONTH));
+        query.findInBackground(new FindCallback<Day>() {
+            @Override
+            public void done(List<Day> days, ParseException exception) {
+                if (exception == null && days.size() > 0) { // found diets
+                    dayToday = days.get(0);
+
+                } else if (exception != null) {
+                    Log.d("FitAssistant", "Error: " + exception.getMessage());
+                } else {
+
+                }
+            }
+        });
 
     }
 

@@ -21,12 +21,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_view_blue"
+        android:background="@color/windowBackground"
         android:id="@+id/button_view"
         android:layout_toLeftOf="@+id/button_update"
         android:layout_toStartOf="@+id/button_update"
         android:layout_alignBottom="@+id/list_item_name_diet"
         android:layout_alignTop="@+id/button_update"
-        android:onClick="viewDiet"/>
+        android:onClick="view"/>
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -36,7 +37,7 @@
         android:layout_alignTop="@+id/button_delete"
         android:layout_toLeftOf="@+id/button_delete"
         android:layout_toStartOf="@+id/button_delete"
-        android:onClick="updateDiet"/>
+        android:onClick="update"/>
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -46,7 +47,7 @@
         android:layout_alignBottom="@+id/list_item_name_diet"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:onClick="deleteDiet"/>
+        android:onClick="delete"/>
 
 
 </RelativeLayout>

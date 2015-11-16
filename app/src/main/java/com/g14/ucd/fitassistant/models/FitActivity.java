@@ -10,9 +10,6 @@ import com.parse.ParseObject;
 @ParseClassName("FitActivity")
 public class FitActivity extends ParseObject {
 
-    public String name;
-    public int type;
-
     public String getName() {
         return getString("name");
     }
