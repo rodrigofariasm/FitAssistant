@@ -9,7 +9,7 @@ import java.util.List;
  * Created by Natália on 17/10/2015.
  */
 @ParseClassName("Gym")
-public class Gym extends Activity {
+public class Gym extends FitActivity {
 
     @Override
     public void setName(String name){

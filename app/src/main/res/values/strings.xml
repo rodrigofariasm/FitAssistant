@@ -58,6 +58,8 @@
     <string name="add_exercise">+ Exercise</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_new_exercise">NewExerciseActivity</string>
+    <string name="gym">Gym</string>
+    <string name="general_activity">General activities</string>
 
     <string-array
         name="drawer_string_array">

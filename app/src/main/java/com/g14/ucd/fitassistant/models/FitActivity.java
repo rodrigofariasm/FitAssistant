@@ -7,8 +7,8 @@ package com.g14.ucd.fitassistant.models;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
-@ParseClassName("Activity")
-public class Activity extends ParseObject {
+@ParseClassName("FitActivity")
+public class FitActivity extends ParseObject {
 
     public String name;
     public int type;

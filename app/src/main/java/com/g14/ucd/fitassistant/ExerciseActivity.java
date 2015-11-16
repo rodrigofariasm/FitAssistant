@@ -8,14 +8,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.g14.ucd.fitassistant.models.ActivitiesTypeEnum;
-import com.g14.ucd.fitassistant.models.Activity;
-import com.g14.ucd.fitassistant.models.Diet;
+import com.g14.ucd.fitassistant.models.FitActivity;
 import com.gc.materialdesign.views.ButtonFloat;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -32,11 +28,11 @@ public class ExerciseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
 
-        ParseQuery<Activity> query = ParseQuery.getQuery("Activity");
+        ParseQuery<FitActivity> query = ParseQuery.getQuery("FitActivity");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
-        query.findInBackground(new FindCallback<Activity>() {
+        query.findInBackground(new FindCallback<FitActivity>() {
             @Override
-            public void done(List<Activity> activities, ParseException exception) {
+            public void done(List<FitActivity> activities, ParseException exception) {
                 if (exception == null && activities.size() > 0) { // found diets
                     listActivities(activities);
                 } else if (exception != null) {
@@ -49,9 +45,9 @@ public class ExerciseActivity extends AppCompatActivity {
 
     }
 
-    private void listActivities(List<Activity> activities){
+    private void listActivities(List<FitActivity> activities){
         List<String> viewExercises = new ArrayList<String>();
-        for(Activity activity : activities){
+        for(FitActivity activity : activities){
             String name = activity.getString("name");
             viewExercises.add(name);
 
