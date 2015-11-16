@@ -46,8 +46,6 @@ public class NewDietActivity extends AppCompatActivity {
     private List<Meal> meals;
     EditText descriptionField;
     EditText nameField;
-    String newDietId;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +55,6 @@ public class NewDietActivity extends AppCompatActivity {
         if (!isUpdate()) {
             newDiet = new Diet();
             meals = new ArrayList<Meal>();
-            newDietId = null;
             descriptionField = (EditText) findViewById(R.id.editText_description_diet);
             nameField = (EditText) findViewById(R.id.editText_name_diet);
         }
@@ -234,14 +231,11 @@ public class NewDietActivity extends AppCompatActivity {
             }
         });
         Intent intent = new Intent(NewDietActivity.this, DietActivity.class);
-
+        startActivity(intent);
     }
 
 
     private void createMeal(int id) {
-        Log.d("FITASSISTANT.saveMeal", "newDietId:" + newDietId);
-        Log.d("FITASSISTANT.saveMeal", "newDietId:" + newDiet.getObjectId());
-
         String mealId = null;
         Meal meal = new Meal();
 
@@ -262,7 +256,7 @@ public class NewDietActivity extends AppCompatActivity {
                 meal.setObjectId(mealId);
             }
 
-            meal.setType((Integer) table.getTag());
+            meal.setType(Integer.parseInt(table.getTag().toString()));
             meal.setUser(ParseUser.getCurrentUser());
             meal.setDietID(newDiet.getObjectId());
             meals.add(meal);

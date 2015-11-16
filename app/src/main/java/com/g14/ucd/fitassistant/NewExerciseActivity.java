@@ -1,5 +1,6 @@
 package com.g14.ucd.fitassistant;
 
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
 import android.support.v7.app.AppCompatActivity;
@@ -81,9 +82,18 @@ public class NewExerciseActivity extends AppCompatActivity {
         EditText series = new EditText(getBaseContext());
         EditText repetitions = new EditText(getBaseContext());
 
-        nameExercise.setHint("repetitions");
+        nameExercise.setHint("name");
+        nameExercise.setHintTextColor(Color.BLACK);
+        nameExercise.setTextColor(Color.BLACK);
+        nameExercise.setEms(10);
         series.setHint("series");
-        repetitions.setHint("name");
+        series.setHintTextColor(Color.BLACK);
+        series.setTextColor(Color.BLACK);
+        series.setEms(3);
+        repetitions.setHint("Rep");
+        repetitions.setHintTextColor(Color.BLACK);
+        repetitions.setTextColor(Color.BLACK);
+        repetitions.setEms(3);
 
         ImageButton deleteOption = new ImageButton(getBaseContext());
 

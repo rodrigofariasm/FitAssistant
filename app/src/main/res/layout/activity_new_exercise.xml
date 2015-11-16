@@ -75,13 +75,18 @@
                 android:text="Series"
                 android:id="@+id/textView_series_gym_exercise"/>
 
-                <TextView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Repetitions"
+                android:id="@+id/textView_repetitions_gym_exercise"
+                android:layout_column="22" />
+
+                <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Repetitions"
-                    android:id="@+id/textView_repetitions_gym_exercise"
-                    android:layout_column="22" />
+                    android:visibility="visible"/>
             </TableRow>
 
         </TableLayout>
@@ -94,12 +99,13 @@
             android:layout_below="@id/tableExercises"
             android:visibility="invisible"
             android:layout_margin="10dp"
-            android:src="@drawable/ic_action"/>
+            android:src="@drawable/ic_new_orange"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/save_diet"
+
             android:id="@+id/button_save_exercise"
             android:onClick="saveActivity"
             android:visibility="invisible"

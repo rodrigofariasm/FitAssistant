@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
@@ -75,7 +76,7 @@ public class DietActivity extends AppCompatActivity {
 
 
     private void showButtons(){
-        Button addbutton = (Button) findViewById(R.id.button_add_diet);
+        ImageButton addbutton = (ImageButton) findViewById(R.id.button_add_diet);
         addbutton.setVisibility(View.VISIBLE);
         TextView noDietMessage = (TextView) findViewById(R.id.no_diet_message);
         noDietMessage.setVisibility(View.VISIBLE);
@@ -139,7 +140,7 @@ public class DietActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void updateDiet(View v){
+    public void update(View v){
         final String objectId = (String) v.getTag();
         Log.d("TAG: objectId", objectId);
 
@@ -161,11 +162,11 @@ public class DietActivity extends AppCompatActivity {
 
     }
 
-    public void viewDiet(View v){
+    public void view(View v){
 
     }
 
-    public void deleteDiet(View v){
+    public void delete(View v){
         final String objectId = (String) v.getTag();
         Log.d("TAG: objectId",objectId);
 
