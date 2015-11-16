@@ -18,6 +18,7 @@ import com.g14.ucd.fitassistant.models.Activity;
 import com.g14.ucd.fitassistant.models.Diet;
 import com.g14.ucd.fitassistant.models.Exercise;
 import com.g14.ucd.fitassistant.models.Meal;
+import com.gc.materialdesign.views.ButtonFloat;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -66,7 +67,7 @@ public class ExerciseActivity extends AppCompatActivity {
     }
 
     private void showButtons(){
-        ImageButton addbutton = (ImageButton) findViewById(R.id.button_add_exercise);
+        ButtonFloat addbutton = (ButtonFloat) findViewById(R.id.button_add_exercise);
         addbutton.setVisibility(View.VISIBLE);
         TextView noDietMessage = (TextView) findViewById(R.id.no_exercise_message);
         noDietMessage.setVisibility(View.VISIBLE);

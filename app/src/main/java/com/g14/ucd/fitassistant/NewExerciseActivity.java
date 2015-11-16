@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -86,14 +87,17 @@ public class NewExerciseActivity extends AppCompatActivity {
         nameExercise.setHintTextColor(Color.BLACK);
         nameExercise.setTextColor(Color.BLACK);
         nameExercise.setEms(10);
+
         series.setHint("series");
         series.setHintTextColor(Color.BLACK);
         series.setTextColor(Color.BLACK);
         series.setEms(3);
+        series.setInputType(InputType.TYPE_CLASS_NUMBER);
         repetitions.setHint("Rep");
         repetitions.setHintTextColor(Color.BLACK);
         repetitions.setTextColor(Color.BLACK);
         repetitions.setEms(3);
+        repetitions.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         ImageButton deleteOption = new ImageButton(getBaseContext());
 
