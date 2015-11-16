@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 
 import com.g14.ucd.fitassistant.models.Diet;
 import com.g14.ucd.fitassistant.models.Meal;
+import com.gc.materialdesign.views.ButtonFloat;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -75,7 +77,7 @@ public class DietActivity extends AppCompatActivity {
 
 
     private void showButtons(){
-        Button addbutton = (Button) findViewById(R.id.button_add_diet);
+        ButtonFloat addbutton = (ButtonFloat) findViewById(R.id.button_add_diet);
         addbutton.setVisibility(View.VISIBLE);
         TextView noDietMessage = (TextView) findViewById(R.id.no_diet_message);
         noDietMessage.setVisibility(View.VISIBLE);

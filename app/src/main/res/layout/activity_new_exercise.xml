@@ -94,7 +94,7 @@
             android:layout_below="@id/tableExercises"
             android:visibility="invisible"
             android:layout_margin="10dp"
-            android:src="@drawable/ic_action"/>
+            android:src="@drawable/ic_view_orange"/>
 
         <Button
             android:layout_width="wrap_content"

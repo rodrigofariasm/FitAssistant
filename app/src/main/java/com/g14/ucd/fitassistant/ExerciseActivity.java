@@ -9,12 +9,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.g14.ucd.fitassistant.models.ActivitiesTypeEnum;
 import com.g14.ucd.fitassistant.models.Activity;
 import com.g14.ucd.fitassistant.models.Diet;
+import com.gc.materialdesign.views.ButtonFloat;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -67,7 +69,7 @@ public class ExerciseActivity extends AppCompatActivity {
     }
 
     private void showButtons(){
-        Button addbutton = (Button) findViewById(R.id.button_add_exercise);
+        ButtonFloat addbutton = (ButtonFloat) findViewById(R.id.button_add_exercise);
         addbutton.setVisibility(View.VISIBLE);
         TextView noDietMessage = (TextView) findViewById(R.id.no_exercise_message);
         noDietMessage.setVisibility(View.VISIBLE);

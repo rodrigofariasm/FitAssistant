@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -31,8 +32,7 @@
         android:layout_marginTop="162dp"
         android:visibility="invisible"/>
 
-    <ImageButton
-        style="?android:attr/buttonStyleSmall"
+    <com.gc.materialdesign.views.ButtonFloat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawable="@drawable/ic_new_white"
@@ -40,7 +40,9 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:onClick="addNewDiet"
-        android:visibility="invisible"/>/>
+        android:visibility="invisible"
+        android:background="#1E88E5"
+        materialdesign:animate="true" />
 
 
 
