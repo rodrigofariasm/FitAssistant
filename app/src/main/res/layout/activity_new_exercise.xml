@@ -27,7 +27,6 @@
                 android:id="@+id/tabs_exercise"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-<<<<<<< HEAD
                 app:tabMode="fixed"
                 app:tabGravity="fill"/>
         </android.support.design.widget.AppBarLayout>
@@ -38,47 +37,5 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
     </android.support.design.widget.CoordinatorLayout>
-=======
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Series"
-                android:id="@+id/textView_series_gym_exercise"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Repetitions"
-                android:id="@+id/textView_repetitions_gym_exercise"
-                android:layout_column="22" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="visible"/>
-            </TableRow>
-
-        </TableLayout>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/button_new_opt_gym_exercise"
-            android:onClick="addNewOption"
-            android:layout_below="@id/tableExercises"
-            android:visibility="invisible"
-            android:layout_margin="10dp"
-            android:src="@drawable/ic_new_orange"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/save_diet"
-
-            android:id="@+id/button_save_exercise"
-            android:onClick="saveActivity"
-            android:visibility="invisible"
-            android:layout_below="@id/button_new_opt_gym_exercise"
-            android:layout_alignRight="@+id/editText_name_exercise"/>
->>>>>>> 8e07e7acfe48765348fa5e39f5712e464c4ae35d
 
 </ScrollView>
