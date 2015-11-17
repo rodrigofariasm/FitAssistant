@@ -1,58 +1,44 @@
 package com.g14.ucd.fitassistant;
 
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableContainer;
+
+import android.support.design.widget.TabLayout;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+
 import android.os.Bundle;
-import android.text.InputType;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-
-import com.g14.ucd.fitassistant.models.Activity;
-import com.g14.ucd.fitassistant.models.Exercise;
-import com.g14.ucd.fitassistant.models.Gym;
-import com.g14.ucd.fitassistant.models.Other;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
 
-public class NewExerciseActivity extends AppCompatActivity {
-    TableLayout tableExercisesGym;
-    EditText description;
-    ImageButton newOption;
-    Button save;
-    List<Exercise> exercises;
-    Gym gym;
+public class    NewExerciseActivity extends AppCompatActivity {
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_exercise);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_exercise);
+        viewPager = (ViewPager) findViewById(R.id.viewpager_exercise);
+        setSupportActionBar(toolbar);
+        setupViewPager(viewPager);
 
-        exercises = new ArrayList<Exercise>();
+        tabLayout = (TabLayout) findViewById(R.id.tabs_exercise);
+        tabLayout.setupWithViewPager(viewPager);
 
-        tableExercisesGym = (TableLayout) findViewById(R.id.tableExercises);
-        description = (EditText) findViewById(R.id.editText_description_other);
-        newOption = (ImageButton) findViewById(R.id.button_new_opt_gym_exercise);
-        save = (Button) findViewById(R.id.button_save_exercise);
-        gym = null;
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -76,140 +62,35 @@ public class NewExerciseActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void addNewOption(View v){
-
-        TableRow newRow = new TableRow(getBaseContext());
-        EditText nameExercise = new EditText(getBaseContext());
-        EditText series = new EditText(getBaseContext());
-        EditText repetitions = new EditText(getBaseContext());
-
-        nameExercise.setHint("name");
-        nameExercise.setHintTextColor(Color.BLACK);
-        nameExercise.setTextColor(Color.BLACK);
-        nameExercise.setEms(10);
-
-        series.setHint("series");
-        series.setHintTextColor(Color.BLACK);
-        series.setTextColor(Color.BLACK);
-        series.setEms(3);
-        series.setInputType(InputType.TYPE_CLASS_NUMBER);
-        repetitions.setHint("Rep");
-        repetitions.setHintTextColor(Color.BLACK);
-        repetitions.setTextColor(Color.BLACK);
-        repetitions.setEms(3);
-        repetitions.setInputType(InputType.TYPE_CLASS_NUMBER);
-
-        ImageButton deleteOption = new ImageButton(getBaseContext());
-
-        deleteOption.setImageResource(R.drawable.ic_trash_blue);
-        deleteOption.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteOption(view);
-            }
-        });
-
-        newRow.addView(nameExercise);
-        newRow.addView(series);
-        newRow.addView(repetitions);
-        newRow.addView(deleteOption);
-
-
-        tableExercisesGym.addView(newRow);
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new GymFragment(), "Gym");
+        adapter.addFragment(new GeneralActivityFragment(), "GeneralActivity");
+        viewPager.setAdapter(adapter);
     }
-
-    public void deleteOption(View v){
-        View rootView = (View) v.getParent();
-        tableExercisesGym.removeView(rootView);
-    }
-
-    public void saveActivity(View view){
-        // Is the button now checked?
-        RadioGroup rd = (RadioGroup) findViewById(R.id.radio_group_type);
-        int checked = rd.getCheckedRadioButtonId();
-
-        EditText name  = (EditText) findViewById(R.id.editText_name_exercise);
-        Activity activity = new Activity();
-        activity.setName(name.getText().toString());
-
-        // Check which radio button was clicked
-        switch(checked) {
-            case R.id.radioButtonGym:
-                Gym gym = (Gym) activity;
-                gym.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if(e == null){
-                            saveArrayExercises();
-                        } else {
-                            Log.d("FITASSISTANT", "Error saving other exercise " + e.getMessage());
-                        }
-                    }
-                });
-            break;
-            case R.id.radioButtonOther:
-                EditText description  = (EditText) findViewById(R.id.editText_description_other);
-                Other other = (Other) activity;
-                other.setDescription(description.getText().toString());
-                other.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if(e != null){
-                            Log.d("FITASSISTANT", "Error saving other exercise " + e.getMessage());
-                        }
-                    }
-                });
-            break;
+    public class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+        @Override
+        public int getCount() {
+            Log.d("FitAssistant", ""+mFragmentList.size());
+            return mFragmentList.size();
+        }
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
         }
     }
 
-    private void saveArrayExercises(){
-
-        int size = tableExercisesGym.getChildCount();
-        for(int i = 1; i<size; i++){
-            TableRow row = (TableRow) tableExercisesGym.getChildAt(i);
-            EditText name = (EditText) row.getChildAt(0);
-            EditText sections = (EditText) row.getChildAt(1);
-            EditText repetitions = (EditText) row.getChildAt(2);
-
-            Exercise newExercise = new Exercise();
-            newExercise.setName(name.getText().toString());
-            newExercise.setSections(Integer.parseInt(sections.getText().toString()));
-            newExercise.setRepetitions(Integer.parseInt(repetitions.getText().toString()));
-            newExercise.setActivityID(gym.getObjectId());
-            exercises.add(newExercise);
-        }
-        try {
-            ParseObject.saveAll(exercises);
-        }catch (ParseException parseE){
-            gym.deleteInBackground();
-            Log.d("FITASSISTANT", "Error saving exercises " + parseE.getMessage()) ;
-        }
-
-    }
-
-    public void onRadioButtonClicked(View view){
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.radioButtonGym:
-                if (checked) {
-                    tableExercisesGym.setVisibility(View.VISIBLE);
-                    newOption.setVisibility(View.VISIBLE);
-                    description.setVisibility(View.INVISIBLE);
-                    save.setVisibility(View.VISIBLE);
-                }
-                    break;
-            case R.id.radioButtonOther:
-                if (checked) {
-                    tableExercisesGym.setVisibility(View.INVISIBLE);
-                    newOption.setVisibility(View.INVISIBLE);
-                    description.setVisibility(View.VISIBLE);
-                    save.setVisibility(View.VISIBLE);
-                }
-                    break;
-        }
-    }
 }

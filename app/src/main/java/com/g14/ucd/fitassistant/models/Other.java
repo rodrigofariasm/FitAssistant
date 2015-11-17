@@ -6,7 +6,9 @@ import com.parse.ParseGeoPoint;
 /**
  * Created by Natália on 17/10/2015.
  */
-public class Other extends Activity{
+
+@ParseClassName("Other")
+public class Other extends FitActivity {
 
     public String getDescription() {
         return getString("description");

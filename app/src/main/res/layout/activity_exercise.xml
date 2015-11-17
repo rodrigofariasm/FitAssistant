@@ -36,11 +36,11 @@
     <com.gc.materialdesign.views.ButtonFloat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawable="@drawable/ic_new_white"
+        android:src="@drawable/ic_new_white"
         android:id="@+id/button_add_exercise"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:background="#1E88E5"
+        android:background="#e58f0c"
         materialdesign:animate="true"
         android:onClick="addNewExercise"/>
 

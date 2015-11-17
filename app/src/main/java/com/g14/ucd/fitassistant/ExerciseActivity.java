@@ -8,13 +8,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+
 import com.g14.ucd.fitassistant.models.ActivitiesTypeEnum;
-import com.g14.ucd.fitassistant.models.Activity;
+import com.g14.ucd.fitassistant.models.FitActivity;
 import com.g14.ucd.fitassistant.models.Diet;
 import com.g14.ucd.fitassistant.models.Exercise;
 import com.g14.ucd.fitassistant.models.Meal;
@@ -36,11 +35,11 @@ public class ExerciseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
 
-        ParseQuery<Activity> query = ParseQuery.getQuery("Activity");
+        ParseQuery<FitActivity> query = ParseQuery.getQuery("FitActivity");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
-        query.findInBackground(new FindCallback<Activity>() {
+        query.findInBackground(new FindCallback<FitActivity>() {
             @Override
-            public void done(List<Activity> activities, ParseException exception) {
+            public void done(List<FitActivity> activities, ParseException exception) {
                 if (exception == null && activities.size() > 0) { // found diets
                     listActivities(activities);
                 } else if (exception != null) {
@@ -52,9 +51,7 @@ public class ExerciseActivity extends AppCompatActivity {
         });
 
     }
-
-    private void listActivities(List<Activity> activities){
-
+    private void listActivities(List<FitActivity> activities){
         ListAdapter mAdapter1 = new ListAdapter(
                 this, // The current context (this activity)
                 R.layout.list_item_diet, // The name of the layout ID.
@@ -67,8 +64,8 @@ public class ExerciseActivity extends AppCompatActivity {
     }
 
     private void showButtons(){
-        ButtonFloat addbutton = (ButtonFloat) findViewById(R.id.button_add_exercise);
-        addbutton.setVisibility(View.VISIBLE);
+        ButtonFloat addButton = (ButtonFloat) findViewById(R.id.button_add_exercise);
+        addButton.setVisibility(View.VISIBLE);
         TextView noDietMessage = (TextView) findViewById(R.id.no_exercise_message);
         noDietMessage.setVisibility(View.VISIBLE);
     }
@@ -92,12 +89,6 @@ public class ExerciseActivity extends AppCompatActivity {
             case R.id.logout_option:
                 logout();
                 return true;
-            case R.id.diet_option:
-                openDietActivity();
-                return true;
-            case R.id.exercise_option:
-                openExerciseActivity();
-                return true;
             case R.id.add_exercise:
                 addNewExercise();
                 return true;
@@ -112,15 +103,6 @@ public class ExerciseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void openDietActivity() {
-        Intent intent = new Intent(ExerciseActivity.this, DietActivity.class);
-        startActivity(intent);
-    }
-
-    private void openExerciseActivity() {
-        Intent intent = new Intent(ExerciseActivity.this, ExerciseActivity.class);
-        startActivity(intent);
-    }
 
     public void addNewExercise(View v){
         addNewExercise();
@@ -135,11 +117,11 @@ public class ExerciseActivity extends AppCompatActivity {
         final String objectId = (String) view.getTag();
         Log.d("TAG: objectId", objectId);
 
-        ParseQuery<Activity> query = ParseQuery.getQuery("Activity");
+        ParseQuery<FitActivity> query = ParseQuery.getQuery("Activity");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
-        query.getInBackground(objectId, new GetCallback<Activity>() {
+        query.getInBackground(objectId, new GetCallback<FitActivity>() {
             @Override
-            public void done(Activity activity, final ParseException exception) {
+            public void done(FitActivity activity, final ParseException exception) {
                 if (exception == null) { // found diet
                     Intent intent = new Intent(ExerciseActivity.this, NewDietActivity.class);
                     intent.putExtra("activityId", objectId);
@@ -155,11 +137,11 @@ public class ExerciseActivity extends AppCompatActivity {
         final String objectId = (String) v.getTag();
         Log.d("TAG: objectId",objectId);
 
-        ParseQuery<Activity> query = ParseQuery.getQuery("Activity");
+        ParseQuery<FitActivity> query = ParseQuery.getQuery("Activity");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
-        query.getInBackground(objectId, new GetCallback<Activity>() {
+        query.getInBackground(objectId, new GetCallback<FitActivity>() {
             @Override
-            public void done(Activity activity, final ParseException exception) {
+            public void done(FitActivity activity, final ParseException exception) {
                 if (exception == null) { // found diets
                     if(activity.getType() == ActivitiesTypeEnum.GYM.getCode()){
                         ParseQuery<Exercise> query = ParseQuery.getQuery("Exercise");

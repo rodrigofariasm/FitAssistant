@@ -1,10 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".DietActivity">
-    <item android:id="@+id/diet_option" android:title="@string/diet"
-        android:orderInCategory="200" app:showAsAction="never"/>
-    <item android:id="@+id/exercise_option" android:title="@string/exercise"
-        android:orderInCategory="200" app:showAsAction="never"/>
     <item android:id="@+id/logout_option" android:title="@string/logout"
         android:orderInCategory="200" app:showAsAction="never"/>
     <item android:id="@+id/action_settings" android:title="@string/action_settings"

@@ -8,7 +8,8 @@ import java.util.List;
 /**
  * Created by Natália on 17/10/2015.
  */
-public class Gym extends Activity {
+@ParseClassName("Gym")
+public class Gym extends FitActivity {
 
     @Override
     public void setName(String name){

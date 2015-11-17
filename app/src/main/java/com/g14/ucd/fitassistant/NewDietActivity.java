@@ -63,7 +63,7 @@ public class NewDietActivity extends AppCompatActivity {
     }
 
     private boolean isUpdate() {
-        //Para recuperar os dados do Bundle em outra Activity
+        //Para recuperar os dados do Bundle em outra FitActivity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             final String objectId = extras.getString("diet");

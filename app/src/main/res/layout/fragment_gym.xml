@@ -1,0 +1,60 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="com.g14.ucd.fitassistant.GymFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:inputType="textPersonName"
+        android:hint="@string/app_name"
+        android:id="@+id/edittext_name_exercise_gym"/>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/table_exercises_gym"
+        android:layout_marginTop="30dp" >
+
+        <TableRow
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="2">
+            <TextView
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Name"
+             android:id="@+id/textview_name_gym_exercise"/>
+            <TextView
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Series"
+                android:id="@+id/textview_series_gym_exercise"/>
+
+            <TextView
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Repetitions"
+                android:id="@+id/textview_repetitions_gym_exercise"
+                android:layout_column="22" />
+        </TableRow>
+
+    </TableLayout>
+
+    <ImageButton
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/button_new_opt_gym_exercise"
+        android:onClick="addNewOption"
+        android:layout_below="@id/table_exercises_gym"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_view_orange"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/save_diet"
+        android:id="@+id/button_save_exercise"
+        android:onClick="saveActivity"/>
+    </LinearLayout>
+
+ </ScrollView>
