@@ -54,8 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -150,15 +149,6 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 //openSettings();
-                return true;
-            case R.id.logout_option:
-                logout();
-                return true;
-            case R.id.diet_option:
-                openDietActivity();
-                return true;
-            case R.id.exercise_option:
-                openExerciseActivity();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -255,8 +245,9 @@ public class MainActivity extends AppCompatActivity {
             case(4):
                 //Set Goals
                 break;
-
-
+            case(5):
+                logout();
+                break;
         }
 
     }

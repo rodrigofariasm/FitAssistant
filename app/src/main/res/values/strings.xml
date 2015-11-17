@@ -61,14 +61,15 @@
     <string name="gym">Gym</string>
     <string name="general_activity">General activities</string>
 
+<!-- String to drawer -->
     <string-array
         name="drawer_string_array">
-        <item>Make a Schedule</item>
-        <item>Make a Diet</item>
-        <item>Plan Exercises</item>
-        <item>Plan Gym</item>
-        <item>Set Your Goals</item>
+        <item>Schedule</item>
+        <item>Diet</item>
+        <item>Exercises</item>
+        <item>Gym</item>
+        <item>Goals</item>
+        <item>Logout</item>
     </string-array>
-
 
 </resources>

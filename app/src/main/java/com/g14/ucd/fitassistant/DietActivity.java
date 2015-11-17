@@ -99,9 +99,6 @@ public class DietActivity extends AppCompatActivity {
             case R.id.action_settings:
                 //openSettings();
                 return true;
-            case R.id.logout_option:
-                logout();
-                return true;
             case R.id.add_diet:
                 addNewDiet();
                 return true;
