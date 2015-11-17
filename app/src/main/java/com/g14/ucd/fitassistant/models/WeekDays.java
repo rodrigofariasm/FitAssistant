@@ -10,7 +10,7 @@ public enum WeekDays {
     WEDNESDAY ("Wednesday",4),
     THURSDAY ("Thursday",5),
     FRIDAY ("Friday",6),
-    SATURDAY ("Sabbath",7);
+    SATURDAY ("Saturday",7);
 
     private String value;
     private int code;
