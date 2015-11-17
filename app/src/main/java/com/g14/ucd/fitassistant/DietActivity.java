@@ -102,12 +102,6 @@ public class DietActivity extends AppCompatActivity {
             case R.id.logout_option:
                 logout();
                 return true;
-            case R.id.diet_option:
-                openDietActivity();
-                return true;
-            case R.id.exercise_option:
-                openExerciseActivity();
-                return true;
             case R.id.add_diet:
                 addNewDiet();
                 return true;
@@ -122,15 +116,6 @@ public class DietActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void openDietActivity() {
-        Intent intent = new Intent(DietActivity.this, DietActivity.class);
-        startActivity(intent);
-    }
-
-    private void openExerciseActivity() {
-        Intent intent = new Intent(DietActivity.this, ExerciseActivity.class);
-        startActivity(intent);
-    }
 
     public void addNewDiet(View v){
         addNewDiet();

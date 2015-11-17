@@ -1,6 +1,5 @@
 package com.g14.ucd.fitassistant;
 
-import android.support.v4.app.FragmentPagerAdapter;
 
 import android.support.design.widget.TabLayout;
 
@@ -9,28 +8,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableContainer;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import android.os.Bundle;
 
-import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import com.g14.ucd.fitassistant.models.FitActivity;
-import com.g14.ucd.fitassistant.models.Other;
-import com.parse.ParseException;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewExerciseActivity extends AppCompatActivity {
+public class    NewExerciseActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -41,11 +31,12 @@ public class NewExerciseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_exercise);
         toolbar = (Toolbar) findViewById(R.id.toolbar_exercise);
         viewPager = (ViewPager) findViewById(R.id.viewpager_exercise);
-        setupViewPager(viewPager);
         setSupportActionBar(toolbar);
+        setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs_exercise);
         tabLayout.setupWithViewPager(viewPager);
+
     }
 
 
@@ -72,15 +63,15 @@ public class NewExerciseActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter2 adapter = new ViewPagerAdapter2(getSupportFragmentManager());
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new GymFragment(), "Gym");
         adapter.addFragment(new GeneralActivityFragment(), "GeneralActivity");
         viewPager.setAdapter(adapter);
     }
-    public class ViewPagerAdapter2 extends FragmentPagerAdapter {
+    public class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
-        public ViewPagerAdapter2(FragmentManager manager) {
+        public ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
         @Override
@@ -89,6 +80,7 @@ public class NewExerciseActivity extends AppCompatActivity {
         }
         @Override
         public int getCount() {
+            Log.d("FitAssistant", ""+mFragmentList.size());
             return mFragmentList.size();
         }
         public void addFragment(Fragment fragment, String title) {

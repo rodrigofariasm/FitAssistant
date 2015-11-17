@@ -64,6 +64,7 @@ public class WelcomeActivity extends Activity {
                     Intent intent = new Intent(WelcomeActivity.this, DispatchActivity.class);
                     Installation pInst = new Installation();
                     pInst.install();
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 } else {
                     Log.d("MyApp", "User logged in through Facebook!");

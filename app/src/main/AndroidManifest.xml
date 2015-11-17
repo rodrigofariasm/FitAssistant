@@ -57,7 +57,12 @@
         <activity
             android:name=".DietActivity"
             android:label="@string/diet"
-            android:theme="@style/MyDietTheme" >
+            android:theme="@style/MyDietTheme"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"
+            />
         </activity>
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -80,12 +85,22 @@
         </activity>
         <activity
             android:name=".ExerciseActivity"
-            android:label="@string/exercise" >
+            android:label="@string/exercise"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"
+                />
         </activity>
         <activity
             android:name=".NewExerciseActivity"
             android:label="@string/title_activity_new_exercise"
-            android:theme="@style/MyMaterialTheme" >
+            android:theme="@style/MyMaterialTheme"
+            android:parentActivityName=".ExerciseActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ExerciseActivity"
+                />
         </activity>
     </application>
 

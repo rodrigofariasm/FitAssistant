@@ -8,11 +8,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TableLayout;
+
+import com.g14.ucd.fitassistant.models.Exercise;
 import com.g14.ucd.fitassistant.models.FitActivity;
+import com.g14.ucd.fitassistant.models.Gym;
 import com.g14.ucd.fitassistant.models.Other;
 import com.parse.ParseException;
 import com.parse.SaveCallback;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,6 +30,12 @@ import com.parse.SaveCallback;
  * create an instance of this fragment.
  */
 public class GeneralActivityFragment extends android.support.v4.app.Fragment {
+    TableLayout tableExercisesGym;
+    EditText description;
+    ImageButton newOption;
+    Button save;
+    List<Exercise> exercises;
+    Gym gym;
 
     private OnFragmentInteractionListener mListener;
 

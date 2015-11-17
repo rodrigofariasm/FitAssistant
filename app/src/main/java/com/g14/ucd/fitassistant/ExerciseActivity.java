@@ -64,8 +64,8 @@ public class ExerciseActivity extends AppCompatActivity {
     }
 
     private void showButtons(){
-        ButtonFloat addbutton = (ButtonFloat) findViewById(R.id.button_add_exercise);
-        addbutton.setVisibility(View.VISIBLE);
+        ButtonFloat addButton = (ButtonFloat) findViewById(R.id.button_add_exercise);
+        addButton.setVisibility(View.VISIBLE);
         TextView noDietMessage = (TextView) findViewById(R.id.no_exercise_message);
         noDietMessage.setVisibility(View.VISIBLE);
     }
@@ -89,12 +89,6 @@ public class ExerciseActivity extends AppCompatActivity {
             case R.id.logout_option:
                 logout();
                 return true;
-            case R.id.diet_option:
-                openDietActivity();
-                return true;
-            case R.id.exercise_option:
-                openExerciseActivity();
-                return true;
             case R.id.add_exercise:
                 addNewExercise();
                 return true;
@@ -109,15 +103,6 @@ public class ExerciseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void openDietActivity() {
-        Intent intent = new Intent(ExerciseActivity.this, DietActivity.class);
-        startActivity(intent);
-    }
-
-    private void openExerciseActivity() {
-        Intent intent = new Intent(ExerciseActivity.this, ExerciseActivity.class);
-        startActivity(intent);
-    }
 
     public void addNewExercise(View v){
         addNewExercise();

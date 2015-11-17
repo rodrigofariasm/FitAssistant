@@ -190,13 +190,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void openDietActivity() {
         Intent intent = new Intent(MainActivity.this, DietActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
     private void openExerciseActivity() {
         Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
@@ -245,12 +245,16 @@ public class MainActivity extends AppCompatActivity {
                 //Make a Schedule
             case(1)://diet
                 openDietActivity();
+                break;
             case(2):
-                //openExercises
+                openExerciseActivity();
+                break;
             case(3):
+                break;
                 //openGym
             case(4):
                 //Set Goals
+                break;
 
 
         }

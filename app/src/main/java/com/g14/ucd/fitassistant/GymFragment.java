@@ -49,17 +49,13 @@ public class GymFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
+    public void onCreate(Bundle savedInstanceState) {  super.onCreate(savedInstanceState);}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         exercises = new ArrayList<Exercise>();
-
-        tableExercisesGym = (TableLayout) getActivity().findViewById(R.id.tableExercises);
+        tableExercisesGym = (TableLayout) getActivity().findViewById(R.id.table_exercises_gym);
         description = (EditText) getActivity().findViewById(R.id.editText_description_other);
         newOption = (ImageButton) getActivity().findViewById(R.id.button_new_opt_gym_exercise);
         save = (Button) getActivity().findViewById(R.id.button_save_exercise);
@@ -67,31 +63,13 @@ public class GymFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_gym, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
+     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
