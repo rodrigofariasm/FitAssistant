@@ -72,9 +72,7 @@ public class DietActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.listView_diets);
         listView.setAdapter(mAdapter);
 
-
     }
-
 
     private void showButtons(){
         ButtonFloat addbutton = (ButtonFloat) findViewById(R.id.button_add_diet);
@@ -106,13 +104,6 @@ public class DietActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    private void logout() {
-        ParseUser.logOut();
-        Intent intent = new Intent(DietActivity.this, DispatchActivity.class);
-        startActivity(intent);
-    }
-
 
     public void addNewDiet(View v){
         addNewDiet();

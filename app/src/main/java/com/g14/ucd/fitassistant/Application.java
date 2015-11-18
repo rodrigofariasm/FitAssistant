@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.g14.ucd.fitassistant.models.Diet;
+import com.g14.ucd.fitassistant.models.Goal;
 import com.g14.ucd.fitassistant.models.Meal;
 import com.parse.Parse;
 import com.parse.ParseACL;
@@ -30,6 +31,7 @@ public class Application extends android.app.Application {
         super.onCreate();
         ParseObject.registerSubclass(Diet.class);
         ParseObject.registerSubclass(Meal.class);
+        ParseObject.registerSubclass(Goal.class);
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "IWa3fIqg1uxV59ZpqqqKwm5E7FUIWINYe6GYUGnF", "vdBuoTC4AJfADhwdxwwTapoUGoY84Idc4o9uF6FT");
         ParseFacebookUtils.initialize(this);

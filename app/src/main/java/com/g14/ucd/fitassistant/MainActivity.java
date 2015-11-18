@@ -33,6 +33,7 @@ import com.facebook.appevents.AppEventsLogger;
 import com.g14.ucd.fitassistant.models.Day;
 import com.g14.ucd.fitassistant.models.Diet;
 import com.g14.ucd.fitassistant.models.Exercise;
+import com.g14.ucd.fitassistant.models.Goal;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -99,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
 
         today = new GregorianCalendar();
         dayToday = null;
@@ -190,6 +190,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void openGoalActivity() {
+        Intent intent = new Intent(MainActivity.this, GoalActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new DietFragment(), "Diet");
@@ -243,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
                 //openGym
             case(4):
-                //Set Goals
+                openGoalActivity();
                 break;
             case(5):
                 logout();
