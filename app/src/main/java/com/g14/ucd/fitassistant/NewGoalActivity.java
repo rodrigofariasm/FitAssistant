@@ -106,7 +106,7 @@ public class NewGoalActivity extends AppCompatActivity {
             time_field.setAdapter(adapter2);
 
             int pos2 = adapter2.getPosition(newGoal.getIntervalUnit());
-            time_field.setSelection(pos);
+            time_field.setSelection(pos2);
 
             actual_field.setText(Integer.toString(newGoal.getActual()));
             desired_field.setText(Integer.toString(newGoal.getDesired()));
@@ -150,6 +150,8 @@ public class NewGoalActivity extends AppCompatActivity {
                 if (e == null) {
                     Intent intent = new Intent(NewGoalActivity.this, GoalActivity.class);
                     startActivity(intent);
+                }else{
+                    Log.d("Fit assitant", " error saving goal: " + e.getMessage());
                 }
             }
         });

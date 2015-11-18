@@ -17,17 +17,27 @@
         android:layout_toStartOf="@+id/button_view">
     </TextView>
 
+    <Switch
+        android:id="@+id/switch_activate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/button_view"
+        android:layout_toStartOf="@+id/button_view"
+        android:layout_alignBottom="@+id/list_item_name_goal"
+        android:layout_alignTop="@+id/button_view"
+        android:onClick="activate"/>
+
     <ImageButton
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/fitnessiconsmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_view_blue"
         android:background="@color/windowBackground"
         android:id="@+id/button_view"
         android:layout_toLeftOf="@+id/button_update"
         android:layout_toStartOf="@+id/button_update"
+        android:layout_alignBottom="@+id/list_item_name_goal"
         android:layout_alignTop="@+id/button_update"
-        android:onClick="activate"
-        android:layout_alignBottom="@+id/button_update" />
+        android:onClick="view"/>
 
     <ImageButton
         android:layout_width="wrap_content"

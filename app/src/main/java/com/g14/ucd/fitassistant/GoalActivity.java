@@ -28,17 +28,22 @@ public class GoalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goal);
 
+        initialize();
+    }
+
+    private void initialize(){
         ParseQuery<Goal> query = ParseQuery.getQuery("Goal");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<Goal>() {
             @Override
             public void done(List<Goal> goals, ParseException exception) {
-                if (exception == null && goals.size() > 0) { // found goals
+                if (exception == null) { // found goals
                     listGoals(goals);
+                    if(goals.size()== 0){
+                        showButtons();
+                    }
                 } else if (exception != null) {
                     Log.d("FitAssistant", "Error: " + exception.getMessage());
-                } else {
-                    showButtons();
                 }
             }
         });
@@ -49,7 +54,7 @@ public class GoalActivity extends AppCompatActivity {
         ListAdapter mAdapter = new ListAdapter(
                 this, // The current context (this activity)
                 R.layout.list_item_goal, // The name of the layout ID.
-                R.id.list_item_name_goal, // The ID of the textview to populate.
+                R.id.list_item_name_goal, R.id.button_view, R.id.button_update,R.id.button_delete, R.id.switch_activate,// The ID of the textview to populate.
                 goals);
 
         ListView listView = (ListView) findViewById(R.id.listView_goals);
@@ -131,6 +136,7 @@ public class GoalActivity extends AppCompatActivity {
                 if (exception == null) { // found goals
                     try {
                         goal.delete();
+                        initialize();
                     } catch (ParseException e) {
                         Log.d("FitAssistant", "Error deleting goal" + e.getMessage());
                     }

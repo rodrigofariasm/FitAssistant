@@ -1,17 +1,17 @@
 package com.g14.ucd.fitassistant;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.g14.ucd.fitassistant.models.Diet;
+import com.g14.ucd.fitassistant.models.FitActivity;
+import com.g14.ucd.fitassistant.models.Goal;
 import com.parse.ParseObject;
 
 import java.util.List;
@@ -25,20 +25,22 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
     private List<T> objects = null;
     private int textViewId;
     private int resourceId;
-    private int buttonDelete;
-    private int buttonUpdate;
-    private int buttonView;
+    private int button1;
+    private int button2;
+    private int button3;
+    private int button4;
 
     public ListAdapter(Context context, int resource, int textViewResourceId, int view, int update,
-                       int delete, List<T> objects) {
+                       int delete, int activate, List<T> objects) {
         super(context, resource, textViewResourceId, objects);
         this.context  = context;
         this.objects = objects;
         textViewId = textViewResourceId;
         resourceId = resource;
-        buttonDelete = delete;
-        buttonUpdate = update;
-        buttonView = view;
+        button1 = delete;
+        button2 = update;
+        button3 = view;
+        button4 = activate;
     }
 
     @Override
@@ -54,15 +56,13 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
         T obj = (T) getItem(position);
         if(obj != null){
             TextView name = (TextView) v.findViewById(textViewId);
-            ImageButton delete = (ImageButton) v.findViewById(buttonDelete);
-            ImageButton update = (ImageButton) v.findViewById(buttonUpdate);
-            ImageButton view = (ImageButton) v.findViewById(buttonView);
+            ImageButton delete = (ImageButton) v.findViewById(button1);
+            ImageButton update = (ImageButton) v.findViewById(button2);
+            ImageButton view = (ImageButton) v.findViewById(button3);
+            Switch activated = (Switch) v.findViewById(button4);
 
             String id = obj.getObjectId();
 
-            if(name != null){
-                name.setText(obj.getString("name"));
-            }
             if(update != null){
                 update.setTag(id);
             }
@@ -72,9 +72,35 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
             if(view != null){
                 view.setTag(id);
             }
+            if(activated != null){
+                view.setTag(id);
+            }
+
+            String itemName = null;
+            if(name != null){
+                if(obj instanceof Diet || obj instanceof FitActivity){
+                    itemName = obj.getString("name");
+                } else if (obj != null && obj instanceof Goal){
+                    String goalType = obj.getString("type");
+                    String interval = Integer.toString(obj.getInt("interval"));
+                    String unit = obj.getString("interval_unit");
+                    String firstPart = null;
+                    switch (goalType){
+                        case("Lose fat"):
+                            firstPart = "Lose " + Integer.toString(obj.getInt("actual") - obj.getInt("desired")) + "% of fat in ";
+                            break;
+                        case("Lose weight"):
+                            firstPart = "Lose " + Integer.toString(obj.getInt("actual") - obj.getInt("desired")) + "kg in ";
+                            break;
+                        case("Gain weight"):
+                            firstPart = "Gain " + Integer.toString(obj.getInt("actual") - obj.getInt("desired")) + "kg in ";
+                            break;
+                    }
+                    itemName = firstPart + interval + " "+ unit;
+                }
+                name.setText(itemName);
+            }
         }
-
-
         return v;
     }
 }

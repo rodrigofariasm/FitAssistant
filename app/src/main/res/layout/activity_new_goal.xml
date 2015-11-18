@@ -35,7 +35,7 @@
 
         <EditText
             android:id="@+id/editText_actual"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/goals_spinner"
             android:layout_toRightOf="@id/textView_actual"/>
@@ -51,7 +51,7 @@
 
         <EditText
             android:id="@+id/editText_desired"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/editText_actual"
             android:layout_toRightOf="@id/textView_desired"/>
@@ -67,7 +67,7 @@
 
         <EditText
             android:id="@+id/editText_interval"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/editText_desired"
             android:layout_toRightOf="@id/textView_interval"/>

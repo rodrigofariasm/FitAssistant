@@ -45,17 +45,22 @@ public class DietActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diet);
 
+        initialize();
+    }
+
+    private void initialize(){
         ParseQuery<Diet> query = ParseQuery.getQuery("Diet");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<Diet>() {
             @Override
             public void done(List<Diet> diets, ParseException exception) {
-                if (exception == null && diets.size() > 0) { // found diets
+                if (exception == null) { // found diets
                     listDiets(diets);
+                    if (diets.size() == 0){
+                        showButtons();
+                    }
                 } else if (exception != null) {
                     Log.d("FitAssistant", "Error: " + exception.getMessage());
-                } else {
-                    showButtons();
                 }
             }
         });
@@ -66,7 +71,7 @@ public class DietActivity extends AppCompatActivity {
        ListAdapter mAdapter = new ListAdapter(
                 this, // The current context (this activity)
                 R.layout.list_item_diet, // The name of the layout ID.
-                R.id.list_item_name_diet,R.id.button_view, R.id.button_update,R.id.button_delete, // The ID of the textview to populate.
+                R.id.list_item_name_diet,R.id.button_view, R.id.button_update,R.id.button_delete, -1,// The ID of the textview to populate.
                 diets);
 
         ListView listView = (ListView) findViewById(R.id.listView_diets);
@@ -156,6 +161,7 @@ public class DietActivity extends AppCompatActivity {
                         List<Meal> meals = query.find();
                         ParseObject.deleteAll(meals);
                         diet.delete();
+                        initialize();
                     } catch (ParseException e) {
                         Log.d("FitAssistant", "Error deleting diet" + e.getMessage());
                     }
