@@ -45,7 +45,7 @@
     <string name="save_diet">Save</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-
+    <string name="progress_saving_exercise">Saving Exercise</string>
     <string name="option">Option</string>
     <string name="today">TODAY</string>
     <string-array name="weeday_spinner">
@@ -87,5 +87,6 @@
     <string name="no_goal_message">You don\'t have goals. Please create one.</string>
     <string name="add_goal">+ Goal</string>
     <string name="title_activity_new_goal">NewGoalActivity</string>
+    <string name="gym_exercises">Gym Exercises</string>
 
 </resources>

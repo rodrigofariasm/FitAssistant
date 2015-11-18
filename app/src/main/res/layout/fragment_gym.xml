@@ -1,10 +1,12 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.g14.ucd.fitassistant.GymFragment">
+    android:layout_height="wrap_content" tools:context="com.14.ucd.fitassistant.GymFragment"
+    android:background="@color/transparency">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        >
     <EditText
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,11 +14,11 @@
         android:hint="@string/app_name"
         android:id="@+id/edittext_name_exercise_gym"/>
 
-    <TableLayout
+        <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/table_exercises_gym"
-        android:layout_marginTop="30dp" >
+        android:layout_marginTop="30dp">
 
         <TableRow
             android:layout_height="10dp"
@@ -26,40 +28,33 @@
             android:layout_gravity="center_horizontal">
             <TextView
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Name"
+                android:text="@string/gym_exercises"
                 android:layout_weight="2"
              android:id="@+id/textview_name_gym_exercise"/>
-            <TextView
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Series"
-                android:layout_weight="2"
-                android:id="@+id/textview_series_gym_exercise"/>
 
-            <TextView
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Repetitions"
-                android:layout_weight="2"
-                android:id="@+id/textview_repetitions_gym_exercise"
-                 />
         </TableRow>
 
     </TableLayout>
 
-    <ImageButton
-        android:layout_width="match_parent"
+        <ImageButton
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/button_new_opt_gym_exercise"
         android:onClick="addNewOption"
         android:layout_below="@id/table_exercises_gym"
         android:layout_margin="10dp"
-        android:src="@drawable/ic_new_orange"/>
+        android:backgroundTint="@color/md_blue_300"
+        android:src="@drawable/ic_new_white"
+        android:layout_gravity="center_horizontal" />
 
-    <com.gc.materialdesign.views.ButtonRectangle
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/save_diet"
-        android:id="@+id/button_save_exercise_gym"
-        android:onClick="saveActivity"/>
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/save_diet"
+            android:id="@+id/button_save_exercise_gym"
+            android:onClick="saveActivity"
+            android:layout_gravity="right" />
+
     </LinearLayout>
 
  </ScrollView>

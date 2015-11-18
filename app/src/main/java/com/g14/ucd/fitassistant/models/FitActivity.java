@@ -6,6 +6,7 @@ package com.g14.ucd.fitassistant.models;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 @ParseClassName("FitActivity")
 public class FitActivity extends ParseObject {
@@ -24,6 +25,14 @@ public class FitActivity extends ParseObject {
 
     public void setType(int type1){
         put("type",type1);
+    }
+    public void setUser(ParseUser value){
+        if(value != null){
+            put("user",value);
+        }
+    }
+    public ParseUser getUser(){
+        return getParseUser("user");
     }
 
 

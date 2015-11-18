@@ -1,6 +1,8 @@
 package com.g14.ucd.fitassistant;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -19,6 +21,7 @@ import com.g14.ucd.fitassistant.models.Gym;
 import com.g14.ucd.fitassistant.models.Other;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.List;
@@ -31,7 +34,6 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class GeneralActivityFragment extends android.support.v4.app.Fragment {
-    EditText description;
     EditText name;
     ButtonRectangle save;
 
@@ -52,7 +54,9 @@ public class GeneralActivityFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
+
         super.onViewCreated(view, savedInstanceState);
+
         save = (ButtonRectangle) view.findViewById(R.id.button_save_exercise);
         save.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -91,17 +95,29 @@ public class GeneralActivityFragment extends android.support.v4.app.Fragment {
     }
 
     public void saveActivity() {
-        Log.d( ""+R.string.app_name, "trying Save");
+        final ProgressDialog dialog = new ProgressDialog(getActivity());
+        dialog.setTitle(getString(R.string.progress_saving_exercise));
+        dialog.show();
+        Log.d("" + R.string.app_name, "trying Save");
         EditText name = (EditText) getActivity().findViewById(R.id.edittext_name_general_activity);
         Other activity = new Other();
         activity.setName(name.getText().toString());
         EditText description = (EditText) getActivity().findViewById(R.id.editText_description_other);
         activity.setDescription(description.getText().toString());
+        activity.setUser(ParseUser.getCurrentUser());
         activity.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
+
                 if (e != null) {
+
                     Log.d("FITASSISTANT", "Error saving other exercise " + e.getMessage());
+                }else{
+                    dialog.dismiss();
+                    Intent intent = new Intent(getActivity(), ExerciseActivity.class );
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    startActivity(intent);
                 }
             }
         });
