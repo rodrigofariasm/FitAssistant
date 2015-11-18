@@ -106,17 +106,24 @@
             android:name=".GoalActivity"
             android:label="@string/title_activity_goal"
             android:theme="@style/MyDietTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".NewGoalActivity"
-            android:label="@string/title_activity_new_goal" >
+            android:label="@string/title_activity_new_goal"
+            android:theme="@style/MyDietTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".GoalActivity" />
         </activity>
         <activity
             android:name=".ScheduleActivity"
             android:label="@string/title_activity_schedule" >
         </activity>
         <activity
-            android:name=".newDietScheduletActivity"
+            android:name=".NewDietScheduletActivity"
             android:label="@string/title_activity_new_diet_schedulet" >
         </activity>
     </application>
