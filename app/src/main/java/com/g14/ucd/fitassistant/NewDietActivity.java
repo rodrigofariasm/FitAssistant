@@ -44,6 +44,7 @@ public class NewDietActivity extends AppCompatActivity {
 
     private Diet newDiet;
     private List<Meal> meals;
+    private List<Meal> mealsRetreived;
     EditText descriptionField;
     EditText nameField;
 
@@ -55,6 +56,7 @@ public class NewDietActivity extends AppCompatActivity {
         if (!isUpdate()) {
             newDiet = new Diet();
             meals = new ArrayList<Meal>();
+            mealsRetreived = new ArrayList<Meal>();
             descriptionField = (EditText) findViewById(R.id.editText_description_diet);
             nameField = (EditText) findViewById(R.id.editText_name_diet);
         }
@@ -94,12 +96,13 @@ public class NewDietActivity extends AppCompatActivity {
 
             ParseQuery<Meal> query = ParseQuery.getQuery("Meal");
             query.whereEqualTo("user", ParseUser.getCurrentUser());
-            query.whereEqualTo("dietId", newDiet.getObjectId());
+            query.whereEqualTo("dietID", newDiet.getObjectId());
             query.findInBackground(new FindCallback<Meal>() {
                 @Override
-                public void done(List<Meal> meals, ParseException exception) {
+                public void done(List<Meal> mealsFound, ParseException exception) {
                     if (exception == null) { // found meals
-                        for (Meal meal : meals) {
+                        mealsRetreived = mealsFound;
+                        for (Meal meal : mealsFound) {
                             Button button = (Button) findViewById(getButtonOptionId(meal.getType()));
                             for (String option : meal.getOptions()) {
                                 addNewOption(button, option, meal.getObjectId());
@@ -223,6 +226,7 @@ public class NewDietActivity extends AppCompatActivity {
                     createMeal(R.id.table_snack);
                     try {
                         ParseObject.saveAll(meals);
+                        ParseObject.deleteAll(getMealsToDelete(meals, mealsRetreived));
                     } catch (ParseException parseE) {
                         newDiet.deleteInBackground();
                         Log.d("FITASSISTANT", "Error saving meals " + parseE.getMessage());
@@ -243,24 +247,51 @@ public class NewDietActivity extends AppCompatActivity {
         int size = table.getChildCount();
         if(size > 1) { // if there's any option registred for the meal . proceed to save. 1 = textView with the type
 
+            TableRow row0 = (TableRow) table.getChildAt(1);
+            EditText optionText0 = (EditText) row0.getChildAt(0);
+            mealId = (String) optionText0.getTag();
+            if (mealId != null) {
+                meal = getMealWithId(mealId);
+                meal.setOptions(new ArrayList<String>());
+            }
+
             for (int i = 1; i < size; i++) {
                 TableRow row = (TableRow) table.getChildAt(i);
                 EditText optionText = (EditText) row.getChildAt(0);
                 meal.addOption(optionText.getText().toString());
-                if (i == 1 && optionText.getTag() != null) {
-                    mealId = (String) optionText.getTag();
-                }
-            }
 
-            if (mealId != null) {
-                meal.setObjectId(mealId);
             }
-
             meal.setType(Integer.parseInt(table.getTag().toString()));
             meal.setUser(ParseUser.getCurrentUser());
             meal.setDietID(newDiet.getObjectId());
             meals.add(meal);
-
         }
     }
+
+    public Meal getMealWithId(String mealId){
+        for(Meal m : mealsRetreived){
+            if(m.getObjectId().equals(mealId)){
+                return m;
+            }
+        }
+        return null;
+    }
+
+
+    private List<Meal> getMealsToDelete(List<Meal> mealsUpdated, List<Meal> mealsRetreived){
+        List<Meal> mealsDeleted = new ArrayList<Meal>();
+        for(Meal mealret : mealsRetreived){
+            String objIdRetrieved = mealret.getObjectId();
+            boolean mealUpdated = false;
+            for(Meal updMeal : mealsUpdated){
+                if(updMeal.getObjectId().equals(objIdRetrieved)){
+                    mealUpdated = true;
+            }
+            }
+            if(!mealUpdated){ // if the id of one of the meals updated is not equal to any the meals updated so it should be deleted
+                mealsDeleted.add(mealret);
+            }
+        }
+        return mealsDeleted;
+    };
 }

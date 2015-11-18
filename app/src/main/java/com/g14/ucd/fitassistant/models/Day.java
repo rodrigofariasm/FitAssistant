@@ -47,4 +47,6 @@ public class Day extends ParseObject{
     public String getWeekDayName(int code){
         return WeekDays.fromCode(code).getValue();
     }
+
+
 }

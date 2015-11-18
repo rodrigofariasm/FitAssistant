@@ -68,4 +68,8 @@ public class Meal extends ParseObject{
     public static ParseQuery<Meal> getQuery() {
         return ParseQuery.getQuery(Meal.class);
     }
+
+
+
+
 }

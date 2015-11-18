@@ -132,8 +132,6 @@ public class DietActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     public void view(View v){

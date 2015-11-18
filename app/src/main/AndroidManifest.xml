@@ -111,6 +111,14 @@
             android:name=".NewGoalActivity"
             android:label="@string/title_activity_new_goal" >
         </activity>
+        <activity
+            android:name=".ScheduleActivity"
+            android:label="@string/title_activity_schedule" >
+        </activity>
+        <activity
+            android:name=".newDietScheduletActivity"
+            android:label="@string/title_activity_new_diet_schedulet" >
+        </activity>
     </application>
 
 </manifest>
