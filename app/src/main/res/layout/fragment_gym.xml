@@ -19,23 +19,28 @@
         android:layout_marginTop="30dp" >
 
         <TableRow
-            android:layout_height="0dp"
-            android:layout_width="match_parent"
-            android:layout_weight="2">
+            android:layout_height="10dp"
+            android:layout_width="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="2"
+            android:layout_gravity="center_horizontal">
             <TextView
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Name"
+                android:layout_weight="2"
              android:id="@+id/textview_name_gym_exercise"/>
             <TextView
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Series"
+                android:layout_weight="2"
                 android:id="@+id/textview_series_gym_exercise"/>
 
             <TextView
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Repetitions"
+                android:layout_weight="2"
                 android:id="@+id/textview_repetitions_gym_exercise"
-                android:layout_column="22" />
+                 />
         </TableRow>
 
     </TableLayout>
@@ -47,13 +52,13 @@
         android:onClick="addNewOption"
         android:layout_below="@id/table_exercises_gym"
         android:layout_margin="10dp"
-        android:src="@drawable/ic_view_orange"/>
+        android:src="@drawable/ic_new_orange"/>
 
-    <Button
+    <com.gc.materialdesign.views.ButtonRectangle
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/save_diet"
-        android:id="@+id/button_save_exercise"
+        android:id="@+id/button_save_exercise_gym"
         android:onClick="saveActivity"/>
     </LinearLayout>
 

@@ -3,8 +3,13 @@ package com.g14.ucd.fitassistant;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.g14.ucd.fitassistant.models.Day;
 import com.g14.ucd.fitassistant.models.Diet;
+import com.g14.ucd.fitassistant.models.Exercise;
+import com.g14.ucd.fitassistant.models.FitActivity;
+import com.g14.ucd.fitassistant.models.Gym;
 import com.g14.ucd.fitassistant.models.Meal;
+import com.g14.ucd.fitassistant.models.Other;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseFacebookUtils;
@@ -29,6 +34,11 @@ public class Application extends android.app.Application {
     public void onCreate(){
         super.onCreate();
         ParseObject.registerSubclass(Diet.class);
+        ParseObject.registerSubclass(FitActivity.class);
+        ParseObject.registerSubclass(Gym.class);
+        ParseObject.registerSubclass(Other.class);
+        ParseObject.registerSubclass(Exercise.class);
+        ParseObject.registerSubclass(Day.class);
         ParseObject.registerSubclass(Meal.class);
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "IWa3fIqg1uxV59ZpqqqKwm5E7FUIWINYe6GYUGnF", "vdBuoTC4AJfADhwdxwwTapoUGoY84Idc4o9uF6FT");

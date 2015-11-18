@@ -3,6 +3,7 @@ package com.g14.ucd.fitassistant;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.TableRow;
 import com.g14.ucd.fitassistant.models.Exercise;
 import com.g14.ucd.fitassistant.models.FitActivity;
 import com.g14.ucd.fitassistant.models.Gym;
+import com.gc.materialdesign.views.ButtonRectangle;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
@@ -36,7 +38,7 @@ public class GymFragment extends Fragment {
     TableLayout tableExercisesGym;
     EditText description;
     ImageButton newOption;
-    Button save;
+    ButtonRectangle save;
     List<Exercise> exercises;
     Gym gym;
 
@@ -54,15 +56,31 @@ public class GymFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        exercises = new ArrayList<Exercise>();
-        tableExercisesGym = (TableLayout) getActivity().findViewById(R.id.table_exercises_gym);
-        description = (EditText) getActivity().findViewById(R.id.editText_description_other);
-        newOption = (ImageButton) getActivity().findViewById(R.id.button_new_opt_gym_exercise);
-        save = (Button) getActivity().findViewById(R.id.button_save_exercise);
-        gym = null;
         return inflater.inflate(R.layout.fragment_gym, container, false);
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+        exercises = new ArrayList<Exercise>();
+        tableExercisesGym = (TableLayout) getActivity().findViewById(R.id.table_exercises_gym);
+        description = (EditText) getActivity().findViewById(R.id.editText_description_other);
+        save = (ButtonRectangle) getActivity().findViewById(R.id.button_save_exercise_gym);
+        newOption = (ImageButton) getActivity().findViewById(R.id.button_new_opt_gym_exercise);
+
+        save.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                saveActivity();
+            }
+        });
+        newOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNewOption(v);
+            }
+        });
+    }
     @Override
     public void onDetach() {
         super.onDetach();
@@ -73,8 +91,7 @@ public class GymFragment extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
-    public void saveActivity(View view) {
-        // Is the button now checked?
+    public void saveActivity() {
 
         EditText name = (EditText) getActivity().findViewById(R.id.edittext_name_exercise_gym);
         FitActivity activity = new FitActivity();
@@ -122,9 +139,13 @@ public class GymFragment extends Fragment {
         EditText series = new EditText(getActivity().getBaseContext());
         EditText repetitions = new EditText(getActivity().getBaseContext());
 
-        nameExercise.setHint("repetitions");
+        nameExercise.setHint("name");
+        nameExercise.setMaxEms(15);
         series.setHint("series");
-        repetitions.setHint("name");
+        series.setInputType(InputType.TYPE_CLASS_NUMBER);
+        repetitions.setHint("repetitions");
+        repetitions.setInputType(InputType.TYPE_CLASS_NUMBER);
+
 
         ImageButton deleteOption = new ImageButton(getActivity().getBaseContext());
 
