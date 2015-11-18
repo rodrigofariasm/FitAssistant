@@ -9,7 +9,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/new_diet_layout">
+        android:id="@+id/new_diet_layout"
+        android:padding="20dp">
 
         <EditText
             android:layout_width="wrap_content"
@@ -26,7 +27,7 @@
             android:inputType="textCapSentences"
             android:hint="Description"
             android:ems="15"
-
+            android:layout_marginTop="20dp"
             android:id="@+id/editText_description_diet"
             android:layout_below="@id/editText_name_diet"/>
 
@@ -36,7 +37,8 @@
             android:id="@+id/table_breakfast"
             android:layout_below="@+id/editText_description_diet"
             android:layout_alignParentTop="@id/editText_name_diet"
-            android:tag="1">
+            android:tag="1"
+            android:layout_marginTop="20dp">
 
             <TableRow>
                 <TextView
@@ -49,7 +51,6 @@
 
         </TableLayout>
 
-
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,13 +59,38 @@
             android:onClick="addNewOption"
             android:layout_below="@id/table_breakfast"/>
 
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/table_morning_snack"
+            android:layout_below="@id/button_new_opt_breakfast"
+            android:tag="2">
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Morning Snack"
+                    android:id="@+id/textView_morning_snack"/>
+            </TableRow>
+        </TableLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_option"
+            android:id="@+id/button_new_opt_morning_snack"
+            android:onClick="addNewOption"
+            android:layout_below="@id/table_morning_snack"/>
+
 
         <TableLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/table_lunch"
-            android:layout_below="@id/button_new_opt_breakfast"
-            android:tag="2">
+            android:layout_below="@id/button_new_opt_morning_snack"
+            android:tag="3">
 
             <TableRow>
                 <TextView
@@ -88,9 +114,35 @@
         <TableLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/table_dinner"
+            android:id="@+id/table_afternoon_snack"
             android:layout_below="@id/button_new_opt_lunch"
-            android:tag="3">
+            android:tag="4">
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Afternoon Snack"
+                    android:id="@+id/textView_afternoon_snack"/>
+            </TableRow>
+        </TableLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_option"
+            android:id="@+id/button_new_opt_afternoon_snack"
+            android:onClick="addNewOption"
+            android:layout_below="@id/table_afternoon_snack"/>
+
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/table_dinner"
+            android:layout_below="@id/button_new_opt_afternoon_snack"
+            android:tag="5">
 
             <TableRow>
                 <TextView
@@ -115,17 +167,17 @@
         <TableLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/table_snack"
+            android:id="@+id/table_night_snack"
             android:layout_below="@id/button_new_opt_dinner"
-            android:tag="4">
+            android:tag="6">
 
             <TableRow>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Snack"
-                    android:id="@+id/textView_snack"/>
+                    android:text="Night Snack"
+                    android:id="@+id/textView_night_snack"/>
             </TableRow>
         </TableLayout>
 
@@ -133,9 +185,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/new_option"
-            android:id="@+id/button_new_opt_snack"
+            android:id="@+id/button_new_opt_night_snack"
             android:onClick="addNewOption"
-            android:layout_below="@id/table_snack"/>
+            android:layout_below="@id/table_night_snack"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -143,7 +195,7 @@
             android:text="@string/save_diet"
             android:id="@+id/button_save_diet"
             android:onClick="saveDiet"
-            android:layout_below="@id/button_new_opt_snack"
+            android:layout_below="@id/button_new_opt_night_snack"
             android:layout_alignRight="@+id/editText_name_diet"
             android:layout_alignEnd="@+id/editText_name_diet" />
 

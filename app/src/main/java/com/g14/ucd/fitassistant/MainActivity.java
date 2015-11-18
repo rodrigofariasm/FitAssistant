@@ -160,6 +160,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.exercise_option:
                 openExerciseActivity();
                 return true;
+            case R.id.new_diet_schedule:
+                openScheduleDietActivity();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -196,6 +199,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void openExerciseActivity() {
         Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+
+    private void openScheduleDietActivity() {
+        Intent intent = new Intent(MainActivity.this, NewDietScheduletActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }

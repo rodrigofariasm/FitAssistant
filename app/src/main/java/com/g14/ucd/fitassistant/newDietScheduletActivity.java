@@ -13,11 +13,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-
-import com.g14.ucd.fitassistant.models.Day;
+import android.widget.TextView;
 import com.g14.ucd.fitassistant.models.Diet;
 import com.g14.ucd.fitassistant.models.Meal;
 import com.parse.FindCallback;
@@ -27,22 +27,20 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class NewDietScheduletActivity extends AppCompatActivity {
 
-    TableLayout table;
     Spinner selectbox;
     List<Diet> dietsRetreived;
     List<Meal> mealsRetreived;
 
-    Day day;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_diet_schedulet);
         selectbox = (Spinner) findViewById(R.id.diets_spinner);
-        day = new Day();
         dietsRetreived = new ArrayList<Diet>();
         mealsRetreived = new ArrayList<Meal>();
 
@@ -67,13 +65,14 @@ public class NewDietScheduletActivity extends AppCompatActivity {
         SpinnerAdapter<Diet> adapter =  new SpinnerAdapter(
                         this, // The current context (this activity)
                 R.layout.spinner_item_diet, // The name of the layout ID.
-                R.id.diets_spinner, // The ID of the textview to populate.
+                R.id.textView_spinner_name, // The ID of the textview to populate.
                 diets);
 
+        Spinner spinnerDiet = (Spinner) findViewById(R.id.diets_spinner);
+        spinnerDiet.setAdapter(adapter);
     }
 
     public void onItemSelected(View view){
-        table.setVisibility(View.VISIBLE);
         String objectId = (String) view.getTag();
 
         if(objectId != null && findDietRetrieved(objectId) != null){
@@ -82,9 +81,9 @@ public class NewDietScheduletActivity extends AppCompatActivity {
             query.whereEqualTo("dietID", objectId);
             try {
                 mealsRetreived = query.find();
-                generateFields();
+                generateListMeals();
             } catch (ParseException e) {
-                Log.d("FitAssistant", "Error deleting diet" + e.getMessage());
+                Log.d("FitAssistant", "Error searching meals" + e.getMessage());
             }
         }
     }
@@ -98,24 +97,10 @@ public class NewDietScheduletActivity extends AppCompatActivity {
         return null;
     }
 
-    public Meal findMealRetrieved(String mealId, int type){
-        for(Meal m : mealsRetreived){
-            if(mealId != null && m.getObjectId().equals(mealId)){
-                return m;
-            }
-            if(mealId == null && m.getType() == type){
-                return m;
-            }
-        }
-        return null;
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_new_diet_schedulet, menu);
-        table = (TableLayout) findViewById(R.id.table_schedule_diet);
         return true;
     }
 
@@ -134,24 +119,16 @@ public class NewDietScheduletActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void generateFields(){
-        //bre
-        findMealRetrieved(null, 1);
+    public void generateListMeals(){
+        Collections.sort(mealsRetreived);
+        ListMealScheduleAdapter mAdapter = new ListMealScheduleAdapter(
+                this,
+                R.layout.list_meals_diet_schedule,
+                R.id.item_name_diet, R.id.meal_time,
+                mealsRetreived);
 
-        //sna
-        findMealRetrieved(null, 4);
-
-        //lun
-        findMealRetrieved(null, 2);
-
-        //san
-        findMealRetrieved(null,4);
-
-        //din
-        findMealRetrieved(null, 3);
-
-        //sa
-        findMealRetrieved(null,4);
+        ListView listView = (ListView) findViewById(R.id.list_meals_schedule);
+        listView.setAdapter(mAdapter);
     }
 
     public void showButtonAddDiet(){

@@ -5,9 +5,11 @@ package com.g14.ucd.fitassistant.models;
  */
 public enum MealEnum {
     BREAKFAST("Breakfast",1),
-    LUNCH("Lunch",2),
-    DINNER("Dinner",3),
-    SNACK("Snack",4);
+    MORNING_SNAK("Morning Snak",2),
+    LUNCH("Lunch",3),
+    AFTERNOON_SNAK("Afternoon Snak",2),
+    DINNER("Dinner",5),
+    NIGHT_SNAK("Night Snak",6);
 
     private String value;
     private int code;
@@ -31,5 +33,14 @@ public enum MealEnum {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public static MealEnum fromCode(int code){
+        for(MealEnum m : values()){
+            if(m.getCode() == code){
+                return m;
+            }
+        }
+        return null;
     }
 }

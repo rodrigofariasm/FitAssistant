@@ -21,18 +21,24 @@ import java.util.List;
  */
 public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
 
-    private final Activity context = null;
+    private Context context = null;
     private List<T> objects = null;
     private int textViewId;
-    private int resource;
+    private int resourceId;
+    private int buttonDelete;
+    private int buttonUpdate;
+    private int buttonView;
 
-    public ListAdapter(Context context, int resource, int textViewResourceId, List<T> objects) {
+    public ListAdapter(Context context, int resource, int textViewResourceId, int view, int update,
+                       int delete, List<T> objects) {
         super(context, resource, textViewResourceId, objects);
-        context = this.context;
-        objects = this.objects;
+        this.context  = context;
+        this.objects = objects;
         textViewId = textViewResourceId;
-        resource = this.resource;
-
+        resourceId = resource;
+        buttonDelete = delete;
+        buttonUpdate = update;
+        buttonView = view;
     }
 
     @Override
@@ -42,15 +48,15 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
         if (v == null) {
             LayoutInflater vi;
             vi = LayoutInflater.from(getContext());
-            v = vi.inflate(R.layout.list_item_diet, null);
+            v = vi.inflate(resourceId, null);
         }
 
         T obj = (T) getItem(position);
         if(obj != null){
-            TextView name = (TextView) v.findViewById(R.id.list_item_name_diet);
-            ImageButton delete = (ImageButton) v.findViewById(R.id.button_delete);
-            ImageButton update = (ImageButton) v.findViewById(R.id.button_update);
-            ImageButton view = (ImageButton) v.findViewById(R.id.button_view);
+            TextView name = (TextView) v.findViewById(textViewId);
+            ImageButton delete = (ImageButton) v.findViewById(buttonDelete);
+            ImageButton update = (ImageButton) v.findViewById(buttonUpdate);
+            ImageButton view = (ImageButton) v.findViewById(buttonView);
 
             String id = obj.getObjectId();
 
@@ -71,6 +77,4 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
 
         return v;
     }
-
-
 }

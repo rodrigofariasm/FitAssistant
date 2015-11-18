@@ -19,23 +19,18 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/table_schedule_diet">
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lienar_layout_diet_schedule"
+        android:id="@+id/list_meals_schedule"/>
 
-        <TableRow android:id="@+id/table_menu">
-            <TextView
-                android:text="Meal"
-                android:gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:text="Time"
-                android:gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </TableRow>
-    </TableLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:layout_below="@id/list_meals_schedule"
+        android:id="@+id/button_save_diet_schedule"/>
+
 
 </RelativeLayout>

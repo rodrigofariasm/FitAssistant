@@ -32,14 +32,6 @@ public class Diet extends ParseObject{
         put("description",description);
     }
 
-    public boolean isActive() {
-        return getBoolean("isActive");
-    }
-
-    public void setActive(boolean active) {
-        put("isActive", active);
-    }
-
     public ParseUser getUser(){
         return getParseUser("user");
     }

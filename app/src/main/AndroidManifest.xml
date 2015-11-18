@@ -109,7 +109,7 @@
             android:label="@string/title_activity_schedule" >
         </activity>
         <activity
-            android:name=".newDietScheduletActivity"
+            android:name=".NewDietScheduletActivity"
             android:label="@string/title_activity_new_diet_schedulet" >
         </activity>
     </application>

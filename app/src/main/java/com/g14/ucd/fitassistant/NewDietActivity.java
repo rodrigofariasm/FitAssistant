@@ -1,9 +1,11 @@
 package com.g14.ucd.fitassistant;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -122,11 +124,15 @@ public class NewDietActivity extends AppCompatActivity {
             case 1:
                 return R.id.button_new_opt_breakfast;
             case 2:
-                return R.id.button_new_opt_lunch;
+                return R.id.button_new_opt_morning_snack;
             case 3:
-                return R.id.button_new_opt_dinner;
+                return R.id.button_new_opt_lunch;
             case 4:
-                return R.id.button_new_opt_snack;
+                return R.id.button_new_opt_afternoon_snack;
+            case 5:
+                return R.id.button_new_opt_dinner;
+            case 6:
+                return R.id.button_new_opt_night_snack;
         }
         return code;
     }
@@ -178,8 +184,7 @@ public class NewDietActivity extends AppCompatActivity {
             }
         });
         newRow.addView(buttonDelete);
-
-
+        
         if (option != null && mealId != null) { // if is update diet the option will be filled already
             editText.setText(option);
             editText.setTag(mealId);
@@ -197,12 +202,17 @@ public class NewDietActivity extends AppCompatActivity {
             case R.id.button_new_opt_dinner:
                 tableoptions = (TableLayout) findViewById(R.id.table_dinner);
                 break;
-            case R.id.button_new_opt_snack:
-                tableoptions = (TableLayout) findViewById(R.id.table_snack);
+            case R.id.button_new_opt_afternoon_snack:
+                tableoptions = (TableLayout) findViewById(R.id.table_afternoon_snack);
+                break;
+            case R.id.button_new_opt_morning_snack:
+                tableoptions = (TableLayout) findViewById(R.id.table_morning_snack);
+                break;
+            case R.id.button_new_opt_night_snack:
+                tableoptions = (TableLayout) findViewById(R.id.table_night_snack);
                 break;
         }
 
-        buttonDelete.setTag(editText.getId());
         tableoptions.addView(newRow);
     }
 
@@ -221,9 +231,11 @@ public class NewDietActivity extends AppCompatActivity {
             public void done(ParseException e) {
                 if (e == null) {
                     createMeal(R.id.table_breakfast);
+                    createMeal(R.id.table_morning_snack);
                     createMeal(R.id.table_lunch);
+                    createMeal(R.id.table_afternoon_snack);
                     createMeal(R.id.table_dinner);
-                    createMeal(R.id.table_snack);
+                    createMeal(R.id.table_night_snack);
                     try {
                         ParseObject.saveAll(meals);
                         ParseObject.deleteAll(getMealsToDelete(meals, mealsRetreived));

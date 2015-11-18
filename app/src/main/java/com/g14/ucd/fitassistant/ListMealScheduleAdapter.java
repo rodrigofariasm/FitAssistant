@@ -6,33 +6,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.g14.ucd.fitassistant.models.Diet;
-import com.g14.ucd.fitassistant.models.Meal;
-import com.g14.ucd.fitassistant.models.MealEnum;
 import com.parse.ParseObject;
 
 import java.util.List;
 
 /**
- * Created by Natália on 17/11/2015.
+ * Created by Natália on 12/11/2015.
  */
-public class SpinnerAdapter <T extends ParseObject> extends ArrayAdapter {
+public class ListMealScheduleAdapter<T extends  ParseObject> extends ArrayAdapter {
 
     private Context context = null;
     private List<T> objects = null;
     private int textViewId;
     private int resourceId;
+    private int editTextViewId;
 
-
-    public SpinnerAdapter(Context context, int resource, int textViewResourceId, List<T> objects) {
+    public ListMealScheduleAdapter(Context context, int resource, int textViewResourceId, int editTextViewId,List<T> objects) {
         super(context, resource, textViewResourceId, objects);
         this.context  = context;
         this.objects = objects;
         textViewId = textViewResourceId;
         resourceId = resource;
+        this.editTextViewId = editTextViewId;
     }
 
     @Override
@@ -48,21 +47,13 @@ public class SpinnerAdapter <T extends ParseObject> extends ArrayAdapter {
         T obj = (T) getItem(position);
         if(obj != null){
             TextView name = (TextView) v.findViewById(textViewId);
+            EditText time = (EditText) v.findViewById(editTextViewId);
+
             String id = obj.getObjectId();
-            String itemName = null;
-
-            if(obj instanceof Diet){
-                itemName = ((Diet) obj).getName().toString();
-            }
-
-            if(name != null && itemName != null){
-                name.setText(itemName);
-                name.setTag(id);
+            if(name != null){
+                name.setText(obj.getString("name"));
             }
         }
         return v;
     }
-
 }
-
-

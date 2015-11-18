@@ -66,7 +66,7 @@ public class DietActivity extends AppCompatActivity {
        ListAdapter mAdapter = new ListAdapter(
                 this, // The current context (this activity)
                 R.layout.list_item_diet, // The name of the layout ID.
-                R.id.list_item_name_diet, // The ID of the textview to populate.
+                R.id.list_item_name_diet,R.id.button_view, R.id.button_update,R.id.button_delete, // The ID of the textview to populate.
                 diets);
 
         ListView listView = (ListView) findViewById(R.id.listView_diets);

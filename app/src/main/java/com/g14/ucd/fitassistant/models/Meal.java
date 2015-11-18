@@ -13,7 +13,7 @@ import java.util.List;
  * Created by Leticia on 17/10/2015.
  */
 @ParseClassName("Meal")
-public class Meal extends ParseObject{
+public class Meal extends ParseObject implements Comparable{
 
     public int getType() {
         return getInt("type");
@@ -28,7 +28,7 @@ public class Meal extends ParseObject{
     }
 
     public void setOptions(List<String> options) {
-        put("options",options);
+        put("options", options);
     }
 
     public void addOption(String option){
@@ -70,6 +70,17 @@ public class Meal extends ParseObject{
     }
 
 
-
-
+    @Override
+    public int compareTo(Object another) {
+        if(another instanceof Meal) {
+            Meal other = (Meal) another;
+            if (this.getType() < other.getType()) {
+                return -1;
+            }
+            if (this.getType() > other.getType()) {
+                return 1;
+            }
+        }
+        return 0;
+    }
 }
