@@ -114,8 +114,6 @@ public class GoalActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     public void view(View v){

@@ -18,28 +18,36 @@ public class Goal extends ParseObject{
         put("type",type);
     }
 
-    public String getActual() {
-        return getString("actual");
+    public int getActual() {
+        return getInt("actual");
     }
 
-    public void setActual(String actual) {
+    public void setActual(int actual) {
         put("actual",actual);
     }
 
-    public String getGoal() {
-        return getString("goal");
+    public int getDesired() {
+        return getInt("desired");
     }
 
-    public void setGoal(String goal) {
-        put("goal",goal);
+    public void setDesired(int desired) {
+        put("desired",desired);
     }
 
-    public String getInterval() {
-        return getString("interval");
+    public int getInterval() {
+        return getInt("interval");
     }
 
-    public void setInterval(String interval) {
+    public void setInterval(int interval) {
         put("interval",interval);
+    }
+
+    public String getIntervalUnit() {
+        return getString("interval_unit");
+    }
+
+    public void setIntervalUnit(String interval_unit) {
+        put("interval_unit",interval_unit);
     }
 
     public boolean isActive() {
