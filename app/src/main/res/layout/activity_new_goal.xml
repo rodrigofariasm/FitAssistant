@@ -1,0 +1,93 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.g14.ucd.fitassistant.NewGoalActivity">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/new_goal_layout">
+
+        <TextView
+            android:id="@+id/textView_goalType"
+            android:text="Goal type:"
+            android:paddingTop="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/goals_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/textView_goalType"/>
+
+        <TextView
+            android:id="@+id/textView_actual"
+            android:text="Actual:"
+            android:paddingTop="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/goals_spinner"/>
+
+        <EditText
+            android:id="@+id/editText_actual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/goals_spinner"
+            android:layout_toRightOf="@id/textView_actual"/>
+
+        <TextView
+            android:id="@+id/textView_desired"
+            android:text="Desired:"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editText_actual"/>
+
+        <EditText
+            android:id="@+id/editText_desired"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editText_actual"
+            android:layout_toRightOf="@id/textView_desired"/>
+
+        <TextView
+            android:id="@+id/textView_interval"
+            android:text="Interval:"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editText_desired"/>
+
+        <EditText
+            android:id="@+id/editText_interval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editText_desired"
+            android:layout_toRightOf="@id/textView_interval"/>
+
+        <Spinner
+            android:id="@+id/time_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editText_desired"
+            android:layout_toRightOf="@id/editText_interval"/>
+
+        <Button
+            android:id="@+id/button_save_goal"
+            android:text="Save"
+            android:onClick="saveGoal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/time_spinner"
+            android:layout_alignRight="@id/time_spinner" />
+
+    </RelativeLayout>
+</ScrollView>
+

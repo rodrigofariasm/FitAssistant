@@ -11,7 +11,7 @@
     <string name="facebook_app_id">1649882351961392</string>
 
 
-    <!--- String para login e cadastrar -->
+    <!--- String for login and register -->
     <string name="title_activity_login">Enter</string>
     <string name="title_activity_signup">Sign In</string>
     <string name="prompt_email">Email, must be valid</string>
@@ -34,9 +34,7 @@
     <string name="prompt_username">First name</string>
     <string name="date_of_birth">Date of Birth</string>
 
-
-
-    <!--- String para Dietas -->
+    <!--- String for Diets -->
     <string name="diet">Diet</string>
     <string name="title_activity_diet">Diet</string>
     <string name="add_diet">+ Diet</string>
@@ -47,9 +45,7 @@
     <string name="save_diet">Save</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-
-
-
+    <string name="progress_saving_exercise">Saving Exercise</string>
     <string name="option">Option</string>
     <string name="today">TODAY</string>
     <string-array name="weeday_spinner">
@@ -75,18 +71,37 @@
     <string name="gym">Gym</string>
     <string name="general_activity">General activities</string>
 
+<!-- String to drawer -->
     <string-array
         name="drawer_string_array">
-        <item>Make a Schedule</item>
-        <item>Make a Diet</item>
-        <item>Plan Exercises</item>
-        <item>Plan Gym</item>
-        <item>Set Your Goals</item>
+        <item>Schedule</item>
+        <item>Diet</item>
+        <item>Exercises</item>
+        <item>Gym</item>
+        <item>Goals</item>
+        <item>Logout</item>
     </string-array>
     <string name="title_activity_schedule">ScheduleActivity</string>
     <string name="title_activity_schedule_diet">ScheduleDietActivity</string>
     <string name="title_activity_new_diet_schedulet">NewDietScheduletActivity</string>
 
 
+<!-- String to Goal -->
+    <string name="title_activity_goal">Goal</string>
+    <string name="no_goal_message">You don\'t have goals. Please create one.</string>
+    <string name="add_goal">+ Goal</string>
+    <string name="title_activity_new_goal">NewGoalActivity</string>
+    <string name="gym_exercises">Gym Exercises</string>
+    <string-array name="goals_array">
+        <item>Lose fat</item>
+        <item>Gain Weight</item>
+        <item>Lose Weight</item>
+    </string-array>
+    <string-array name="time_array">
+        <item>day(s)</item>
+        <item>week(s)</item>
+        <item>month(s)</item>
+        <item>years(s)</item>
+    </string-array>
 
 </resources>

@@ -80,7 +80,6 @@ public class    NewExerciseActivity extends AppCompatActivity {
         }
         @Override
         public int getCount() {
-            Log.d("FitAssistant", ""+mFragmentList.size());
             return mFragmentList.size();
         }
         public void addFragment(Fragment fragment, String title) {

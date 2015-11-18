@@ -86,9 +86,6 @@ public class ExerciseActivity extends AppCompatActivity {
             case R.id.action_settings:
                 //openSettings();
                 return true;
-            case R.id.logout_option:
-                logout();
-                return true;
             case R.id.add_exercise:
                 addNewExercise();
                 return true;

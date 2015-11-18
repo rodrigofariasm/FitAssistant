@@ -33,6 +33,7 @@ import com.facebook.appevents.AppEventsLogger;
 import com.g14.ucd.fitassistant.models.Day;
 import com.g14.ucd.fitassistant.models.Diet;
 import com.g14.ucd.fitassistant.models.Exercise;
+import com.g14.ucd.fitassistant.models.Goal;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -54,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
 
         today = new GregorianCalendar();
         dayToday = null;
@@ -151,18 +150,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 //openSettings();
                 return true;
-            case R.id.logout_option:
-                logout();
-                return true;
-            case R.id.diet_option:
-                openDietActivity();
-                return true;
-            case R.id.exercise_option:
-                openExerciseActivity();
-                return true;
-            case R.id.new_diet_schedule:
-                openScheduleDietActivity();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -204,8 +191,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void openScheduleDietActivity() {
-        Intent intent = new Intent(MainActivity.this, NewDietScheduletActivity.class);
+    private void openGoalActivity() {
+        Intent intent = new Intent(MainActivity.this, GoalActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
@@ -263,10 +250,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
                 //openGym
             case(4):
-                //Set Goals
+                openGoalActivity();
                 break;
-
-
+            case(5):
+                logout();
+                break;
         }
 
     }

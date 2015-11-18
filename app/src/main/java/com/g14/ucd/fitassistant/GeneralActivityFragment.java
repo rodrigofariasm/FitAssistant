@@ -1,6 +1,8 @@
 package com.g14.ucd.fitassistant;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -17,7 +19,9 @@ import com.g14.ucd.fitassistant.models.Exercise;
 import com.g14.ucd.fitassistant.models.FitActivity;
 import com.g14.ucd.fitassistant.models.Gym;
 import com.g14.ucd.fitassistant.models.Other;
+import com.gc.materialdesign.views.ButtonRectangle;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.List;
@@ -30,17 +34,14 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class GeneralActivityFragment extends android.support.v4.app.Fragment {
-    TableLayout tableExercisesGym;
-    EditText description;
-    ImageButton newOption;
-    Button save;
-    List<Exercise> exercises;
-    Gym gym;
+    EditText name;
+    ButtonRectangle save;
 
     private OnFragmentInteractionListener mListener;
 
     public GeneralActivityFragment() {
         // Required empty public constructor
+
     }
 
 
@@ -49,6 +50,20 @@ public class GeneralActivityFragment extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_general_activity, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+
+        super.onViewCreated(view, savedInstanceState);
+
+        save = (ButtonRectangle) view.findViewById(R.id.button_save_exercise);
+        save.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                saveActivity();
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -79,19 +94,30 @@ public class GeneralActivityFragment extends android.support.v4.app.Fragment {
         public void onFragmentInteraction(Uri uri);
     }
 
-    public void saveActivity(View view) {
-        // Is the button now checked?
+    public void saveActivity() {
+        final ProgressDialog dialog = new ProgressDialog(getActivity());
+        dialog.setTitle(getString(R.string.progress_saving_exercise));
+        dialog.show();
+        Log.d("" + R.string.app_name, "trying Save");
         EditText name = (EditText) getActivity().findViewById(R.id.edittext_name_general_activity);
-        FitActivity activity = new FitActivity();
+        Other activity = new Other();
         activity.setName(name.getText().toString());
         EditText description = (EditText) getActivity().findViewById(R.id.editText_description_other);
-        Other other = (Other) activity;
-        other.setDescription(description.getText().toString());
-        other.saveInBackground(new SaveCallback() {
+        activity.setDescription(description.getText().toString());
+        activity.setUser(ParseUser.getCurrentUser());
+        activity.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
+
                 if (e != null) {
+
                     Log.d("FITASSISTANT", "Error saving other exercise " + e.getMessage());
+                }else{
+                    dialog.dismiss();
+                    Intent intent = new Intent(getActivity(), ExerciseActivity.class );
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    startActivity(intent);
                 }
             }
         });

@@ -59,12 +59,11 @@
         <activity
             android:name=".DietActivity"
             android:label="@string/diet"
-            android:theme="@style/MyDietTheme"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/MyDietTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"
-            />
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -88,21 +87,38 @@
         <activity
             android:name=".ExerciseActivity"
             android:label="@string/exercise"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/MyDietTheme"
+            android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"
-                />
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".NewExerciseActivity"
             android:label="@string/title_activity_new_exercise"
+            android:parentActivityName=".ExerciseActivity"
             android:theme="@style/MyMaterialTheme"
-            android:parentActivityName=".ExerciseActivity">
+            android:windowSoftInputMode="adjustPan">
+              <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ExerciseActivity" />
+        </activity>
+        <activity
+            android:name=".GoalActivity"
+            android:label="@string/title_activity_goal"
+            android:theme="@style/MyDietTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ExerciseActivity"
-                />
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".NewGoalActivity"
+            android:label="@string/title_activity_new_goal"
+            android:theme="@style/MyDietTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".GoalActivity" />
         </activity>
         <activity
             android:name=".ScheduleActivity"
