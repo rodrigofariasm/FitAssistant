@@ -19,6 +19,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -169,6 +170,14 @@ public class GoalActivity extends AppCompatActivity {
                         goal.setActive(false);
                         initialize();
                     }
+                    goal.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e != null){
+                                Log.d("Fit assitant", " error saving goal: " + e.getMessage());
+                            }
+                        }
+                    });
                 } else if (exception != null) {
                     Log.d("FitAssistant", "Error finding goal with id " + objectId + ": " + exception.getMessage());
                 }

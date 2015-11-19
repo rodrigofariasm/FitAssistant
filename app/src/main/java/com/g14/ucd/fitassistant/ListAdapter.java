@@ -100,7 +100,7 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
                             firstPart = "Lose " + Integer.toString(obj.getInt("actual") - obj.getInt("desired")) + "kg in ";
                             break;
                         case("Gain weight"):
-                            firstPart = "Gain " + Integer.toString(obj.getInt("actual") - obj.getInt("desired")) + "kg in ";
+                            firstPart = "Gain " + Integer.toString(obj.getInt("desired") - obj.getInt("actual")) + "kg in ";
                             break;
                     }
                     itemName = firstPart + interval + " "+ unit;

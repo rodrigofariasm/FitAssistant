@@ -35,10 +35,20 @@
 
         <EditText
             android:id="@+id/editText_actual"
+            android:inputType="number"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/goals_spinner"
             android:layout_toRightOf="@id/textView_actual"/>
+
+        <TextView
+            android:id="@+id/textView_actualUnit"
+            android:paddingTop="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/goals_spinner"
+            android:layout_toRightOf="@id/editText_actual"/>
 
         <TextView
             android:id="@+id/textView_desired"
@@ -52,9 +62,19 @@
         <EditText
             android:id="@+id/editText_desired"
             android:layout_width="40dp"
+            android:inputType="number"
             android:layout_height="wrap_content"
             android:layout_below="@id/editText_actual"
             android:layout_toRightOf="@id/textView_desired"/>
+
+        <TextView
+            android:id="@+id/textView_desiredUnit"
+            android:paddingTop="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editText_actual"
+            android:layout_toRightOf="@id/editText_desired"/>
 
         <TextView
             android:id="@+id/textView_interval"
@@ -68,6 +88,7 @@
         <EditText
             android:id="@+id/editText_interval"
             android:layout_width="40dp"
+            android:inputType="number"
             android:layout_height="wrap_content"
             android:layout_below="@id/editText_desired"
             android:layout_toRightOf="@id/textView_interval"/>

@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.g14.ucd.fitassistant.models.Goal;
 import com.parse.FindCallback;
@@ -32,7 +33,8 @@ public class NewGoalActivity extends AppCompatActivity {
     EditText actual;
     EditText desired;
     EditText interval;
-
+    TextView actualUnit;
+    TextView desiredUnit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +48,21 @@ public class NewGoalActivity extends AppCompatActivity {
             actual = (EditText) findViewById(R.id.editText_actual);
             desired = (EditText) findViewById(R.id.editText_desired);
             interval = (EditText) findViewById(R.id.editText_interval);
+            actualUnit = (TextView) findViewById(R.id.textView_actualUnit);
+            desiredUnit = (TextView) findViewById(R.id.textView_desiredUnit);
 
             ArrayAdapter<CharSequence> goalType_adapter = ArrayAdapter.createFromResource(this,
                     R.array.goals_array, android.R.layout.simple_spinner_item);
             goalType_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             goalType.setAdapter(goalType_adapter);
+
+            if(goalType.getSelectedItemPosition() == 0){
+                actualUnit.setText("%");
+                desiredUnit.setText("%");
+            }else{
+                actualUnit.setText("kg");
+                desiredUnit.setText("kg");
+            }
 
             ArrayAdapter<CharSequence> time_adapter = ArrayAdapter.createFromResource(this,
                     R.array.time_array, android.R.layout.simple_spinner_item);
