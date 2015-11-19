@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,21 +57,30 @@ public class NewGoalActivity extends AppCompatActivity {
             goalType_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             goalType.setAdapter(goalType_adapter);
 
-            if(goalType.getSelectedItemPosition() == 0){
-                actualUnit.setText("%");
-                desiredUnit.setText("%");
-            }else{
-                actualUnit.setText("kg");
-                desiredUnit.setText("kg");
-            }
+            goalType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position == 0) {
+                        actualUnit.setText("%");
+                        desiredUnit.setText("%");
+                    } else {
+                        actualUnit.setText("kg");
+                        desiredUnit.setText("kg");
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    actualUnit.setText("%");
+                    desiredUnit.setText("%");
+                }
+            });
 
             ArrayAdapter<CharSequence> time_adapter = ArrayAdapter.createFromResource(this,
                     R.array.time_array, android.R.layout.simple_spinner_item);
             time_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             time.setAdapter(time_adapter);
         }
-
-
     }
 
     private boolean isUpdate() {
