@@ -24,6 +24,7 @@ import com.g14.ucd.fitassistant.models.Gym;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
@@ -75,7 +76,7 @@ public class GymFragment extends Fragment {
         save = (ButtonRectangle) getActivity().findViewById(R.id.button_save_exercise_gym);
         newOption = (ImageButton) getActivity().findViewById(R.id.button_new_opt_gym_exercise);
 
-        save.setOnClickListener(new View.OnClickListener(){
+        save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveActivity();
@@ -101,27 +102,38 @@ public class GymFragment extends Fragment {
     public void saveActivity() {
 
         EditText name = (EditText) getActivity().findViewById(R.id.edittext_name_exercise_gym);
-        Gym activity = new Gym();
+        final Gym activity = new Gym();
         activity.setName(name.getText().toString());
-        gym.saveInBackground(new SaveCallback() {
+        activity.setUser(ParseUser.getCurrentUser());
+
+        activity.setExercises(exercises);
+        activity.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    saveArrayExercises();
+                    saveArrayExercises(activity);
+                    activity.setExercises(exercises);
+                    try{
+                        activity.save();
+                    }catch(Exception e1){
+                        Log.d("FITASSISTANT", "Error updating exercise " + e1.getMessage());
+                    }
+
+
                 } else {
                     Log.d("FITASSISTANT", "Error saving other exercise " + e.getMessage());
                 }
             }
         });
     }
-    private void saveArrayExercises(){
+    private void saveArrayExercises(Gym activity){
         final ProgressDialog dialog = new ProgressDialog(getActivity());
         dialog.setTitle(getString(R.string.progress_saving_exercise));
         dialog.show();
         int size = tableExercisesGym.getChildCount();
         for(int i = 1; i<size; i+=2){
             TableRow row = (TableRow) tableExercisesGym.getChildAt(i);
-            EditText name = (EditText) row.getChildAt(0);
+            EditText name = (EditText) row.getChildAt(1);
             TableRow row2 = (TableRow) tableExercisesGym.getChildAt(i+1);
             EditText sections = (EditText) row2.getChildAt(0);
             EditText repetitions = (EditText) row2.getChildAt(1);
@@ -130,8 +142,9 @@ public class GymFragment extends Fragment {
             newExercise.setName(name.getText().toString());
             newExercise.setSections(Integer.parseInt(sections.getText().toString()));
             newExercise.setRepetitions(Integer.parseInt(repetitions.getText().toString()));
-            newExercise.setActivityID(gym.getObjectId());
+            newExercise.setActivityID(activity.getObjectId());
             exercises.add(newExercise);
+
         }
         try {
             ParseObject.saveAll(exercises);
@@ -224,10 +237,5 @@ public class GymFragment extends Fragment {
             }
         }
         count--;
-
-
     }
-
-
-
 }

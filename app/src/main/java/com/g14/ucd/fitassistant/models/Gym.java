@@ -21,25 +21,25 @@ public class Gym extends FitActivity {
         put("type", ActivitiesTypeEnum.GYM.getCode());
     }
 
-    public List<String> getExercises() {
+    public List<Exercise> getExercises() {
         return getList("exercises");
     }
 
-    public void setExercises(List<String> exercises) {
+    public void setExercises(List<Exercise> exercises) {
         put("exercises",exercises);
     }
 
-    public void addExercise(String ID){
-        List<String> exercises = getExercises();
+    public void addExercise(Exercise exercise){
+        List<Exercise> exercises = getExercises();
         if(exercises == null){
-            setExercises(new ArrayList<String>());
+            setExercises(new ArrayList<Exercise>());
         }
-        exercises.add(ID);
+        exercises.add(exercise);
     }
 
-    public void removeExercise(Integer ID){
-        List<String> exercises = getExercises();
-        exercises.remove(ID);
+    public void removeExercise(Exercise exercise){
+        List<Exercise> exercises = getExercises();
+        exercises.remove(exercise);
         setExercises(exercises);
     }
 }
