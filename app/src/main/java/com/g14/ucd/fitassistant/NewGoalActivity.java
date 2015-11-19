@@ -144,6 +144,7 @@ public class NewGoalActivity extends AppCompatActivity {
         newGoal.setInterval(Integer.parseInt(interval.getText().toString()));
         newGoal.setIntervalUnit(time.getSelectedItem().toString());
         newGoal.setType(goalType.getSelectedItem().toString());
+        newGoal.setActive(false);
         newGoal.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {

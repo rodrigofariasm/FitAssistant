@@ -59,7 +59,7 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
             ImageButton delete = (ImageButton) v.findViewById(button1);
             ImageButton update = (ImageButton) v.findViewById(button2);
             ImageButton view = (ImageButton) v.findViewById(button3);
-            Switch activated = (Switch) v.findViewById(button4);
+            Switch activate = (Switch) v.findViewById(button4);
 
             String id = obj.getObjectId();
 
@@ -72,8 +72,15 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
             if(view != null){
                 view.setTag(id);
             }
-            if(activated != null){
-                view.setTag(id);
+            if(activate != null){
+                activate.setTag(id);
+                if(obj instanceof Goal){
+                    if(((Goal) obj).isActive()){
+                        activate.setChecked(true);
+                    }else{
+                        activate.setChecked(false);
+                    }
+                }
             }
 
             String itemName = null;

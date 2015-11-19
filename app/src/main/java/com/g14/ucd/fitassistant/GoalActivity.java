@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.g14.ucd.fitassistant.models.Goal;
@@ -27,7 +28,6 @@ public class GoalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goal);
-
         initialize();
     }
 
@@ -39,7 +39,7 @@ public class GoalActivity extends AppCompatActivity {
             public void done(List<Goal> goals, ParseException exception) {
                 if (exception == null) { // found goals
                     listGoals(goals);
-                    if(goals.size()== 0){
+                    if (goals.size() == 0) {
                         showButtons();
                     }
                 } else if (exception != null) {
@@ -121,8 +121,6 @@ public class GoalActivity extends AppCompatActivity {
         });
     }
 
-    public void view(View v){
-    }
 
     public void delete(View v){
         final String objectId = (String) v.getTag();
@@ -139,6 +137,37 @@ public class GoalActivity extends AppCompatActivity {
                         initialize();
                     } catch (ParseException e) {
                         Log.d("FitAssistant", "Error deleting goal" + e.getMessage());
+                    }
+                } else if (exception != null) {
+                    Log.d("FitAssistant", "Error finding goal with id " + objectId + ": " + exception.getMessage());
+                }
+            }
+        });
+    }
+
+    public void activate(View v){
+        final String objectId = (String) v.getTag();
+        final Switch myswitch = (Switch) v;
+        if(myswitch.isChecked()){
+            myswitch.setChecked(true);
+        }else{
+            myswitch.setChecked(false);
+        }
+
+        Log.d("TAG: objectId", objectId);
+
+        ParseQuery<Goal> query = ParseQuery.getQuery("Goal");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.getInBackground(objectId, new GetCallback<Goal>() {
+            @Override
+            public void done(Goal goal, final ParseException exception) {
+                if (exception == null) { // found diet
+                    if(myswitch.isChecked()){
+                        goal.setActive(true);
+                        initialize();
+                    }else{
+                        goal.setActive(false);
+                        initialize();
                     }
                 } else if (exception != null) {
                     Log.d("FitAssistant", "Error finding goal with id " + objectId + ": " + exception.getMessage());
