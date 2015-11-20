@@ -59,7 +59,7 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
             ImageButton delete = (ImageButton) v.findViewById(button1);
             ImageButton update = (ImageButton) v.findViewById(button2);
             ImageButton view = (ImageButton) v.findViewById(button3);
-            Switch activate = (Switch) v.findViewById(button4);
+            Switch activated = (Switch) v.findViewById(button4);
 
             String id = obj.getObjectId();
 
@@ -72,15 +72,8 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
             if(view != null){
                 view.setTag(id);
             }
-            if(activate != null){
-                activate.setTag(id);
-                if(obj instanceof Goal){
-                    if(((Goal) obj).isActive()){
-                        activate.setChecked(true);
-                    }else{
-                        activate.setChecked(false);
-                    }
-                }
+            if(activated != null){
+                activated.setTag(id);
             }
 
             String itemName = null;
@@ -89,21 +82,17 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
                     itemName = obj.getString("name");
                 } else if (obj != null && obj instanceof Goal){
                     String goalType = obj.getString("type");
-                    String interval = Integer.toString(obj.getInt("interval"));
-                    String unit = obj.getString("interval_unit");
-                    String firstPart = null;
                     switch (goalType){
-                        case("Lose fat"):
-                            firstPart = "Lose " + Integer.toString(obj.getInt("actual") - obj.getInt("desired")) + "% of fat in ";
+                         case("Lose fat"):
+                            itemName = "Lose " + Integer.toString(obj.getInt("actual") - obj.getInt("desired")) + "% of fat";
                             break;
-                        case("Lose weight"):
-                            firstPart = "Lose " + Integer.toString(obj.getInt("actual") - obj.getInt("desired")) + "kg in ";
-                            break;
-                        case("Gain weight"):
-                            firstPart = "Gain " + Integer.toString(obj.getInt("desired") - obj.getInt("actual")) + "kg in ";
-                            break;
+                         case("Lose weight"):
+                             itemName = "Lose " + Integer.toString(obj.getInt("actual") - obj.getInt("desired")) + "kg";
+                             break;
+                         case("Gain weight"):
+                             itemName = "Lose " + Integer.toString(obj.getInt("actual") - obj.getInt("desired")) + "kg";
+                             break;
                     }
-                    itemName = firstPart + interval + " "+ unit;
                 }
                 name.setText(itemName);
             }

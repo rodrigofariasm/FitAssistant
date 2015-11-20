@@ -111,7 +111,7 @@ public class GoalActivity extends AppCompatActivity {
         query.getInBackground(objectId, new GetCallback<Goal>() {
             @Override
             public void done(Goal goal, final ParseException exception) {
-                if (exception == null) { // found diet
+                if (exception == null) { // found goal
                     Intent intent = new Intent(GoalActivity.this, NewGoalActivity.class);
                     intent.putExtra("goal", objectId);
                     startActivity(intent);
@@ -162,7 +162,7 @@ public class GoalActivity extends AppCompatActivity {
         query.getInBackground(objectId, new GetCallback<Goal>() {
             @Override
             public void done(Goal goal, final ParseException exception) {
-                if (exception == null) { // found diet
+                if (exception == null) { // found goal
                     if(myswitch.isChecked()){
                         goal.setActive(true);
                         initialize();
@@ -178,6 +178,26 @@ public class GoalActivity extends AppCompatActivity {
                             }
                         }
                     });
+                } else if (exception != null) {
+                    Log.d("FitAssistant", "Error finding goal with id " + objectId + ": " + exception.getMessage());
+                }
+            }
+        });
+    }
+
+    public void view(View v){
+        final String objectId = (String) v.getTag();
+        Log.d("TAG: objectId", objectId);
+
+        ParseQuery<Goal> query = ParseQuery.getQuery("Goal");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.getInBackground(objectId, new GetCallback<Goal>() {
+            @Override
+            public void done(Goal goal, final ParseException exception) {
+                if (exception == null) { // found goal
+                    Intent intent = new Intent(GoalActivity.this, ViewGoalActivity.class);
+                    intent.putExtra("goal", objectId);
+                    startActivity(intent);
                 } else if (exception != null) {
                     Log.d("FitAssistant", "Error finding goal with id " + objectId + ": " + exception.getMessage());
                 }
