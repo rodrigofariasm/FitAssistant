@@ -36,22 +36,6 @@ public class Goal extends ParseObject{
         put("desired",desired);
     }
 
-    public int getInterval() {
-        return getInt("interval");
-    }
-
-    public void setInterval(int interval) {
-        put("interval",interval);
-    }
-
-    public String getIntervalUnit() {
-        return getString("interval_unit");
-    }
-
-    public void setIntervalUnit(String interval_unit) {
-        put("interval_unit",interval_unit);
-    }
-
     public boolean isActive() {
         return getBoolean("isActive");
     }

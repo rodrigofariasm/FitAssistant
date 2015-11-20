@@ -57,8 +57,9 @@ public class ViewGoalActivity extends AppCompatActivity {
     private void loadTitle(){
         if(goalView != null){
             String goalType = goalView.getString("type");
-            String interval = Integer.toString(goalView.getInt("interval"));
-            String unit = goalView.getString("interval_unit");
+            long difference = Math.abs(goalView.getEnd().getTime() - goalView.getStart().getTime());
+            long differenceDates = difference / (24 * 60 * 60 * 1000);
+            String interval = Long.toString(differenceDates);
             String firstPart = null;
             switch (goalType){
                 case("Lose fat"):
@@ -71,7 +72,7 @@ public class ViewGoalActivity extends AppCompatActivity {
                     firstPart = "Gain " + Integer.toString(goalView.getInt("desired") - goalView.getInt("actual")) + "kg in ";
                     break;
             }
-            goalTitle.setText(firstPart + interval + " "+ unit);
+            goalTitle.setText(firstPart + interval + " days");
         }
     }
 
