@@ -3,6 +3,7 @@ package com.g14.ucd.fitassistant.models;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 /**
  * Created by Natália on 17/10/2015.
@@ -45,5 +46,8 @@ public class Exercise extends ParseObject{
 
     public void setActivityID(String value) {
         put("activityID", value);
+    }
+    public void setUser(ParseUser user) {
+        put("user", user);
     }
 }

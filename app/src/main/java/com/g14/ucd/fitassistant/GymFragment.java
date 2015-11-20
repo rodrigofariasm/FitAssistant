@@ -142,14 +142,15 @@ public class GymFragment extends Fragment {
             Spinner repetitions = (Spinner) row2.getChildAt(1);
 
             Exercise newExercise = new Exercise();
+            newExercise.setUser(ParseUser.getCurrentUser());
             newExercise.setName(name.getText().toString());
             if (sections.getSelectedItemPosition() == 0|| sections.getSelectedItemPosition()==9) {
                 newExercise.setSections(0);
             } else {
-                newExercise.setSections(0);
+                newExercise.setSections(Integer.parseInt(sections.getSelectedItem().toString()));
             }
             if (repetitions.getSelectedItemPosition() == 0 || repetitions.getSelectedItemPosition() == 8) {
-                newExercise.setRepetitions(Integer.parseInt(repetitions.getItemAtPosition(8).toString()));
+                newExercise.setRepetitions(0);
             }else{
                 newExercise.setRepetitions(Integer.parseInt(repetitions.getSelectedItem().toString()));
             }
@@ -161,8 +162,6 @@ public class GymFragment extends Fragment {
             ParseObject.saveAll(exercises);
             dialog.dismiss();
             Intent intent = new Intent(getActivity(), ExerciseActivity.class );
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
             startActivity(intent);
 
         }catch (ParseException parseE){

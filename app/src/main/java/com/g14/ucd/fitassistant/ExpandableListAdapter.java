@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.g14.ucd.fitassistant.models.Exercise;
@@ -65,18 +67,15 @@ public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandable
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final String childText = (String) getChild(groupPosition, childPosition);
+        final Exercise childExercise = (Exercise) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.exercise_list_group, null);
         }
-
-        TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.lblListHeader);
-
-        txtListChild.setText(childText);
+        TableLayout table = (TableLayout) convertView.findViewById(R.id.child_table_exercises_gym);
+        TableRow row = new TableRow(getBaseContext());
         return convertView;
     }
 
@@ -110,7 +109,7 @@ public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandable
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_item_diet, null);
+            convertView = infalInflater.inflate(R.layout.list_item_exercise, null);
         }
         T obj = (T) getGroup(groupPosition);
         String id = obj.getObjectId();
@@ -127,7 +126,7 @@ public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandable
             icone.setImageResource(R.drawable.dumbbell);
         }
         TextView lblListHeader = (TextView) convertView
-                .findViewById(R.id.list_item_name_diet);
+                .findViewById(R.id.list_item_name_exercise);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
         if(update != null){
