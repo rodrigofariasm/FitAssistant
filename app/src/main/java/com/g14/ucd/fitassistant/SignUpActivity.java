@@ -154,8 +154,6 @@ public class SignUpActivity extends FragmentActivity implements DatePickerDialog
         newFragment.show(getSupportFragmentManager(), "datepicker");
     }
 
-
-
     public void onDateSet(DatePicker view, int year, int month, int day) {
     }
 

@@ -5,6 +5,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.Date;
+
 /**
  * Created by Leticia on 17/11/2015.
  */
@@ -34,22 +36,6 @@ public class Goal extends ParseObject{
         put("desired",desired);
     }
 
-    public int getInterval() {
-        return getInt("interval");
-    }
-
-    public void setInterval(int interval) {
-        put("interval",interval);
-    }
-
-    public String getIntervalUnit() {
-        return getString("interval_unit");
-    }
-
-    public void setIntervalUnit(String interval_unit) {
-        put("interval_unit",interval_unit);
-    }
-
     public boolean isActive() {
         return getBoolean("isActive");
     }
@@ -70,5 +56,21 @@ public class Goal extends ParseObject{
 
     public static ParseQuery<Goal> getQuery() {
         return ParseQuery.getQuery(Goal.class);
+    }
+
+    public void setStart(Date start) {
+        put("start",start);
+    }
+
+    public Date getStart(){
+        return getDate("start");
+    }
+
+    public void setEnd(Date end) {
+        put("end",end);
+    }
+
+    public Date getEnd(){
+        return getDate("end");
     }
 }

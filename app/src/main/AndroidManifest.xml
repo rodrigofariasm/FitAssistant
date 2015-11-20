@@ -128,6 +128,15 @@
             android:name=".NewDietScheduletActivity"
             android:label="@string/title_activity_new_diet_schedulet" >
         </activity>
+        <activity
+            android:name=".ViewGoalActivity"
+            android:label="@string/title_activity_view_goal"
+            android:theme="@style/MyDietTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".GoalActivity" />
+        </activity>
+
     </application>
 
 </manifest>

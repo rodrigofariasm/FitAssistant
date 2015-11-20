@@ -111,7 +111,7 @@ public class GoalActivity extends AppCompatActivity {
         query.getInBackground(objectId, new GetCallback<Goal>() {
             @Override
             public void done(Goal goal, final ParseException exception) {
-                if (exception == null) { // found diet
+                if (exception == null) { // found goal
                     Intent intent = new Intent(GoalActivity.this, NewGoalActivity.class);
                     intent.putExtra("goal", objectId);
                     startActivity(intent);
@@ -149,11 +149,6 @@ public class GoalActivity extends AppCompatActivity {
     public void activate(View v){
         final String objectId = (String) v.getTag();
         final Switch myswitch = (Switch) v;
-        if(myswitch.isChecked()){
-            myswitch.setChecked(true);
-        }else{
-            myswitch.setChecked(false);
-        }
 
         Log.d("TAG: objectId", objectId);
 
@@ -162,13 +157,11 @@ public class GoalActivity extends AppCompatActivity {
         query.getInBackground(objectId, new GetCallback<Goal>() {
             @Override
             public void done(Goal goal, final ParseException exception) {
-                if (exception == null) { // found diet
+                if (exception == null) { // found goal
                     if(myswitch.isChecked()){
                         goal.setActive(true);
-                        initialize();
                     }else{
                         goal.setActive(false);
-                        initialize();
                     }
                     goal.saveInBackground(new SaveCallback() {
                         @Override
@@ -178,6 +171,26 @@ public class GoalActivity extends AppCompatActivity {
                             }
                         }
                     });
+                } else if (exception != null) {
+                    Log.d("FitAssistant", "Error finding goal with id " + objectId + ": " + exception.getMessage());
+                }
+            }
+        });
+    }
+
+    public void view(View v){
+        final String objectId = (String) v.getTag();
+        Log.d("TAG: objectId", objectId);
+
+        ParseQuery<Goal> query = ParseQuery.getQuery("Goal");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.getInBackground(objectId, new GetCallback<Goal>() {
+            @Override
+            public void done(Goal goal, final ParseException exception) {
+                if (exception == null) { // found goal
+                    Intent intent = new Intent(GoalActivity.this, ViewGoalActivity.class);
+                    intent.putExtra("goal", objectId);
+                    startActivity(intent);
                 } else if (exception != null) {
                     Log.d("FitAssistant", "Error finding goal with id " + objectId + ": " + exception.getMessage());
                 }
