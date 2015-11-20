@@ -6,12 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.g14.ucd.fitassistant.models.Diet;
 import com.g14.ucd.fitassistant.models.FitActivity;
 import com.g14.ucd.fitassistant.models.Goal;
+import com.g14.ucd.fitassistant.models.Gym;
+import com.g14.ucd.fitassistant.models.Other;
 import com.parse.ParseObject;
 
 import java.util.List;
@@ -29,6 +32,7 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
     private int button2;
     private int button3;
     private int button4;
+    private int icon;
 
     public ListAdapter(Context context, int resource, int textViewResourceId, int view, int update,
                        int delete, int activate, List<T> objects) {
@@ -42,6 +46,20 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
         button3 = view;
         button4 = activate;
     }
+    public ListAdapter(Context context, int resource, int textViewResourceId, int view, int update,
+                       int delete, int activate, List<T> objects, int icon) {
+        super(context, resource, textViewResourceId, objects);
+        this.context  = context;
+        this.objects = objects;
+        textViewId = textViewResourceId;
+        resourceId = resource;
+        button1 = delete;
+        button2 = update;
+        button3 = view;
+        button4 = activate;
+        this.icon = icon;
+    }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -55,6 +73,7 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
 
         T obj = (T) getItem(position);
         if(obj != null){
+            ImageView image = (ImageView) v.findViewById(icon);
             TextView name = (TextView) v.findViewById(textViewId);
             ImageButton delete = (ImageButton) v.findViewById(button1);
             ImageButton update = (ImageButton) v.findViewById(button2);
@@ -78,8 +97,14 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
 
             String itemName = null;
             if(name != null){
-                if(obj instanceof Diet || obj instanceof FitActivity){
+                if(obj instanceof Diet ) {
                     itemName = obj.getString("name");
+                }else if(obj instanceof Gym){
+                    itemName = obj.getString("name");
+                    image.setImageResource(R.drawable.dumbbell);
+                }else if(obj instanceof Other){
+                    itemName = obj.getString("description");
+                    image.setImageResource(R.drawable.sprint);
                 } else if (obj != null && obj instanceof Goal){
                     if(((Goal) obj).isActive()){
                         activated.setChecked(true);

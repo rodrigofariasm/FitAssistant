@@ -93,6 +93,7 @@
     <string name="title_activity_new_goal">New Goal</string>
     <string name="title_activity_view_goal">View Goal</string>
     <string name="gym_exercises">Gym Exercises</string>
+    <string name="progress_loading_exercises">Loading your exercises</string>
     <string-array name="goals_array">
         <item>Lose fat</item>
         <item>Gain weight</item>
@@ -103,6 +104,29 @@
         <item>week(s)</item>
         <item>month(s)</item>
         <item>years(s)</item>
+    </string-array>
+    <string-array name="series_array">
+        <item>Series</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>Free</item>
+    </string-array>
+    <string-array name="repetition_array">
+        <item>Repetitions</item>
+        <item>8</item>
+        <item>10</item>
+        <item>12</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>Free</item>
     </string-array>
 
 </resources>

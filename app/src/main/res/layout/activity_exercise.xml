@@ -11,10 +11,10 @@
     android:id="@+id/exercise">
 
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="385dp"
-        android:id="@+id/listView_exercises"
+    <ExpandableListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/exampandable_listView_exercises"
         android:layout_gravity="bottom"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -29,7 +29,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/no_exercise_message"
         android:id="@+id/no_exercise_message"
-        android:layout_alignTop="@+id/listView_exercises"
+        android:layout_alignTop="@+id/exampandable_listView_exercises"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="162dp" />
 
