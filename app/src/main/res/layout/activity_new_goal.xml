@@ -81,7 +81,7 @@
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/editText_desired"
-            android:onClick="showDatePickerDialogStart"/>
+            android:onClick="showDate"/>
 
         <TextView
             android:id="@+id/textView_until"
@@ -99,7 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/editText_desired"
             android:layout_toRightOf="@id/textView_until"
-            android:onClick="showDatePickerDialogEnd"/>
+            android:onClick="showDate"/>
 
         <Button
             android:id="@+id/button_save_goal"

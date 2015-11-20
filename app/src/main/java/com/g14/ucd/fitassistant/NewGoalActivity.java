@@ -1,9 +1,7 @@
 package com.g14.ucd.fitassistant;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Intent;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -13,26 +11,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.g14.ucd.fitassistant.models.Goal;
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class NewGoalActivity extends AppCompatActivity {
@@ -41,12 +34,13 @@ public class NewGoalActivity extends AppCompatActivity {
     Spinner goalType;
     EditText actual;
     EditText desired;
-    static EditText start;
-    static EditText end;
+    EditText start;
+    EditText end;
     TextView actualUnit;
     TextView desiredUnit;
-    static Date start_field;
-    static Date end_field;
+    ArrayAdapter<CharSequence> goalType_adapter;
+    private DatePickerDialog startDatePickerDialog;
+    private DatePickerDialog endDatePickerDialog;
 
     private SimpleDateFormat dateFormatter;
 
@@ -55,26 +49,29 @@ public class NewGoalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_goal);
 
+        newGoal = new Goal();
+        goalType = (Spinner) findViewById(R.id.goals_spinner);
+        actual = (EditText) findViewById(R.id.editText_actual);
+        desired = (EditText) findViewById(R.id.editText_desired);
+        actualUnit = (TextView) findViewById(R.id.textView_actualUnit);
+        desiredUnit = (TextView) findViewById(R.id.textView_desiredUnit);
+
+        start = (EditText) findViewById(R.id.editText_start);
+        start.setInputType(InputType.TYPE_NULL);
+        start.requestFocus();
+
+        end = (EditText) findViewById(R.id.editText_end);
+        end.setInputType(InputType.TYPE_NULL);
+
+        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+
+        goalType_adapter = ArrayAdapter.createFromResource(this,
+                R.array.goals_array, android.R.layout.simple_spinner_item);
+        goalType_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        goalType.setAdapter(goalType_adapter);
+
         if (!isUpdate()) {
-            newGoal = new Goal();
-            goalType = (Spinner) findViewById(R.id.goals_spinner);
-            actual = (EditText) findViewById(R.id.editText_actual);
-            desired = (EditText) findViewById(R.id.editText_desired);
-            start = (EditText) findViewById(R.id.editText_start);
-            end = (EditText) findViewById(R.id.editText_end);
-            actualUnit = (TextView) findViewById(R.id.textView_actualUnit);
-            desiredUnit = (TextView) findViewById(R.id.textView_desiredUnit);
-            start_field = null;
-            end_field = null;
-
-            start.setInputType(InputType.TYPE_NULL);
-            end.setInputType(InputType.TYPE_NULL);
-
-            ArrayAdapter<CharSequence> goalType_adapter = ArrayAdapter.createFromResource(this,
-                    R.array.goals_array, android.R.layout.simple_spinner_item);
-            goalType_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            goalType.setAdapter(goalType_adapter);
-
+            setDateTimeField();
             goalType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -123,20 +120,12 @@ public class NewGoalActivity extends AppCompatActivity {
 
     private void fillFields() {
         if (newGoal != null) {
-            Spinner goalType_field = (Spinner) findViewById(R.id.goals_spinner);
-            EditText actual_field = (EditText) findViewById(R.id.editText_actual);
-            EditText desired_field = (EditText) findViewById(R.id.editText_desired);
-
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.goals_array, android.R.layout.simple_spinner_item);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            goalType_field.setAdapter(adapter);
-
-            int pos = adapter.getPosition(newGoal.getType());
-            goalType_field.setSelection(pos);
-
-            actual_field.setText(Integer.toString(newGoal.getActual()));
-            desired_field.setText(Integer.toString(newGoal.getDesired()));
-
+            int pos = goalType_adapter.getPosition(newGoal.getType());
+            goalType.setSelection(pos);
+            actual.setText(Integer.toString(newGoal.getActual()));
+            desired.setText(Integer.toString(newGoal.getDesired()));
+            start.setText(dateFormatter.format(newGoal.getStart()));
+            end.setText(dateFormatter.format(newGoal.getEnd()));
         }
     }
 
@@ -166,10 +155,15 @@ public class NewGoalActivity extends AppCompatActivity {
         newGoal.setUser(ParseUser.getCurrentUser());
         newGoal.setActual(Integer.parseInt(actual.getText().toString()));
         newGoal.setDesired(Integer.parseInt(desired.getText().toString()));
-        newGoal.setStart(start_field);
-        newGoal.setEnd(end_field);
         newGoal.setType(goalType.getSelectedItem().toString());
-        newGoal.setActive(false);
+        try {
+            Date startDate = dateFormatter.parse(start.getText().toString());
+            Date endDate = dateFormatter.parse(end.getText().toString());
+            newGoal.setStart(startDate);
+            newGoal.setEnd(endDate);
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
         newGoal.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -183,70 +177,45 @@ public class NewGoalActivity extends AppCompatActivity {
         });
     }
 
-    public void showDatePickerDialogStart(View v) {
-        DialogFragment newFragment = new DatePickerFragmentStart();
-        newFragment.show(getSupportFragmentManager(), "datepicker");
+    private void setDateTimeField(){
+        Calendar newCalendar = Calendar.getInstance();
+        startDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                start.setText(dateFormatter.format(newDate.getTime()));
+            }
+
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+        endDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                end.setText(dateFormatter.format(newDate.getTime()));
+            }
+
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
-    public void onDateSet(DatePicker view, int year, int month, int day) {
+    public static java.util.Date getDateFromDatePicker(DatePicker datePicker){
+        int day = datePicker.getDayOfMonth();
+        int month = datePicker.getMonth();
+        int year =  datePicker.getYear();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+
+        return calendar.getTime();
     }
 
-    public static class DatePickerFragmentStart extends DialogFragment
-            implements DatePickerDialog.OnDateSetListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current date as the default date in the picker
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-
-            // Create a new instance of DatePickerDialog and return it
-            // Create a new instance of DatePickerDialog and return it
-            return new DatePickerDialog(getActivity(), this, year, month, day);
-        }
-
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            // Do something with the date chosen by the user
-            Calendar newDate = Calendar.getInstance();
-            newDate.set(year, month, day);
-            start_field = newDate.getTime();
-            start.setText((month+1) + "/" + day + "/" + year);
-        }
-    }
-
-    public void showDatePickerDialogEnd(View v) {
-        DialogFragment newFragment2 = new DatePickerFragmentEnd();
-        newFragment2.show(getSupportFragmentManager(), "datepicker2");
-    }
-
-    public static class DatePickerFragmentEnd extends DialogFragment
-            implements DatePickerDialog.OnDateSetListener {
-
-        public DatePickerFragmentEnd() {
-
-        }
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current date as the default date in the picker
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-
-            // Create a new instance of DatePickerDialog and return it
-            // Create a new instance of DatePickerDialog and return it
-            return new DatePickerDialog(getActivity(), this, year, month, day);
-        }
-
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            // Do something with the date chosen by the user
-            Calendar newDate2 = Calendar.getInstance();
-            newDate2.set(year, month, day);
-            end_field = newDate2.getTime();
-            end.setText((month+1) + "/" + day + "/" + year);
+    public void showDate(View v) {
+        if (v == start){
+            startDatePickerDialog.show();
+        }else{
+            endDatePickerDialog.show();
         }
     }
 }
