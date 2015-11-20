@@ -76,29 +76,30 @@
             android:layout_below="@id/editText_actual"
             android:layout_toRightOf="@id/editText_desired"/>
 
+        <EditText
+            android:id="@+id/editText_start"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editText_desired"
+            android:onClick="showDatePickerDialogStart"/>
+
         <TextView
-            android:id="@+id/textView_interval"
-            android:text="Interval:"
+            android:id="@+id/textView_until"
+            android:text="until"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:paddingTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/editText_desired"/>
+            android:layout_below="@id/editText_desired"
+            android:layout_toRightOf="@id/editText_start" />
 
         <EditText
-            android:id="@+id/editText_interval"
-            android:layout_width="40dp"
-            android:inputType="number"
+            android:id="@+id/editText_end"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/editText_desired"
-            android:layout_toRightOf="@id/textView_interval"/>
-
-        <Spinner
-            android:id="@+id/time_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/editText_desired"
-            android:layout_toRightOf="@id/editText_interval"/>
+            android:layout_toRightOf="@id/textView_until"
+            android:onClick="showDatePickerDialogEnd"/>
 
         <Button
             android:id="@+id/button_save_goal"
@@ -106,8 +107,8 @@
             android:onClick="saveGoal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/time_spinner"
-            android:layout_alignRight="@id/time_spinner" />
+            android:layout_below="@+id/textView_until"
+            android:layout_alignParentRight="true"/>
 
     </RelativeLayout>
 </ScrollView>
