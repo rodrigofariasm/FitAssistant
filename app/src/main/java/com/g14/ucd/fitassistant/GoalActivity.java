@@ -149,11 +149,6 @@ public class GoalActivity extends AppCompatActivity {
     public void activate(View v){
         final String objectId = (String) v.getTag();
         final Switch myswitch = (Switch) v;
-        if(myswitch.isChecked()){
-            myswitch.setChecked(true);
-        }else{
-            myswitch.setChecked(false);
-        }
 
         Log.d("TAG: objectId", objectId);
 
@@ -165,10 +160,8 @@ public class GoalActivity extends AppCompatActivity {
                 if (exception == null) { // found goal
                     if(myswitch.isChecked()){
                         goal.setActive(true);
-                        initialize();
                     }else{
                         goal.setActive(false);
-                        initialize();
                     }
                     goal.saveInBackground(new SaveCallback() {
                         @Override

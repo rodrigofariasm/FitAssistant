@@ -81,6 +81,11 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
                 if(obj instanceof Diet || obj instanceof FitActivity){
                     itemName = obj.getString("name");
                 } else if (obj != null && obj instanceof Goal){
+                    if(((Goal) obj).isActive()){
+                        activated.setChecked(true);
+                    }else{
+                        activated.setChecked(false);
+                    }
                     String goalType = obj.getString("type");
                     switch (goalType){
                          case("Lose fat"):
