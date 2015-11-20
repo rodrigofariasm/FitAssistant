@@ -1,5 +1,6 @@
 package com.g14.ucd.fitassistant;
 
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -12,9 +13,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -135,13 +138,21 @@ public class GymFragment extends Fragment {
             TableRow row = (TableRow) tableExercisesGym.getChildAt(i);
             EditText name = (EditText) row.getChildAt(1);
             TableRow row2 = (TableRow) tableExercisesGym.getChildAt(i+1);
-            EditText sections = (EditText) row2.getChildAt(0);
-            EditText repetitions = (EditText) row2.getChildAt(1);
+            Spinner sections = (Spinner) row2.getChildAt(0);
+            Spinner repetitions = (Spinner) row2.getChildAt(1);
 
             Exercise newExercise = new Exercise();
             newExercise.setName(name.getText().toString());
-            newExercise.setSections(Integer.parseInt(sections.getText().toString()));
-            newExercise.setRepetitions(Integer.parseInt(repetitions.getText().toString()));
+            if (sections.getSelectedItemPosition() == 0|| sections.getSelectedItemPosition()==9) {
+                newExercise.setSections(0);
+            } else {
+                newExercise.setSections(0);
+            }
+            if (repetitions.getSelectedItemPosition() == 0 || repetitions.getSelectedItemPosition() == 8) {
+                newExercise.setRepetitions(Integer.parseInt(repetitions.getItemAtPosition(8).toString()));
+            }else{
+                newExercise.setRepetitions(Integer.parseInt(repetitions.getSelectedItem().toString()));
+            }
             newExercise.setActivityID(activity.getObjectId());
             exercises.add(newExercise);
 
@@ -156,47 +167,51 @@ public class GymFragment extends Fragment {
 
         }catch (ParseException parseE){
             gym.deleteInBackground();
+            try{
+                ParseObject.deleteAll(exercises);
+            }catch (Exception ee){}
+
             Log.d("FITASSISTANT", "Error saving exercises " + parseE.getMessage()) ;
         }
 
     }
+    @TargetApi(16)
     public void addNewOption(View v){
 
         TableRow newRow = new TableRow(getActivity().getBaseContext());
         TableRow newRow2 = new TableRow(getActivity().getBaseContext());
         TextView exe = new TextView(getActivity().getBaseContext());
         final EditText nameExercise = new EditText(getActivity().getBaseContext());
-        EditText series = new EditText(getActivity().getBaseContext());
-        final EditText repetitions = new EditText(getActivity().getBaseContext());
-        InputFilter[] filter = new InputFilter[3];
-        InputFilter[] filtername = new InputFilter[1];
-        filter[0] = new InputFilter.LengthFilter(2);
-        filter[2] = new InputFilter.LengthFilter(2);
-        filter[1] = new InputFilter.LengthFilter(2);
-        filtername[0] = new InputFilter.LengthFilter(40);
+        Spinner series = new Spinner(getActivity().getBaseContext());
+        Spinner repetitions= new Spinner(getActivity().getBaseContext());
 
-        exe.setText("" + count+ ".");
+
+
+        exe.setText("" + count + ".");
         exe.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
         exe.setTextSize(20);
         nameExercise.setHint("name");
         nameExercise.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
         nameExercise.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
-        nameExercise.setFilters(filtername);
 
         TableRow.LayoutParams params = new TableRow.LayoutParams();
         params.span = 3; //amount of columns you will span
         nameExercise.setLayoutParams(params);
 
-        series.setHint("series");
-        series.setInputType(InputType.TYPE_CLASS_NUMBER);
-        series.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
-        series.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
-        series.setFilters(filter);
-        repetitions.setHint("repetitions");
-        repetitions.setInputType(InputType.TYPE_CLASS_NUMBER);
-        repetitions.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
-        repetitions.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
-        repetitions.setFilters(filter);
+        series.setPrompt("Series");
+        ArrayAdapter<CharSequence> ser_adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.series_array, android.R.layout.simple_spinner_item);
+        repetitions.setPrompt("Repetitions");
+        ArrayAdapter<CharSequence> rep_adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.repetition_array, android.R.layout.simple_spinner_item);
+
+        ser_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        series.setPopupBackgroundResource(R.drawable.spinner_background);
+        series.setAdapter(ser_adapter);
+        rep_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        repetitions.setPopupBackgroundResource(R.drawable.spinner_background);
+        repetitions.setAdapter(rep_adapter);
+
 
 
 
