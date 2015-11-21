@@ -25,6 +25,27 @@
         android:layout_below="@id/lienar_layout_diet_schedule"
         android:id="@+id/list_meals_schedule"/>
 
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/table_activites_schedule"
+        android:layout_below="@id/list_meals_schedule">
+
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Schedule your exercises:"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+ activity"
+                android:id="@+id/button_add_activity_schedule"/>
+        </TableRow>
+
+    </TableLayout>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

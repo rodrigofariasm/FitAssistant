@@ -2,6 +2,7 @@ package com.g14.ucd.fitassistant;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ public class ListMealScheduleAdapter<T extends  ParseObject> extends ArrayAdapte
     private int textViewId;
     private int resourceId;
     private int editTextViewId;
+
 
     public ListMealScheduleAdapter(Context context, int resource, int textViewResourceId, int editTextViewId,List<T> objects) {
         super(context, resource, textViewResourceId, objects);
@@ -52,8 +54,10 @@ public class ListMealScheduleAdapter<T extends  ParseObject> extends ArrayAdapte
             String id = obj.getObjectId();
             if(name != null){
                 name.setText(obj.getString("name"));
+                name.setTag(obj.getInt("type"));
             }
         }
         return v;
     }
+
 }
