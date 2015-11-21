@@ -89,7 +89,7 @@
             android:label="@string/exercise"
             android:parentActivityName=".MainActivity"
             android:theme="@style/MyDietTheme"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -99,8 +99,8 @@
             android:label="@string/title_activity_new_exercise"
             android:parentActivityName=".ExerciseActivity"
             android:theme="@style/MyMaterialTheme"
-            android:windowSoftInputMode="adjustPan">
-              <meta-data
+            android:windowSoftInputMode="adjustPan" >
+            <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ExerciseActivity" />
         </activity>
@@ -136,7 +136,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".GoalActivity" />
         </activity>
-
     </application>
 
 </manifest>
