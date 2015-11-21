@@ -10,9 +10,18 @@
         android:id="@+id/textView_goalTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/textView_dayNumber"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView_goalTitle"/>
+
+    <Button
+        android:id="@+id/button_registerHistory"
+        android:text="Register History"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView_dayNumber"/>
 
 </RelativeLayout>

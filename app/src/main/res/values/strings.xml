@@ -130,5 +130,6 @@
         <item>30</item>
         <item>Free</item>
     </string-array>
+    <string name="title_activity_popup">popup</string>
 
 </resources>
