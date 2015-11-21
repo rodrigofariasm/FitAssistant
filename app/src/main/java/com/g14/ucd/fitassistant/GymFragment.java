@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import android.support.v4.app.Fragment;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import bolts.Continuation;
 import bolts.Task;
@@ -94,6 +95,7 @@ public class GymFragment extends Fragment {
                 addNewOption(v);
             }
         });
+        addNewOption(view);
     }
     @Override
     public void onDetach() {
@@ -106,81 +108,105 @@ public class GymFragment extends Fragment {
         public void onFragmentInteraction(Uri uri);
     }
     public void saveActivity() {
+        Log.d("checkinput", "" + checkInput());
+        if (!checkInput()) {
+            return;
+        } else {
+            EditText name = (EditText) getActivity().findViewById(R.id.edittext_name_exercise_gym);
+            final Gym activity = new Gym();
+            activity.setName(name.getText().toString());
+            activity.setUser(ParseUser.getCurrentUser());
 
-        EditText name = (EditText) getActivity().findViewById(R.id.edittext_name_exercise_gym);
-        final Gym activity = new Gym();
-        activity.setName(name.getText().toString());
-        activity.setUser(ParseUser.getCurrentUser());
+            activity.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null) {
+                        try {
+                            saveArrayExercises(activity);
+                        } catch (Exception e1) {
+                            Log.d("FITASSISTANT", "Error updating exercise " + e1.getMessage());
+                        }
 
-        activity.setExercises(exercises);
-        activity.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    activity.setExercises(exercises);
-                    try {
-                        activity.save();
-                    } catch (Exception e1) {
-                        Log.d("FITASSISTANT", "Error updating exercise " + e1.getMessage());
+
+                    } else {
+                        Log.d("FITASSISTANT", "Error saving other exercise " + e.getMessage());
                     }
-
-
-                } else {
-                    Log.d("FITASSISTANT", "Error saving other exercise " + e.getMessage());
                 }
-            }
 
-        });
-        activity.saveInBackground().continueWith(new Continuation<Void, Void>() {
-            @Override
-            public Void then(Task<Void> task) throws Exception {
-                saveArrayExercises(activity);
-                return null;
-            }
-        });
+            });
+        }
     }
-    private void saveArrayExercises(Gym activity){
+        private void saveArrayExercises(Gym activity){
+            final ProgressDialog dialog = new ProgressDialog(getActivity());
+            dialog.setTitle(getString(R.string.progress_saving_exercise));
+            dialog.show();
+            int size = tableExercisesGym.getChildCount();
+            for(int i = 1; i<size; i+=2){
+                TableRow row = (TableRow) tableExercisesGym.getChildAt(i);
+                EditText name = (EditText) row.getChildAt(1);
+                TableRow row2 = (TableRow) tableExercisesGym.getChildAt(i+1);
+                Spinner sections = (Spinner) row2.getChildAt(0);
+                Spinner repetitions = (Spinner) row2.getChildAt(1);
 
-        final ProgressDialog dialog = new ProgressDialog(getActivity());
-        dialog.setTitle(getString(R.string.progress_saving_exercise));
-        dialog.show();
+                Exercise newExercise = new Exercise();
+                newExercise.setUser(ParseUser.getCurrentUser());
+                newExercise.setName(name.getText().toString());
+                if (sections.getSelectedItemPosition() == 0|| sections.getSelectedItemPosition()==9) {
+                    newExercise.setSections(0);
+                } else {
+                    newExercise.setSections(Integer.parseInt(sections.getSelectedItem().toString()));
+                }
+                if (repetitions.getSelectedItemPosition() == 0 || repetitions.getSelectedItemPosition() == 8) {
+                    newExercise.setRepetitions(0);
+                }else{
+                    newExercise.setRepetitions(Integer.parseInt(repetitions.getSelectedItem().toString()));
+                }
+                newExercise.setActivityID(activity);
+                exercises.add(newExercise);
+
+            }
+            try {
+                ParseObject.saveAll(exercises);
+                Intent intent = new Intent(getActivity(), ExerciseActivity.class );
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                dialog.dismiss();
+                startActivity(intent);
+            }catch (Exception parseE){
+                Log.d("FITASSISTANT", "Error saving exercises " + parseE.getMessage()) ;
+            }
+        }
+
+
+
+    private boolean checkInput() {
+        EditText name = (EditText) getActivity().findViewById(R.id.edittext_name_exercise_gym);
+        Log.d("äff", ""+name.getText().toString().trim());
+        if(name.getText().toString().trim().length() == 0){
+            Toast.makeText(this.getContext(), "Gym must have a name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         int size = tableExercisesGym.getChildCount();
         for(int i = 1; i<size; i+=2){
             TableRow row = (TableRow) tableExercisesGym.getChildAt(i);
-            EditText name = (EditText) row.getChildAt(1);
+            EditText namerow = (EditText) row.getChildAt(1);
+
             TableRow row2 = (TableRow) tableExercisesGym.getChildAt(i+1);
             Spinner sections = (Spinner) row2.getChildAt(0);
-            Spinner repetitions = (Spinner) row2.getChildAt(1);
-
-            Exercise newExercise = new Exercise();
-            newExercise.setUser(ParseUser.getCurrentUser());
-            newExercise.setName(name.getText().toString());
-            if (sections.getSelectedItemPosition() == 0|| sections.getSelectedItemPosition()==9) {
-                newExercise.setSections(0);
-            } else {
-                newExercise.setSections(Integer.parseInt(sections.getSelectedItem().toString()));
+            if (namerow.getText().toString().length() == 0){
+                deleteOption(namerow, sections);
+                checkInput();
+                break;
             }
-            if (repetitions.getSelectedItemPosition() == 0 || repetitions.getSelectedItemPosition() == 8) {
-                newExercise.setRepetitions(0);
-            }else{
-                newExercise.setRepetitions(Integer.parseInt(repetitions.getSelectedItem().toString()));
-            }
-            newExercise.setActivityID(activity);
-            exercises.add(newExercise);
-
         }
-        try {
-            activity.save();
-            Intent intent = new Intent(getActivity(), ExerciseActivity.class );
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            dialog.dismiss();
-            startActivity(intent);
-
-        }catch (Exception parseE){
-            Log.d("FITASSISTANT", "Error saving exercises " + parseE.getMessage()) ;
+        Log.d("äff", ""+tableExercisesGym.getChildCount());
+        if(tableExercisesGym.getChildCount() <= 1){
+            Toast.makeText(this.getContext(), "Gym must have at least one exercise", Toast.LENGTH_SHORT).show();
+            return false;
         }
-
+        return true;
     }
+
+
     @TargetApi(16)
     public void addNewOption(View v){
 
