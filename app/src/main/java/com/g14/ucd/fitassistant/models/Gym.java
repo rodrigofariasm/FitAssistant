@@ -13,7 +13,7 @@ public class Gym extends FitActivity {
 
     @Override
     public void setName(String name){
-        put("name",ActivitiesTypeEnum.GYM.getValue() + " - " + name);
+        put("name",name);
     }
 
     @Override
@@ -22,7 +22,8 @@ public class Gym extends FitActivity {
     }
 
     public List<Exercise> getExercises() {
-        return getList("exercises");
+        return
+                getList("exercises");
     }
 
     public void setExercises(List<Exercise> exercises) {

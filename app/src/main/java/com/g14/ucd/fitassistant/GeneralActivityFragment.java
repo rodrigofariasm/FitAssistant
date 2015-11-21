@@ -115,8 +115,6 @@ public class GeneralActivityFragment extends android.support.v4.app.Fragment {
                 }else{
                     dialog.dismiss();
                     Intent intent = new Intent(getActivity(), ExerciseActivity.class );
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
                     startActivity(intent);
                 }
             }

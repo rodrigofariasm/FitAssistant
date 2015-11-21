@@ -3,6 +3,7 @@ package com.g14.ucd.fitassistant.models;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 /**
  * Created by Natália on 17/10/2015.
@@ -34,16 +35,19 @@ public class Exercise extends ParseObject{
         put("repetitions",repetitions);
     }
 
-    public String getActivityID() {
+    public Gym getActivityID() {
         try {
-            return fetchIfNeeded().getString("activityID");
-        } catch (ParseException e) {
+            return (Gym) fetchIfNeeded().getParseObject("activityID");
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return "erro";
+        return new Gym();
     }
 
-    public void setActivityID(String value) {
+    public void setActivityID(Gym value) {
         put("activityID", value);
+    }
+    public void setUser(ParseUser user) {
+        put("user", user);
     }
 }

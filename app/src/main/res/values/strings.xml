@@ -94,6 +94,8 @@
     <string name="title_activity_view_goal">View Goal</string>
     <string name="gym_exercises">Gym Exercises</string>
     <string name="progress_loading_exercises">Loading your exercises</string>
+    <string name="sections">Sections</string>
+    <string name="repetitions">Repetitions</string>
     <string-array name="goals_array">
         <item>Lose fat</item>
         <item>Gain weight</item>

@@ -13,12 +13,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.g14.ucd.fitassistant.models.ActivitiesTypeEnum;
 import com.g14.ucd.fitassistant.models.FitActivity;
 import com.g14.ucd.fitassistant.models.Gym;
-import com.g14.ucd.fitassistant.models.Diet;
+
 import com.g14.ucd.fitassistant.models.Exercise;
 import com.g14.ucd.fitassistant.models.Gym;
 import com.g14.ucd.fitassistant.models.Meal;
@@ -38,14 +39,14 @@ import java.util.List;
 
 public class ExerciseActivity extends AppCompatActivity {
     ArrayList<FitActivity> exercises;
-    HashMap<String, ArrayList<Exercise>> gymExercises;
+    HashMap<FitActivity, ArrayList<Exercise>> gymExercises;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
 
         exercises = new ArrayList<FitActivity>();
-        gymExercises = new HashMap<String, ArrayList<Exercise>>();
+        gymExercises = new HashMap<FitActivity, ArrayList<Exercise>>();
         ParseQuery<Gym> query = ParseQuery.getQuery("Gym");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         final ProgressDialog dialog  = new ProgressDialog(this);
@@ -56,8 +57,8 @@ public class ExerciseActivity extends AppCompatActivity {
 
             @Override
             public void done(List<Gym> activities, ParseException exception) {
-                if (exception == null && activities.size() > 0) { // found diets
-                    //istGyms(activities);
+                if (exception == null ) {
+                    if(activities.size() > 0)
                     exercises.addAll(activities);
                 } else {
                     error_dialog.show();
@@ -73,9 +74,11 @@ public class ExerciseActivity extends AppCompatActivity {
             @Override
             public void done(List<Other> activities, ParseException exception) {
                 if (exception == null) {
-
-                    exercises.addAll(activities);
-                    dialog.dismiss();
+                    if(!activities.isEmpty())
+                        exercises.addAll(activities);
+                        for(Other a: activities){
+                            gymExercises.put(a,new ArrayList<Exercise>());
+                        }
 
                 } else {
                     Log.d("FitAssistant", "Error: " + exception.getMessage());
@@ -93,6 +96,7 @@ public class ExerciseActivity extends AppCompatActivity {
 
                     for (Exercise e:activities
                          ) {
+                        Log.d("FIT", e.getActivityID()+ " "+ e.getName() );
                         if(gymExercises.containsKey(e.getActivityID())){
                             ArrayList<Exercise> newAc = gymExercises.get(e.getActivityID());
                             newAc.add(e);
@@ -104,8 +108,11 @@ public class ExerciseActivity extends AppCompatActivity {
                             newAc.add(e);
                             gymExercises.put(e.getActivityID(), newAc);
                         }
+                        Log.d("FIT", ""+gymExercises.size());
+
 
                     }
+                    dialog.dismiss();
                     if (!exercises.isEmpty()) {
                         hideButtons();
                         listExercises(exercises);
@@ -128,8 +135,8 @@ public class ExerciseActivity extends AppCompatActivity {
     private void listExercises(List<FitActivity> activities){
         ExpandableListAdapter mAdapter = new ExpandableListAdapter(
                 this, // The current context (this activity)
-                R.layout.list_item_diet, // The name of the layout ID.
-                R.id.list_item_name_diet, R.id.button_update,R.id.button_delete,-1, // The ID of the textview to populate.
+                R.layout.list_item_exercise, // The name of the layout ID.
+                R.id.list_item_name_exercise, R.id.button_update_exercise,R.id.button_delete_exercise,-1, // The ID of the textview to populate.
                 activities, gymExercises, R.id.image_exercise_row);
 
         ExpandableListView listView = (ExpandableListView) findViewById(R.id.exampandable_listView_exercises);
@@ -140,14 +147,16 @@ public class ExerciseActivity extends AppCompatActivity {
 
             }
         });
+       
+
 
     }
 
     private void hideButtons(){
         ButtonFloat addButton = (ButtonFloat) findViewById(R.id.button_add_exercise);
         addButton.setVisibility(View.INVISIBLE);
-        TextView noDietMessage = (TextView) findViewById(R.id.no_exercise_message);
-        noDietMessage.setVisibility(View.INVISIBLE);
+        TextView noExerciseMessage = (TextView) findViewById(R.id.no_exercise_message);
+        noExerciseMessage.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -174,11 +183,6 @@ public class ExerciseActivity extends AppCompatActivity {
         }
     }
 
-    private void logout() {
-        ParseUser.logOut();
-        Intent intent = new Intent(ExerciseActivity.this, DispatchActivity.class);
-        startActivity(intent);
-    }
 
 
     public void addNewExercise(View v){
@@ -199,12 +203,12 @@ public class ExerciseActivity extends AppCompatActivity {
         query.getInBackground(objectId, new GetCallback<Gym>() {
             @Override
             public void done(Gym activity, final ParseException exception) {
-                if (exception == null) { // found diet
-                    Intent intent = new Intent(ExerciseActivity.this, NewDietActivity.class);
+                if (exception == null) { // found exercise
+                    Intent intent = new Intent(ExerciseActivity.this, NewExerciseActivity.class);
                     intent.putExtra("activityId", objectId);
                     startActivity(intent);
                 } else if (exception != null) {
-                    Log.d("FitAssistant", "Error finding diet with id " + objectId + ": " + exception.getMessage());
+                    Log.d("FitAssistant", "Error finding exercise with id " + objectId + ": " + exception.getMessage());
                 }
             }
         });
@@ -214,19 +218,26 @@ public class ExerciseActivity extends AppCompatActivity {
         final String objectId = (String) v.getTag();
         Log.d("TAG: objectId",objectId);
 
-        ParseQuery<Gym> query = ParseQuery.getQuery("Activity");
+        ParseQuery<Gym> query = ParseQuery.getQuery("Gym");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.getInBackground(objectId, new GetCallback<Gym>() {
             @Override
             public void done(Gym activity, final ParseException exception) {
-                if (exception == null) { // found diets
+                if (exception == null) { // found exercises
                     if(activity.getType() == ActivitiesTypeEnum.GYM.getCode()){
-                        ParseQuery<Exercise> query = ParseQuery.getQuery("Exercise");
-                        query.whereEqualTo("user", ParseUser.getCurrentUser());
-                        query.whereEqualTo("activityId", activity.getObjectId());
+                        ParseQuery<Exercise> queryExercise = ParseQuery.getQuery("Exercise");
+                        queryExercise.whereEqualTo("user", ParseUser.getCurrentUser());
+                        queryExercise.whereEqualTo("activityId", activity.getObjectId());
                         try {
-                            List<Exercise> meals = query.find();
-                            ParseObject.deleteAll(meals);
+                            queryExercise.findInBackground(new FindCallback<Exercise>() {
+                                @Override
+                                public void done(List<Exercise> list, ParseException e) {
+                                    for (Exercise e2: list
+                                         ) {
+                                        e2.deleteInBackground();
+                                    }
+                                }
+                            });
                             activity.delete();
                         } catch (ParseException e) {
                             Log.d("FitAssistant", "Error deleting gym activity" + e.getMessage());
@@ -239,7 +250,7 @@ public class ExerciseActivity extends AppCompatActivity {
                         }
                     }
                 } else if (exception != null) {
-                    Log.d("FitAssistant", "Error finding diet with id " + objectId + ": " + exception.getMessage());
+                    Log.d("FitAssistant", "Error finding exercise with id " + objectId + ": " + exception.getMessage());
                 }
             }
         });
