@@ -49,12 +49,7 @@ public class SpinnerAdapter <T extends ParseObject> extends ArrayAdapter {
         if(obj != null){
             TextView name = (TextView) v.findViewById(textViewId);
             String id = obj.getObjectId();
-            String itemName = null;
-
-            if(obj instanceof Diet){
-                itemName = ((Diet) obj).getName().toString();
-            }
-
+            String itemName = obj.getString("name");
             if(name != null && itemName != null){
                 name.setText(itemName);
                 name.setTag(id);
@@ -63,6 +58,23 @@ public class SpinnerAdapter <T extends ParseObject> extends ArrayAdapter {
         return v;
     }
 
+    @Override
+    public View getDropDownView(int position, View convertView,
+                                ViewGroup parent) {
+        TextView label = new TextView(context);
+        T obj = (T) getItem(position);
+        label.setText(obj.getString("name"));
+        return label;
+    }
+
+    public int getPosition(String itemId){
+        for(ParseObject obj : objects){
+            if(obj.getObjectId().equals(itemId)){
+                return getPosition(obj);
+            }
+        }
+        return -1;
+    }
 }
 
 

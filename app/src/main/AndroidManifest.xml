@@ -121,10 +121,6 @@
                 android:value=".GoalActivity" />
         </activity>
         <activity
-            android:name=".ScheduleActivity"
-            android:label="@string/title_activity_schedule" >
-        </activity>
-        <activity
             android:name=".NewDietScheduletActivity"
             android:label="@string/title_activity_new_diet_schedulet" >
         </activity>
@@ -135,6 +131,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".GoalActivity" />
+        </activity>
+        <activity
+            android:name=".ExerciseScheduleActivity"
+            android:label="@string/title_activity_exercise_schedule" >
         </activity>
     </application>
 

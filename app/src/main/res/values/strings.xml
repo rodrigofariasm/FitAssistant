@@ -131,5 +131,6 @@
         <item>Free</item>
     </string-array>
     <string name="title_activity_popup">popup</string>
-
+    <string name="title_activity_exercise_schedule">ExerciseScheduleActivity</string>
+    <string name="no_exercise_schedule_message">You don\'t events. Create one.</string>
 </resources>
