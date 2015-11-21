@@ -4,20 +4,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-public class ScheduleActivity extends AppCompatActivity {
+public class ExerciseScheduleActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule);
+        setContentView(R.layout.activity_exercise_schedule);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_schedule, menu);
+        getMenuInflater().inflate(R.menu.menu_exercise_schedule, menu);
         return true;
     }
 
@@ -35,14 +34,4 @@ public class ScheduleActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    public void NewDietSchedule(View view){
-
-    }
-
-
-    public void NewExerciseSchedule(View view){
-
-    }
-
 }
