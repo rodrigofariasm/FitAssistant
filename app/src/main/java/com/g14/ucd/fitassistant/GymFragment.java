@@ -35,6 +35,9 @@ import java.util.List;
 import android.support.v4.app.Fragment;
 import android.widget.TextView;
 
+import bolts.Continuation;
+import bolts.Task;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -114,11 +117,10 @@ public class GymFragment extends Fragment {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    saveArrayExercises(activity);
                     activity.setExercises(exercises);
-                    try{
+                    try {
                         activity.save();
-                    }catch(Exception e1){
+                    } catch (Exception e1) {
                         Log.d("FITASSISTANT", "Error updating exercise " + e1.getMessage());
                     }
 
@@ -127,9 +129,18 @@ public class GymFragment extends Fragment {
                     Log.d("FITASSISTANT", "Error saving other exercise " + e.getMessage());
                 }
             }
+
+        });
+        activity.saveInBackground().continueWith(new Continuation<Void, Void>() {
+            @Override
+            public Void then(Task<Void> task) throws Exception {
+                saveArrayExercises(activity);
+                return null;
+            }
         });
     }
     private void saveArrayExercises(Gym activity){
+
         final ProgressDialog dialog = new ProgressDialog(getActivity());
         dialog.setTitle(getString(R.string.progress_saving_exercise));
         dialog.show();
@@ -159,17 +170,13 @@ public class GymFragment extends Fragment {
 
         }
         try {
-            ParseObject.saveAll(exercises);
-            dialog.dismiss();
+            activity.save();
             Intent intent = new Intent(getActivity(), ExerciseActivity.class );
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            dialog.dismiss();
             startActivity(intent);
 
-        }catch (ParseException parseE){
-            gym.deleteInBackground();
-            try{
-                ParseObject.deleteAll(exercises);
-            }catch (Exception ee){}
-
+        }catch (Exception parseE){
             Log.d("FITASSISTANT", "Error saving exercises " + parseE.getMessage()) ;
         }
 

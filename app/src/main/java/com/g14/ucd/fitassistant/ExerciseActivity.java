@@ -58,8 +58,10 @@ public class ExerciseActivity extends AppCompatActivity {
             @Override
             public void done(List<Gym> activities, ParseException exception) {
                 if (exception == null ) {
+
                     if(activities.size() > 0)
                     exercises.addAll(activities);
+
                 } else {
                     error_dialog.show();
                     Log.d("FitAssistant", "Error: " + exception.getMessage());
@@ -147,7 +149,7 @@ public class ExerciseActivity extends AppCompatActivity {
 
             }
         });
-       
+
 
 
     }
@@ -191,6 +193,7 @@ public class ExerciseActivity extends AppCompatActivity {
 
     private void addNewExercise(){
         Intent intent = new Intent(ExerciseActivity.this, NewExerciseActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
