@@ -154,7 +154,7 @@ public class GymFragment extends Fragment {
             }else{
                 newExercise.setRepetitions(Integer.parseInt(repetitions.getSelectedItem().toString()));
             }
-            newExercise.setActivityID(activity.getObjectId());
+            newExercise.setActivityID(activity);
             exercises.add(newExercise);
 
         }

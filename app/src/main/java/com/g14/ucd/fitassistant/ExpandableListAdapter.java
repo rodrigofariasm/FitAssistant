@@ -2,6 +2,7 @@ package com.g14.ucd.fitassistant;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.g14.ucd.fitassistant.models.Exercise;
+import com.g14.ucd.fitassistant.models.FitActivity;
 import com.g14.ucd.fitassistant.models.Gym;
 import com.g14.ucd.fitassistant.models.Other;
 import com.parse.ParseObject;
@@ -29,7 +31,7 @@ public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandable
     private Context _context;
     private List<T> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, ArrayList<Exercise>> _listDataChild;
+    private HashMap<FitActivity, ArrayList<Exercise>> _listDataChild;
     private int textViewId;
     private int resourceId;
     private int button1;
@@ -39,7 +41,7 @@ public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandable
     private int icon;
 
     public ExpandableListAdapter(Context context, int resource, int textViewResourceId, int update,
-                                 int delete, int activate, List<T> objects, HashMap<String,
+                                 int delete, int activate, List<T> objects, HashMap<FitActivity,
                                  ArrayList<Exercise>> listDataChild, int icon)  {
         this._context = context;
         this._listDataHeader = objects;
@@ -50,6 +52,7 @@ public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandable
         button2 = update;
         button4 = activate;
         this.icon = icon;
+
     }
 
     @Override
@@ -68,14 +71,18 @@ public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandable
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
         final Exercise childExercise = (Exercise) getChild(groupPosition, childPosition);
+        FitActivity header = (FitActivity) _listDataHeader.get(groupPosition);
+        LayoutInflater infalInflater = (LayoutInflater) this._context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = infalInflater.inflate(R.layout.exercise_list_group,null);
+        TextView name = (TextView) convertView.findViewById(R.id.child_exercise_name);
+        TextView series = (TextView) convertView.findViewById(R.id.child_exercise_section);
+        TextView repetitions = (TextView) convertView.findViewById(R.id.child_exercise_repetition);
+        name.setText(childExercise.getName().toString());
+        series.setText(""+childExercise.getSections());
+        repetitions.setText(""+childExercise.getRepetitions());
 
-        if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.exercise_list_group, null);
-        }
-        TableLayout table = (TableLayout) convertView.findViewById(R.id.child_table_exercises_gym);
-        TableRow row = new TableRow(getBaseContext());
+        convertView.setFocusableInTouchMode(true);
         return convertView;
     }
 
@@ -105,7 +112,6 @@ public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandable
                              View convertView, ViewGroup parent) {
         String headerTitle;
 
-
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -115,9 +121,11 @@ public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandable
         String id = obj.getObjectId();
         ImageView icone = (ImageView) convertView
                 .findViewById(icon);
-        ImageButton delete = (ImageButton) convertView.findViewById(button1);
-        ImageButton update = (ImageButton) convertView.findViewById(button2);
 
+        ImageButton delete = (ImageButton) convertView.findViewById(button1);
+        delete.setFocusable(false);
+        ImageButton update = (ImageButton) convertView.findViewById(button2);
+        update.setFocusable(false);
         if(obj instanceof  Other){
             headerTitle = ((Other) getGroup(groupPosition)).getDescription();
             icone.setImageResource(R.drawable.sprint);

@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.g14.ucd.fitassistant.models.ActivitiesTypeEnum;
@@ -38,14 +39,14 @@ import java.util.List;
 
 public class ExerciseActivity extends AppCompatActivity {
     ArrayList<FitActivity> exercises;
-    HashMap<String, ArrayList<Exercise>> gymExercises;
+    HashMap<FitActivity, ArrayList<Exercise>> gymExercises;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
 
         exercises = new ArrayList<FitActivity>();
-        gymExercises = new HashMap<String, ArrayList<Exercise>>();
+        gymExercises = new HashMap<FitActivity, ArrayList<Exercise>>();
         ParseQuery<Gym> query = ParseQuery.getQuery("Gym");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         final ProgressDialog dialog  = new ProgressDialog(this);
@@ -75,6 +76,9 @@ public class ExerciseActivity extends AppCompatActivity {
                 if (exception == null) {
                     if(!activities.isEmpty())
                         exercises.addAll(activities);
+                        for(Other a: activities){
+                            gymExercises.put(a,new ArrayList<Exercise>());
+                        }
 
                 } else {
                     Log.d("FitAssistant", "Error: " + exception.getMessage());
@@ -92,6 +96,7 @@ public class ExerciseActivity extends AppCompatActivity {
 
                     for (Exercise e:activities
                          ) {
+                        Log.d("FIT", e.getActivityID()+ " "+ e.getName() );
                         if(gymExercises.containsKey(e.getActivityID())){
                             ArrayList<Exercise> newAc = gymExercises.get(e.getActivityID());
                             newAc.add(e);
@@ -103,7 +108,7 @@ public class ExerciseActivity extends AppCompatActivity {
                             newAc.add(e);
                             gymExercises.put(e.getActivityID(), newAc);
                         }
-
+                        Log.d("FIT", ""+gymExercises.size());
 
 
                     }
@@ -142,6 +147,8 @@ public class ExerciseActivity extends AppCompatActivity {
 
             }
         });
+       
+
 
     }
 
@@ -176,11 +183,6 @@ public class ExerciseActivity extends AppCompatActivity {
         }
     }
 
-    private void logout() {
-        ParseUser.logOut();
-        Intent intent = new Intent(ExerciseActivity.this, DispatchActivity.class);
-        startActivity(intent);
-    }
 
 
     public void addNewExercise(View v){
