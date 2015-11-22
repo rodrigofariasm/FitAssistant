@@ -14,6 +14,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.g14.ucd.fitassistant.models.Goal;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -21,9 +25,11 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -33,6 +39,8 @@ public class ViewGoalActivity extends AppCompatActivity {
     private Goal goalView;
     private TextView dayNumber;
     private EditText current;
+    SimpleDateFormat dateFormatter;
+    private GraphView graph;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +49,7 @@ public class ViewGoalActivity extends AppCompatActivity {
 
         goalTitle = (TextView) findViewById(R.id.textView_goalTitle);
         dayNumber = (TextView) findViewById(R.id.textView_dayNumber);
+        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 
         Button registerHistory = (Button) findViewById(R.id.button_registerHistory);
         registerHistory.setOnClickListener(new Button.OnClickListener(){
@@ -116,6 +125,7 @@ public class ViewGoalActivity extends AppCompatActivity {
                             goalView = goal;
                             loadTitle();
                             loadDayNumber();
+                            loadGraph();
                         } else if (exception != null) {
                             Log.d("FitAssistant", "Error finding diet with id " + objectId + ": " + exception.getMessage());
                         }
@@ -173,18 +183,47 @@ public class ViewGoalActivity extends AppCompatActivity {
 
 
     private void saveHistory() {
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         Map<String,Integer> record = goalView.getRecord();
         record.put(dateFormatter.format(Calendar.getInstance().getTime()),Integer.parseInt(current.getText().toString()));
         goalView.setRecord(record);
         goalView.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if(e != null){
+                if (e != null) {
                     Log.d("FitAssistant", "Error: " + e.getMessage());
+                }else{
+                    graph.removeAllSeries();
+                    loadGraph();
                 }
             }
         });
+    }
+
+    public void loadGraph(){
+        graph = (GraphView) findViewById(R.id.graph);
+        Map<String,Integer> record = goalView.getRecord();
+
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
+        int max = 0;
+        for(String r : record.keySet()){
+            try {
+                series.appendData(new DataPoint(dateFormatter.parse(r).getTime(),record.get(r)),true,30);
+                if (record.get(r) > max){
+                    max = record.get(r);
+                }
+            } catch (java.text.ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        graph.addSeries(series);
+
+        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
+        graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
+
+        graph.getViewport().setMinY(0);
+        graph.getViewport().setMaxY(max);
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setScrollable(true);
     }
 
     @Override

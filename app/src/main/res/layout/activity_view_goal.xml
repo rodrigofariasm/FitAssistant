@@ -24,4 +24,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textView_dayNumber"/>
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_registerHistory">
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="200dip"
+            android:id="@+id/graph"
+            />
+    </RelativeLayout>
+
 </RelativeLayout>
