@@ -23,10 +23,10 @@ build/intermediates/gradle_project_sync_data.bin
 .DS_Store
 .gradle/2.4/taskArtifacts/cache.properties.lock
 app/app.iml
+build.gradle
 build/*
 *.iml
 .gradle/2.4/taskArtifacts/cache.properties.lock
-app/build.gradle
 build/intermediates/gradle_project_sync_data.bin
 #built application files
 *.apk
