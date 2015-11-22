@@ -18,11 +18,11 @@ public class Other extends FitActivity {
         put("description",description);
     }
 
-    public ParseGeoPoint getLocation() {
-        return getParseGeoPoint("location");
+    public String getLocation() {
+        return (String) get("location");
     }
 
-    public void setLocation(ParseGeoPoint location) {
+    public void setLocation(String location) {
         put("location", location);
     }
 

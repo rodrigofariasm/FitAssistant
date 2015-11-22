@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.Toast;
 
 import com.g14.ucd.fitassistant.models.Other;
@@ -27,7 +29,9 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 public class GeneralActivityFragment extends android.support.v4.app.Fragment implements GoogleApiClient.ConnectionCallbacks
         ,GoogleApiClient.OnConnectionFailedListener {
+    private static final int REQUEST_PLACE_PICKER = 1;
     EditText name;
+    EditText description;
     ButtonRectangle save;
     EditText goLocationEditText;
     private GoogleApiClient mGoogleApiClient;
@@ -155,11 +159,17 @@ public class GeneralActivityFragment extends android.support.v4.app.Fragment imp
         dialog.setTitle(getString(R.string.progress_saving_exercise));
         dialog.show();
         Log.d("" + R.string.app_name, "trying Save");
-        EditText name = (EditText) getActivity().findViewById(R.id.edittext_name_general_activity);
+        name = (EditText) getActivity().findViewById(R.id.edittext_name_general_activity);
         Other activity = new Other();
         activity.setName(name.getText().toString());
-        EditText description = (EditText) getActivity().findViewById(R.id.editText_description_other);
-        activity.setDescription(description.getText().toString());
+        description = (EditText) getActivity().findViewById(R.id.editText_description_other);
+        if(!checkInput()){
+            dialog.dismiss();
+            return;
+        }
+
+        activity.setDescription(description.getText().toString().trim());
+        activity.setLocation(goLocationEditText.getText().toString());
         activity.setUser(ParseUser.getCurrentUser());
         activity.saveInBackground(new SaveCallback() {
             @Override
@@ -178,12 +188,11 @@ public class GeneralActivityFragment extends android.support.v4.app.Fragment imp
     }
 
     public void goLocation(){
-        int PLACE_PICKER_REQUEST = 1;
         try{
             PlacePicker.IntentBuilder intentBuilder =
                     new PlacePicker.IntentBuilder();
             Intent intent = intentBuilder.build(this.getActivity());
-            startActivityForResult(intent, PLACE_PICKER_REQUEST);
+            getActivity().startActivityForResult(intent, REQUEST_PLACE_PICKER);
         }catch (Exception e){
             Log.d("FitAssitant", e.getMessage().toString());
         }
@@ -191,8 +200,21 @@ public class GeneralActivityFragment extends android.support.v4.app.Fragment imp
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-
+        if (requestCode == REQUEST_PLACE_PICKER) {
+            if (resultCode == getActivity().RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, getActivity());
+                goLocationEditText.setText(place.getName());
+                String toastMsg = String.format("Place: %s", place.getName());
+                Toast.makeText(getActivity(), toastMsg, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+    private boolean checkInput(){
+        if(name.getText().toString().trim().length() == 0 ){
+            Toast.makeText(this.getContext(), "Activity must have a name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
 
