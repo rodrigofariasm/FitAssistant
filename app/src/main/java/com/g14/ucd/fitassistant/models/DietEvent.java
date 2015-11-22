@@ -2,6 +2,7 @@ package com.g14.ucd.fitassistant.models;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,14 +32,6 @@ public class DietEvent extends ParseObject{
         put("DietId",dietId);
     }
 
-    public List<String> getActivitieIds() {
-        return getList("activitieIds");
-    }
-
-    public void setActivitieIds(List<String> activitieIds) {
-        put("activitieIds", activitieIds);
-    }
-
     public List<Integer> getWeekDays(){
         return getList("weekDays");
     }
@@ -47,24 +40,9 @@ public class DietEvent extends ParseObject{
         put("weekDays",weekDays);
     }
 
-    public void addWeekDay(int weekDay){
-        List<Integer> weekDays = getWeekDays();
-        if(weekDays == null){
-            weekDays = new ArrayList<Integer>();
-        }
-        weekDays.add(weekDay);
-        setWeekDays(weekDays);
-    }
-
-    public void removeOption(int weekDay){
-        List<Integer> weekDays = getWeekDays();
-        weekDays.remove(weekDay);
-        setWeekDays(weekDays);
-    }
-
 
     public void setTimes(Map<String,Date> times){
-        put("times",times);
+        put("times", times);
     }
 
     public Map<String,Date> getTimes(){
@@ -79,6 +57,16 @@ public class DietEvent extends ParseObject{
         }
         times.put(Integer.toString(mealType),date);
         setTimes(times);
+    }
+
+    public ParseUser getUser(){
+        return getParseUser("user");
+    }
+
+    public void setUser(ParseUser value){
+        if(value != null){
+            put("user",value);
+        }
     }
 
 
