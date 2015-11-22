@@ -1,6 +1,5 @@
 package com.g14.ucd.fitassistant;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -10,32 +9,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TableLayout;
-
-import com.g14.ucd.fitassistant.models.Exercise;
-import com.g14.ucd.fitassistant.models.FitActivity;
-import com.g14.ucd.fitassistant.models.Gym;
 import com.g14.ucd.fitassistant.models.Other;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-
-import java.util.List;
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link GeneralActivityFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * create an instance of this fragment.
- */
 public class GeneralActivityFragment extends android.support.v4.app.Fragment {
     EditText name;
     ButtonRectangle save;
+   // private GoogleApiClient mGoogleApiClient;
 
     private OnFragmentInteractionListener mListener;
 
@@ -119,7 +102,13 @@ public class GeneralActivityFragment extends android.support.v4.app.Fragment {
                 }
             }
         });
+    }
 
+    public void goLocation(){
+        int PLACE_PICKER_REQUEST = 1;
+        //PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
+     //   Context context = getApplicationContext();
+       // startActivityForResult(builder.build(context), PLACE_PICKER_REQUEST);
     }
 }

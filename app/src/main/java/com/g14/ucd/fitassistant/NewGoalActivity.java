@@ -125,7 +125,11 @@ public class NewGoalActivity extends AppCompatActivity {
             actual.setText(Integer.toString(newGoal.getActual()));
             desired.setText(Integer.toString(newGoal.getDesired()));
             start.setText(dateFormatter.format(newGoal.getStart()));
+            start.setHint(getString(R.string.start));
+            start.setFocusable(true);
             end.setText(dateFormatter.format(newGoal.getEnd()));
+            end.setHint(getString(R.string.end));
+            end.setFocusable(true);
         }
     }
 
