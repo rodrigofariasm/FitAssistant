@@ -1,5 +1,6 @@
 package com.g14.ucd.fitassistant;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -49,6 +50,9 @@ public class DietActivity extends AppCompatActivity {
     }
 
     private void initialize(){
+        final ProgressDialog dialog  = new ProgressDialog(this);
+        dialog.setTitle(getString(R.string.progress_loading_diets));
+        dialog.show();
         ParseQuery<Diet> query = ParseQuery.getQuery("Diet");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<Diet>() {
@@ -59,6 +63,7 @@ public class DietActivity extends AppCompatActivity {
                     if (diets.size() == 0){
                         showButtons();
                     }
+                    dialog.dismiss();
                 } else if (exception != null) {
                     Log.d("FitAssistant", "Error: " + exception.getMessage());
                 }
