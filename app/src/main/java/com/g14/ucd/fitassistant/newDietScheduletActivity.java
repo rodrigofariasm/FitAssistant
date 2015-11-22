@@ -1,5 +1,6 @@
 package com.g14.ucd.fitassistant;
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
@@ -50,6 +51,7 @@ public class NewDietScheduletActivity extends AppCompatActivity {
     static EditText time;
     TextView meal;
     static Map<String,Date> times;
+    List<Integer> weekdays;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class NewDietScheduletActivity extends AppCompatActivity {
         dietsRetreived = new ArrayList<Diet>();
         mealsRetreived = new ArrayList<Meal>();
         times = new HashMap<String,Date>();
+        weekdays = new ArrayList<Integer>();
 
         if(!isUpdate()){
             newDietEvent = new DietEvent();
@@ -70,6 +73,7 @@ public class NewDietScheduletActivity extends AppCompatActivity {
     }
 
     private void findDiets(final String dietUpdateId){
+
         ParseQuery<Diet> query = ParseQuery.getQuery("Diet");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<Diet>() {
@@ -113,13 +117,9 @@ public class NewDietScheduletActivity extends AppCompatActivity {
 
     public void fillFields(){
         findDiets(newDietEvent.getDietId());
-    itemSelected(newDietEvent.getDietId());
-    for(int i =0; i < listView.getChildCount(); i++){
-        RelativeLayout rl = (RelativeLayout) listView.getChildAt(i);
-        String type = meal.getTag().toString();
-        time.setText(timeString);
+        itemSelected(newDietEvent.getDietId());
+
     }
-}
 
 
     public void createSelectBox(List<Diet> diets, String idDietUpdate){
@@ -220,6 +220,8 @@ public class NewDietScheduletActivity extends AppCompatActivity {
     public void saveEvent(View v){
         newDietEvent.setName("dia 1");
         newDietEvent.setTimes(times);
+        newDietEvent.setWeekDays(weekdays);
+        newDietEvent.setUser(ParseUser.getCurrentUser());
         newDietEvent.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -230,6 +232,19 @@ public class NewDietScheduletActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @TargetApi(android.os.Build.VERSION_CODES.LOLLIPOP)
+    public void selectWeekDay(View view){
+        TextView wd = (TextView) view;
+        int weekdayname = Integer.parseInt(wd.getTag().toString());
+        if(weekdays.contains(weekdayname)){
+            weekdays.remove(new Integer(weekdayname));
+            view.setBackground(getDrawable(R.drawable.weekday_checkbox));
+        } else {
+            weekdays.add(new Integer(weekdayname));
+            view.setBackground(getDrawable(R.drawable.weekday_checkbox_clicked));
+        }
     }
 
     public void showTimePickerDialog(View v) {
