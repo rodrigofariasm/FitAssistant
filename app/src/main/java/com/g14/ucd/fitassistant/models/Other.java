@@ -1,5 +1,6 @@
 package com.g14.ucd.fitassistant.models;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseClassName;
 import com.parse.ParseGeoPoint;
 
@@ -11,7 +12,10 @@ import com.parse.ParseGeoPoint;
 public class Other extends FitActivity {
 
     public String getDescription() {
-        return getString("description");
+        try{
+            return fetchIfNeeded().getString("description");
+        }catch (Exception e){}
+        return "";
     }
 
     public void setDescription(String description) {
@@ -19,11 +23,16 @@ public class Other extends FitActivity {
     }
 
     public String getLocation() {
-        return (String) get("location");
+        try{
+            return fetchIfNeeded().getString("location");
+        }catch (Exception e){}
+        return "";
     }
 
     public void setLocation(String location) {
         put("location", location);
     }
+
+
 
 }

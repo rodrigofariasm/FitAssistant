@@ -2,6 +2,7 @@ package com.g14.ucd.fitassistant;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,7 @@ import com.g14.ucd.fitassistant.models.Exercise;
 import com.g14.ucd.fitassistant.models.Gym;
 import com.g14.ucd.fitassistant.models.Meal;
 import com.g14.ucd.fitassistant.models.Other;
+import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ButtonFloat;
 import com.gc.materialdesign.widgets.Dialog;
 import com.parse.FindCallback;
@@ -60,9 +62,9 @@ public class ExerciseActivity extends AppCompatActivity {
 
             @Override
             public void done(List<Gym> activities, ParseException exception) {
-                if (exception == null ) {
+                if (exception == null) {
 
-                    if(activities.size() > 0)
+                    if (activities.size() > 0)
                         exercises.addAll(activities);
 
                 } else {
@@ -74,6 +76,10 @@ public class ExerciseActivity extends AppCompatActivity {
 
 
         dialog.show();
+        Exercise generic = new Exercise();
+        final ArrayList<Exercise> exes = new ArrayList<Exercise>();
+        exes.add(generic);
+
         ParseQuery<Other> queryOther = ParseQuery.getQuery("Other");
         queryOther.whereEqualTo("user", ParseUser.getCurrentUser());
         queryOther.findInBackground(new FindCallback<Other>() {
@@ -83,7 +89,7 @@ public class ExerciseActivity extends AppCompatActivity {
                     if(!activities.isEmpty())
                         exercises.addAll(activities);
                     for(Other a: activities){
-                        gymExercises.put(a,new ArrayList<Exercise>());
+                        gymExercises.put(a,exes);
                     }
 
                 } else {
@@ -114,9 +120,6 @@ public class ExerciseActivity extends AppCompatActivity {
                             newAc.add(e);
                             gymExercises.put(e.getActivityID(), newAc);
                         }
-                        Log.d("FIT", ""+gymExercises.size());
-
-
                     }
                     dialog.dismiss();
                     if (!exercises.isEmpty()) {
@@ -148,6 +151,12 @@ public class ExerciseActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+            }
+        });
+        listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                return false;
             }
         });
 
