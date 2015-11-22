@@ -1,31 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    tools:context="com.g14.ucd.fitassistant.newDietScheduletActivity">
+    xmlns:materialdesign="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/newExerciseScheduleDialog">
 
-    <LinearLayout
+    <Spinner
+        android:id="@+id/exerciseSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/linear_layout_diet_schedule">
+        android:visibility="invisible">
+    </Spinner>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Diet:"/>
+    <EditText
+        android:id="@+id/editText_timePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Time"
+        android:layout_toRightOf="@id/exerciseSpinner"
+        android:visibility="invisible"
+        android:onClick="showTimePickerDialog"/>
 
-        <Spinner
-            android:id="@+id/diets_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save"
-            android:id="@+id/button_save_diet_schedule"
-            android:layout_gravity="bottom" />
-
-    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_view_noExercise"
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/sundayCheckbox"
@@ -36,7 +36,7 @@
         android:textSize="20sp"
         android:background="@drawable/weekday_checkbox"
         android:gravity="center_vertical|center_horizontal"
-        android:layout_below="@id/linear_layout_diet_schedule"
+        android:layout_below="@id/editText_timePicker"
         android:layout_margin="5dp"
         android:onClick="selectWeekDay"
         android:tag="1"/>
@@ -51,7 +51,7 @@
         android:textSize="20sp"
         android:background="@drawable/weekday_checkbox"
         android:gravity="center_vertical|center_horizontal"
-        android:layout_below="@id/linear_layout_diet_schedule"
+        android:layout_below="@id/editText_timePicker"
         android:layout_margin="5dp"
         android:layout_toRightOf="@id/sundayCheckbox"
         android:onClick="selectWeekDay"
@@ -66,7 +66,7 @@
         android:textSize="20sp"
         android:background="@drawable/weekday_checkbox"
         android:gravity="center_vertical|center_horizontal"
-        android:layout_below="@id/linear_layout_diet_schedule"
+        android:layout_below="@id/editText_timePicker"
         android:layout_margin="5dp"
         android:layout_toRightOf="@id/mondayCheckbox"
         android:onClick="selectWeekDay"
@@ -81,7 +81,7 @@
         android:textSize="20sp"
         android:background="@drawable/weekday_checkbox"
         android:gravity="center_vertical|center_horizontal"
-        android:layout_below="@id/linear_layout_diet_schedule"
+        android:layout_below="@id/editText_timePicker"
         android:layout_toRightOf="@id/tuesdayCheckbox"
         android:layout_margin="5dp"
         android:onClick="selectWeekDay"
@@ -96,7 +96,7 @@
         android:textSize="20sp"
         android:background="@drawable/weekday_checkbox"
         android:gravity="center_vertical|center_horizontal"
-        android:layout_below="@id/linear_layout_diet_schedule"
+        android:layout_below="@id/editText_timePicker"
         android:layout_margin="5dp"
         android:layout_toRightOf="@id/wednesdayCheckbox"
         android:onClick="selectWeekDay"
@@ -111,7 +111,7 @@
         android:textSize="20sp"
         android:background="@drawable/weekday_checkbox"
         android:gravity="center_vertical|center_horizontal"
-        android:layout_below="@id/linear_layout_diet_schedule"
+        android:layout_below="@id/editText_timePicker"
         android:layout_margin="5dp"
         android:layout_toRightOf="@id/thursdayCheckbox"
         android:onClick="selectWeekDay"
@@ -126,17 +126,10 @@
         android:textSize="20sp"
         android:background="@drawable/weekday_checkbox"
         android:gravity="center_vertical|center_horizontal"
-        android:layout_below="@id/linear_layout_diet_schedule"
+        android:layout_below="@id/editText_timePicker"
         android:layout_margin="5dp"
         android:layout_toRightOf="@id/fridayCheckbox"
         android:onClick="selectWeekDay"
         android:tag="7"/>
-
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/sundayCheckbox"
-        android:id="@+id/list_meals_schedule"/>
-
 
 </RelativeLayout>

@@ -32,8 +32,8 @@
         <activity
             android:name=".DispatchActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:noHistory="true" >
+            android:noHistory="true"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -67,18 +67,18 @@
         <activity
             android:name=".DietActivity"
             android:label="@string/diet"
-            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/MyDietTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <meta-data
@@ -86,20 +86,20 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:screenOrientation="portrait"
             android:name=".NewDietActivity"
             android:label="@string/title_activity_new_diet"
             android:parentActivityName=".DietActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/MyDietTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.g14.ucd.fitassistant.DietActivity" />
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".ExerciseActivity"
             android:label="@string/exercise"
             android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/MyDietTheme"
             android:windowSoftInputMode="adjustPan" >
             <meta-data
@@ -107,10 +107,10 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".NewExerciseActivity"
             android:label="@string/title_activity_new_exercise"
             android:parentActivityName=".ExerciseActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme"
             android:windowSoftInputMode="adjustPan" >
             <meta-data
@@ -118,41 +118,44 @@
                 android:value=".ExerciseActivity" />
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".GoalActivity"
             android:label="@string/title_activity_goal"
+            android:screenOrientation="portrait"
             android:theme="@style/MyDietTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".NewGoalActivity"
             android:label="@string/title_activity_new_goal"
+            android:screenOrientation="portrait"
             android:theme="@style/MyDietTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".GoalActivity" />
         </activity>
         <activity
-            android:screenOrientation="portrait"
-            android:name=".ScheduleActivity"
-            android:label="@string/title_activity_schedule" >
-        </activity>
-        <activity
-            android:screenOrientation="portrait"
             android:name=".NewDietScheduletActivity"
-            android:label="@string/title_activity_new_diet_schedulet" >
+            android:label="@string/title_activity_new_diet_schedulet"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".ViewGoalActivity"
             android:label="@string/title_activity_view_goal"
+            android:screenOrientation="portrait"
             android:theme="@style/MyDietTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".GoalActivity" />
+        </activity>
+        <activity
+            android:name=".ExerciseScheduleActivity"
+            android:label="@string/title_activity_exercise_schedule" >
+        </activity>
+        <activity
+            android:name=".DietScheduleActivity"
+            android:label="@string/title_activity_diet_schedule" >
         </activity>
     </application>
 

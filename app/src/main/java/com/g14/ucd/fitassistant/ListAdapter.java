@@ -11,6 +11,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.g14.ucd.fitassistant.models.Diet;
+import com.g14.ucd.fitassistant.models.ExerciseEvent;
 import com.g14.ucd.fitassistant.models.FitActivity;
 import com.g14.ucd.fitassistant.models.Goal;
 import com.g14.ucd.fitassistant.models.Gym;
@@ -97,7 +98,7 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
 
             String itemName = null;
             if(name != null){
-                if(obj instanceof Diet ) {
+                if(obj instanceof Diet || obj instanceof ExerciseEvent) {
                     itemName = obj.getString("name");
                 }else if(obj instanceof Gym){
                     itemName = obj.getString("name");

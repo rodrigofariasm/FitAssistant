@@ -172,24 +172,24 @@ public class NewDietActivity extends AppCompatActivity {
 
         EditText editText = new EditText(getBaseContext());
         editText.setHintTextColor(Color.BLACK);
-        editText.setTextColor(Color.BLACK);
-        newRow.addView(editText);
+            editText.setTextColor(Color.BLACK);
+            newRow.addView(editText);
 
-        ImageButton buttonDelete = new ImageButton(getBaseContext());
-        buttonDelete.setImageResource(R.drawable.ic_trash_blue);
-        buttonDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteOption(view);
-            }
-        });
-        newRow.addView(buttonDelete);
-        
-        if (option != null && mealId != null) { // if is update diet the option will be filled already
-            editText.setText(option);
-            editText.setTag(mealId);
-        } else {
-            editText.setHint("option");
+            ImageButton buttonDelete = new ImageButton(getBaseContext());
+            buttonDelete.setImageResource(R.drawable.ic_trash_blue);
+            buttonDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    deleteOption(view);
+                }
+            });
+            newRow.addView(buttonDelete);
+
+            if (option != null && mealId != null) { // if is update diet the option will be filled already
+                editText.setText(option);
+                editText.setTag(mealId);
+            } else {
+                editText.setHint("option");
         }
 
         switch (view.getId()) {
