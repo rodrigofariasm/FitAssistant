@@ -194,11 +194,13 @@ public class NewGoalActivity extends AppCompatActivity {
 
     public void saveGoal(View view) {
         Map<String,Integer> record = new HashMap<String,Integer>();
-        record.put(start.getText().toString(),Integer.parseInt(actual.getText().toString()));
+        record.put(start.getText().toString(), Integer.parseInt(actual.getText().toString()));
         newGoal.setRecord(record);
         newGoal.setUser(ParseUser.getCurrentUser());
         newGoal.setActual(Integer.parseInt(actual.getText().toString()));
-        newGoal.setDesired(Integer.parseInt(desired.getText().toString()));
+        if(!desired.getText().toString().trim().equals("")){
+            newGoal.setDesired(Integer.parseInt(desired.getText().toString()));
+        }
         newGoal.setType(goalType.getSelectedItem().toString());
         try {
             Date startDate = dateFormatter.parse(start.getText().toString());

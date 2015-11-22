@@ -124,10 +124,10 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
                              itemName = "Lose " + Integer.toString(obj.getInt("actual") - obj.getInt("desired")) + "kg";
                              break;
                         case("Follow diet"):
-                            itemName = "Follow the diet for" + Integer.toString(obj.getInt("actual")) + "days";
+                            itemName = "Follow the diet for " + Integer.toString(obj.getInt("actual")) + " days";
                             break;
                         case("Go to gym"):
-                            itemName = "Go to gym for " + Integer.toString(obj.getInt("actual")) + "days";
+                            itemName = "Go to gym for " + Integer.toString(obj.getInt("actual")) + " days";
                             break;
                     }
                 }
