@@ -32,26 +32,15 @@
         android:layout_alignRight="@+id/editText_description_other"
         android:layout_alignEnd="@+id/editText_description_other" />
 
-    <com.gc.materialdesign.views.ButtonRectangle
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/go_location"
-        android:id="@+id/go_location"
-        android:onClick="go_location"
-        android:layout_above="@+id/button_save_exercise"
-        android:layout_alignLeft="@+id/button_save_exercise"
-        android:layout_alignStart="@+id/button_save_exercise">
-</com.gc.materialdesign.views.ButtonRectangle>
-
     <EditText
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:hint="Location"
+        android:focusableInTouchMode="false"
         android:ems="15"
         android:id="@+id/general_activity_location"
-        android:layout_toLeftOf="@+id/go_location"
-        android:layout_alignBottom="@+id/go_location"
+        android:layout_above="@+id/button_save_exercise"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 

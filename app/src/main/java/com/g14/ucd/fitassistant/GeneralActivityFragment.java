@@ -1,7 +1,9 @@
 package com.g14.ucd.fitassistant;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -9,17 +11,31 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import com.g14.ucd.fitassistant.models.Other;
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-public class GeneralActivityFragment extends android.support.v4.app.Fragment {
+public class GeneralActivityFragment extends android.support.v4.app.Fragment implements GoogleApiClient.ConnectionCallbacks
+        ,GoogleApiClient.OnConnectionFailedListener {
     EditText name;
     ButtonRectangle save;
-   // private GoogleApiClient mGoogleApiClient;
-
+    EditText goLocationEditText;
+    private GoogleApiClient mGoogleApiClient;
+    private static final int REQUEST_RESOLVE_ERROR = 1001;
+    // Unique tag for the error dialog fragment
+    private static final String DIALOG_ERROR = "dialog_error";
+    // Bool to track whether the app is already resolving an error
+    private boolean mResolvingError = false;
     private OnFragmentInteractionListener mListener;
 
     public GeneralActivityFragment() {
@@ -39,12 +55,25 @@ public class GeneralActivityFragment extends android.support.v4.app.Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState){
 
         super.onViewCreated(view, savedInstanceState);
-
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(getActivity())
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
         save = (ButtonRectangle) view.findViewById(R.id.button_save_exercise);
+        goLocationEditText = (EditText) view.findViewById(R.id.general_activity_location);
         save.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 saveActivity();
+            }
+        });
+        goLocationEditText.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                goLocation();
             }
         });
     }
@@ -55,7 +84,51 @@ public class GeneralActivityFragment extends android.support.v4.app.Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
 
+    @Override
+    public void onStop() {
+       // mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        // Connected to Google Play services!
+        // The good stuff goes here.
+    }
+
+    @Override
+    public void onConnectionSuspended(int cause) {
+        // The connection has been interrupted.
+        // Disable any UI components that depend on Google APIs
+        // until onConnected() is called.
+        Toast.makeText(getActivity(), "Cannot connect with Internet, please check your connection", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        if (mResolvingError) {
+            // Already attempting to resolve an error.
+            return;
+        } else if (result.hasResolution()) {
+            try {
+                mResolvingError = true;
+                result.startResolutionForResult(getActivity(), REQUEST_RESOLVE_ERROR);
+            } catch (IntentSender.SendIntentException e) {
+                // There was an error with the resolution intent. Try again.
+                mGoogleApiClient.connect();
+            }
+        } else {
+            // Show dialog using GoogleApiAvailability.getErrorDialog()
+            Toast.makeText(getActivity(), "Cannot connect with Internet, please check your connection", Toast.LENGTH_LONG).show();
+            mResolvingError = true;
+        }
+
+    }
     @Override
     public void onDetach() {
         super.onDetach();
@@ -106,9 +179,21 @@ public class GeneralActivityFragment extends android.support.v4.app.Fragment {
 
     public void goLocation(){
         int PLACE_PICKER_REQUEST = 1;
-        //PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try{
+            PlacePicker.IntentBuilder intentBuilder =
+                    new PlacePicker.IntentBuilder();
+            Intent intent = intentBuilder.build(this.getActivity());
+            startActivityForResult(intent, PLACE_PICKER_REQUEST);
+        }catch (Exception e){
+            Log.d("FitAssitant", e.getMessage().toString());
+        }
 
-     //   Context context = getApplicationContext();
-       // startActivityForResult(builder.build(context), PLACE_PICKER_REQUEST);
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+
 }
