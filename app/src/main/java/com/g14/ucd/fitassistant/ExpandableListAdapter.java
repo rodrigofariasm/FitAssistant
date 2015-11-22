@@ -1,7 +1,9 @@
 package com.g14.ucd.fitassistant;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import com.g14.ucd.fitassistant.models.Exercise;
 import com.g14.ucd.fitassistant.models.FitActivity;
 import com.g14.ucd.fitassistant.models.Gym;
 import com.g14.ucd.fitassistant.models.Other;
+import com.gc.materialdesign.views.ButtonFlat;
 import com.parse.ParseObject;
 
 import java.util.ArrayList;
@@ -70,24 +73,56 @@ public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandable
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
+
         final Exercise childExercise = (Exercise) getChild(groupPosition, childPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.exercise_list_group, null);
         }
-        FitActivity header = (FitActivity) _listDataHeader.get(groupPosition);
-        LayoutInflater infalInflater = (LayoutInflater) this._context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = infalInflater.inflate(R.layout.exercise_list_group,null);
-        TextView name = (TextView) convertView.findViewById(R.id.child_exercise_name);
-        TextView series = (TextView) convertView.findViewById(R.id.child_exercise_section);
-        TextView repetitions = (TextView) convertView.findViewById(R.id.child_exercise_repetition);
-        name.setText(childExercise.getName().toString());
-        series.setText(""+childExercise.getSections());
-        repetitions.setText(""+childExercise.getRepetitions());
 
-        convertView.setFocusableInTouchMode(true);
+        final FitActivity header = (FitActivity) _listDataHeader.get(groupPosition);
+        Log.d("instance of Gym", ""+ (header instanceof Gym));
+        if(header instanceof Gym){
+            LayoutInflater infalInflater = (LayoutInflater) this._context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = infalInflater.inflate(R.layout.exercise_list_group,null);
+            TextView name = (TextView) convertView.findViewById(R.id.child_exercise_name);
+            TextView series = (TextView) convertView.findViewById(R.id.child_exercise_section);
+            TextView repetitions = (TextView) convertView.findViewById(R.id.child_exercise_repetition);
+            name.setText(childExercise.getName().toString());
+            series.setText(""+childExercise.getSections());
+            repetitions.setText(""+childExercise.getRepetitions());
+            convertView.setFocusableInTouchMode(false);
+        }else{
+            final Other other = (Other) header;
+            LayoutInflater infalInflater = (LayoutInflater) this._context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = infalInflater.inflate(R.layout.other_list_group,null);
+            if(header.getString("description")!= null){
+                TextView name = (TextView) convertView.findViewById(R.id.child_other_description);
+                name.setText( header.getString("description"));
+            }
+
+            if(header.getString("location")!= null){
+                TextView location = (TextView) convertView.findViewById(R.id.child_other_location);
+                location.setText(header.getString("location"));
+                ButtonFlat goButton = (ButtonFlat) convertView.findViewById(R.id.child_button_go);
+                goButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String uri = "geo:0,0?q="+ other.getLocation();
+                        Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
+                        intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                        _context.startActivity(intent);
+                    }
+                });
+
+            }
+
+
+        }
+
         return convertView;
     }
 

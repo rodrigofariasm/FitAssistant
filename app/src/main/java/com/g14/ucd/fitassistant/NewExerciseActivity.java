@@ -33,7 +33,7 @@ public class    NewExerciseActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-
+    private ViewPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,7 @@ public class    NewExerciseActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new GymFragment(), "Gym");
         adapter.addFragment(new GeneralActivityFragment(), "GeneralActivity");
         viewPager.setAdapter(adapter);
@@ -103,13 +103,10 @@ public class    NewExerciseActivity extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
     }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(data, this);
-                String toastMsg = String.format("Place: %s", place.getName());
-                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
-            }
-        }
+        Fragment fragment = adapter.getItem(1);
+        fragment.onActivityResult(requestCode, resultCode, data);
     }
 }
