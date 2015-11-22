@@ -1,6 +1,7 @@
 package com.g14.ucd.fitassistant;
 
 import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -223,6 +224,9 @@ public class NewDietActivity extends AppCompatActivity {
     }
 
     public void saveDiet(View view) {
+        final ProgressDialog dialog  = new ProgressDialog(this);
+        dialog.setTitle(getString(R.string.progress_saving_diet));
+        dialog.show();
         newDiet.setUser(ParseUser.getCurrentUser());
         newDiet.setDescription(descriptionField.getText().toString());
         newDiet.setName(nameField.getText().toString());
@@ -239,6 +243,7 @@ public class NewDietActivity extends AppCompatActivity {
                     try {
                         ParseObject.saveAll(meals);
                         ParseObject.deleteAll(getMealsToDelete(meals, mealsRetreived));
+                        dialog.dismiss();
                     } catch (ParseException parseE) {
                         newDiet.deleteInBackground();
                         Log.d("FITASSISTANT", "Error saving meals " + parseE.getMessage());

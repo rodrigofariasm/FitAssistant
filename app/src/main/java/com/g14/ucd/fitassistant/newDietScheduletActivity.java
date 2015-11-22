@@ -3,7 +3,10 @@ package com.g14.ucd.fitassistant;
 import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -19,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -95,7 +99,7 @@ public class NewDietScheduletActivity extends AppCompatActivity {
         //Para recuperar os dados do Bundle em outra FitActivity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            final String objectId = extras.getString("day");
+            final String objectId = extras.getString("dietEvent");
             Log.d("FitAssistant: ", "ObjectID: " + objectId);
             if (objectId != null) {
                 ParseQuery<DietEvent> query = ParseQuery.getQuery("DietEvent");
@@ -105,6 +109,7 @@ public class NewDietScheduletActivity extends AppCompatActivity {
                     public void done(DietEvent dietEvent, final ParseException exception) {
                         if (exception == null) { // found diet
                             newDietEvent = dietEvent;
+                            fillFields();
                         } else if (exception != null) {
                             Log.d("FitAssistant", "Error finding diet with id " + objectId + ": " + exception.getMessage());
                         }
@@ -115,12 +120,23 @@ public class NewDietScheduletActivity extends AppCompatActivity {
         return false;
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void fillFields(){
         findDiets(newDietEvent.getDietId());
         itemSelected(newDietEvent.getDietId());
+        times = newDietEvent.getTimes();
+        weekdays = newDietEvent.getWeekDays();
+        EditText editTextName = (EditText) this.findViewById(R.id.name_diet_schedule);
+        editTextName.setText(newDietEvent.getName());
+        TableRow weekdayButtons = (TableRow) findViewById(R.id.weekday_buttons);
 
+        for(int i=0; i<weekdayButtons.getChildCount(); i++){
+            TextView wd = (TextView) weekdayButtons.getChildAt(i);
+            if(weekdays.contains(Integer.parseInt(wd.getTag().toString()))){
+                wd.setBackground(getDrawable(R.drawable.weekday_checkbox));
+            }
+        }
     }
-
 
     public void createSelectBox(List<Diet> diets, String idDietUpdate){
         SpinnerAdapter<Diet> adapter =  new SpinnerAdapter(
@@ -202,23 +218,25 @@ public class NewDietScheduletActivity extends AppCompatActivity {
                 this,
                 R.layout.list_meals_diet_schedule,
                 R.id.item_name_meal, R.id.meal_time,
-                mealsRetreived);
+                mealsRetreived,newDietEvent);
 
         listView.setAdapter(mAdapter);
 
     }
 
     public void showButtonAddDiet(){
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linear_layout_diet_schedule);
         selectbox.setVisibility(View.INVISIBLE);
-        Button addNewDiet = new Button(getBaseContext());
-        addNewDiet.setText("Add diet");
-        linearLayout.addView(addNewDiet);
+        Button addNewDiet = (Button) findViewById(R.id.button_add_diet);
     }
 
 
     public void saveEvent(View v){
-        newDietEvent.setName("dia 1");
+        final ProgressDialog dialog  = new ProgressDialog(this);
+        dialog.setTitle(getString(R.string.progress_saving_event));
+        dialog.show();
+
+        EditText editTextName = (EditText) this.findViewById(R.id.name_diet_schedule);
+        newDietEvent.setName(editTextName.getText().toString());
         newDietEvent.setTimes(times);
         newDietEvent.setWeekDays(weekdays);
         newDietEvent.setUser(ParseUser.getCurrentUser());
@@ -226,7 +244,9 @@ public class NewDietScheduletActivity extends AppCompatActivity {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-
+                    dialog.dismiss();
+                    Intent intent = new Intent(NewDietScheduletActivity.this, DietScheduleActivity.class);
+                    startActivity(intent);
                 } else {
                     Log.d("FITASSISTANT", "Error saving day: " + e.getMessage());
                 }

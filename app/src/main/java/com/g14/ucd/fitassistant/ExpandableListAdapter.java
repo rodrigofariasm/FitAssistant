@@ -82,7 +82,7 @@ public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandable
         }
 
         final FitActivity header = (FitActivity) _listDataHeader.get(groupPosition);
-        Log.d("instance of Gym", ""+ (header instanceof Gym));
+        Log.d("instance of Gym", "" + (header instanceof Gym));
         if(header instanceof Gym){
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);

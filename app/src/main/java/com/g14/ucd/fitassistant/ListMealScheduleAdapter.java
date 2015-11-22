@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.InputType;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.g14.ucd.fitassistant.models.DietEvent;
 import com.g14.ucd.fitassistant.models.MealEnum;
 import com.parse.ParseObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,15 +38,18 @@ public class ListMealScheduleAdapter<T extends  ParseObject> extends ArrayAdapte
     private int textViewId;
     private int resourceId;
     private int editTextViewId;
+    private ParseObject parentObject;
+    private SimpleDateFormat dateFormatter;
 
-
-    public ListMealScheduleAdapter(Context context, int resource, int textViewResourceId, int editTextViewId,List<T> objects) {
+    public ListMealScheduleAdapter(Context context, int resource, int textViewResourceId, int editTextViewId,List<T> objects, ParseObject parentObject) {
         super(context, resource, textViewResourceId, objects);
         this.context  = context;
         this.objects = objects;
         textViewId = textViewResourceId;
         resourceId = resource;
         this.editTextViewId = editTextViewId;
+        this.parentObject = parentObject;
+        dateFormatter = new SimpleDateFormat("H:mm");
     }
 
     @Override
@@ -57,17 +64,28 @@ public class ListMealScheduleAdapter<T extends  ParseObject> extends ArrayAdapte
 
         T obj = (T) getItem(position);
         if(obj != null){
+            int typeObj = obj.getInt("type");
             TextView name = (TextView) v.findViewById(textViewId);
             EditText time = (EditText) v.findViewById(editTextViewId);
             time.setInputType(InputType.TYPE_NULL);
 
             String id = obj.getObjectId();
             if(name != null){
-                name.setText(MealEnum.fromCode(obj.getInt("type")).getValue());
+                name.setText(MealEnum.fromCode(typeObj).getValue());
             }
 
             if(time != null){
-                time.setTag(obj.getInt("type"));
+                time.setTag(typeObj);
+            }
+
+            if(parentObject != null && parentObject instanceof DietEvent ){
+                DietEvent dietEvent = (DietEvent) parentObject;
+                if(dietEvent.getTimes() != null) {
+                    String typeString = "" + typeObj;
+                    Date date = (Date) dietEvent.getMap("times").get(typeString);
+                    Log.d("FitAssistant","Data: " + date);
+                    time.setText(dateFormatter.format(date));
+                }
             }
         }
         return v;

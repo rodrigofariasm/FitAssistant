@@ -59,8 +59,12 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
     }
 
     private void initialize(){
+
         weekdays = new ArrayList<Integer>();
         newEvent = new ExerciseEvent();
+        final ProgressDialog dialog  = new ProgressDialog(this);
+        dialog.setTitle(getString(R.string.progress_loading));
+        dialog.show();
         ParseQuery<ExerciseEvent> query = ParseQuery.getQuery("ExerciseEvent");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<ExerciseEvent>() {
@@ -73,6 +77,7 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
                     }else{
                         hideButtons();
                     }
+                    dialog.dismiss();
                 } else if (exception != null) {
                     Log.d("FitAssistant", "Error: " + exception.getMessage());
                 }
@@ -189,11 +194,15 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
     }
 
     private void save() {
+        final ProgressDialog dialog  = new ProgressDialog(this);
+        dialog.setTitle(getString(R.string.progress_saving_event));
+        dialog.show();
         FitActivity fitActivity = (FitActivity) spinnerFitActivity.getSelectedItem();
         SimpleDateFormat dateFormat = new SimpleDateFormat("H:mm");
         try{
             Date time = dateFormat.parse(editText.getText().toString());
             newEvent.setTime(time);
+            dialog.dismiss();
         } catch (java.text.ParseException e) {
             e.printStackTrace();
         }
