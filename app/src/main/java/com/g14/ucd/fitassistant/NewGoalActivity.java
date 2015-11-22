@@ -1,14 +1,17 @@
 package com.g14.ucd.fitassistant;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -46,6 +49,7 @@ public class NewGoalActivity extends AppCompatActivity {
     private DatePickerDialog endDatePickerDialog;
 
     private SimpleDateFormat dateFormatter;
+    private TextView desiredLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,7 @@ public class NewGoalActivity extends AppCompatActivity {
         desired = (EditText) findViewById(R.id.editText_desired);
         actualUnit = (TextView) findViewById(R.id.textView_actualUnit);
         desiredUnit = (TextView) findViewById(R.id.textView_desiredUnit);
+        desiredLabel = (TextView) findViewById(R.id.textView_desired);
 
         start = (EditText) findViewById(R.id.editText_start);
         start.setInputType(InputType.TYPE_NULL);
@@ -66,6 +71,22 @@ public class NewGoalActivity extends AppCompatActivity {
 
         end = (EditText) findViewById(R.id.editText_end);
         end.setInputType(InputType.TYPE_NULL);
+
+        actual.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+                int result = actionId & EditorInfo.IME_MASK_ACTION;
+                switch (result) {
+                    case EditorInfo.IME_ACTION_DONE:
+                        changeEndDate();
+                        break;
+                    case EditorInfo.IME_ACTION_NEXT:
+                        changeEndDate();
+                        break;
+                }
+                return false;
+            }
+        });
 
         dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 
@@ -81,12 +102,21 @@ public class NewGoalActivity extends AppCompatActivity {
             goalType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    desiredUnit.setVisibility(View.VISIBLE);
+                    desired.setVisibility(View.VISIBLE);
+                    desiredLabel.setVisibility(View.VISIBLE);
                     if (position == 0) {
                         actualUnit.setText("%");
                         desiredUnit.setText("%");
-                    } else {
+                    } else if (position == 1 || position == 2){
                         actualUnit.setText("kg");
                         desiredUnit.setText("kg");
+                    } else {
+                        actualUnit.setText("days");
+                        desiredUnit.setVisibility(View.INVISIBLE);
+                        desired.setVisibility(View.INVISIBLE);
+                        TextView desiredLabel = (TextView) findViewById(R.id.textView_desired);
+                        desiredLabel.setVisibility(View.INVISIBLE);
                     }
                 }
 
@@ -212,6 +242,8 @@ public class NewGoalActivity extends AppCompatActivity {
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+
     }
 
     public static java.util.Date getDateFromDatePicker(DatePicker datePicker){
@@ -228,8 +260,31 @@ public class NewGoalActivity extends AppCompatActivity {
     public void showDate(View v) {
         if (v == start){
             startDatePickerDialog.show();
+            startDatePickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    changeEndDate();
+                }
+            });
         }else{
             endDatePickerDialog.show();
+        }
+    }
+
+    private void changeEndDate(){
+        if(actual != null && actual.getText().toString().trim().length() != 0) {
+            if (goalType.getSelectedItemPosition() == 3 || goalType.getSelectedItemPosition() == 4) {
+                try {
+                    Date endDate = dateFormatter.parse(start.getText().toString());
+                    long endDateMinutes = endDate.getTime();
+                    long interval = (Long.parseLong(actual.getText().toString()) - 1) * 24 * 60 * 60 * 1000;
+                    endDateMinutes = endDateMinutes + interval;
+                    endDate = new Date(endDateMinutes);
+                    end.setText(dateFormatter.format(endDate));
+                } catch (java.text.ParseException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
