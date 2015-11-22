@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
@@ -43,6 +44,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme" >
         </activity>
@@ -67,6 +69,7 @@
         <activity
             android:name=".DietActivity"
             android:label="@string/diet"
+            android:launchMode="singleTask"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyDietTheme" >
@@ -82,12 +85,14 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <meta-data
+            android:launchMode="singleTask"
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
         <activity
             android:name=".NewDietActivity"
             android:label="@string/title_activity_new_diet"
+            android:launchMode="singleTask"
             android:parentActivityName=".DietActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyDietTheme" >
@@ -98,6 +103,7 @@
         <activity
             android:name=".ExerciseActivity"
             android:label="@string/exercise"
+            android:launchMode="singleTask"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyDietTheme"
@@ -109,6 +115,7 @@
         <activity
             android:name=".NewExerciseActivity"
             android:label="@string/title_activity_new_exercise"
+            android:launchMode="singleTask"
             android:parentActivityName=".ExerciseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme"
@@ -121,6 +128,7 @@
             android:name=".GoalActivity"
             android:label="@string/title_activity_goal"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@style/MyDietTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -130,6 +138,7 @@
             android:name=".NewGoalActivity"
             android:label="@string/title_activity_new_goal"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@style/MyDietTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -138,12 +147,14 @@
         <activity
             android:name=".NewDietScheduletActivity"
             android:label="@string/title_activity_new_diet_schedulet"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".ViewGoalActivity"
             android:label="@string/title_activity_view_goal"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@style/MyDietTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -151,10 +162,13 @@
         </activity>
         <activity
             android:name=".ExerciseScheduleActivity"
-            android:label="@string/title_activity_exercise_schedule" >
+            android:label="@string/title_activity_exercise_schedule"
+            android:launchMode="singleTask">
+
         </activity>
         <activity
             android:name=".DietScheduleActivity"
+            android:launchMode="singleTask"
             android:label="@string/title_activity_diet_schedule" >
         </activity>
     </application>

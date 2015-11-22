@@ -39,15 +39,15 @@ public class NotificationFitAssistant extends IntentService{
         String action = intent.getAction();
         // This section handles the 3 possible actions:
         // ping, snooze, and dismiss.
-        if(action.equals(CommonConstants.ACTION_PING)) {
+        if(action.equals(CommonConstants.ACTION_PERFORMED)) {
             issueNotification(intent, mMessage);
-        } else if (action.equals(CommonConstants.ACTION_SNOOZE)) {
+        } else if (action.equals(CommonConstants.ACTION_UNPERFORMED)) {
             nm.cancel(CommonConstants.NOTIFICATION_ID);
-            Log.d(CommonConstants.DEBUG_TAG, getString(R.string.snoozing));
+            //Log.d(CommonConstants.DEBUG_TAG, getString(R.string.snoozing));
             // Sets a snooze-specific "done snoozing" message.
-            issueNotification(intent, getString(R.string.done_snoozing));
+            issueNotification(intent,"done unperformed");
 
-        } else if (action.equals(CommonConstants.ACTION_DISMISS)) {
+        } else if (action.equals(CommonConstants.ACTION_PING)) {
             nm.cancel(CommonConstants.NOTIFICATION_ID);
         }
     }
@@ -58,20 +58,20 @@ public class NotificationFitAssistant extends IntentService{
 
         // Sets up the Snooze and Dismiss action buttons that will appear in the
         // expanded view of the notification.
-        Intent dismissIntent = new Intent(this, PingService.class);
-        dismissIntent.setAction(CommonConstants.ACTION_DISMISS);
+        Intent dismissIntent = new Intent(this, MainActivity.class);
+        dismissIntent.setAction(CommonConstants.ACTION_PERFORMED);
         PendingIntent piDismiss = PendingIntent.getService(this, 0, dismissIntent, 0);
 
-        Intent snoozeIntent = new Intent(this, PingService.class);
-        snoozeIntent.setAction(CommonConstants.ACTION_SNOOZE);
+        Intent snoozeIntent = new Intent(this, MainActivity.class);
+        snoozeIntent.setAction(CommonConstants.ACTION_UNPERFORMED);
         PendingIntent piSnooze = PendingIntent.getService(this, 0, snoozeIntent, 0);
 
         // Constructs the Builder object.
         builder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_stat_notification)
-                        .setContentTitle(getString(R.string.notification))
-                        .setContentText(getString(R.string.ping))
+                        .setSmallIcon(R.drawable.ic_local_dining_white_24dp)
+                        .setContentTitle("Notification!!!")
+                        .setContentText("It is time for breakfast")
                         .setDefaults(Notification.DEFAULT_ALL) // requires VIBRATE permission
                 /*
                  * Sets the big view "big text" style and supplies the
@@ -82,10 +82,10 @@ public class NotificationFitAssistant extends IntentService{
                  */
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(msg))
-                        .addAction (R.drawable.ic_stat_dismiss,
-                                getString(R.string.dismiss), piDismiss)
-                        .addAction (R.drawable.ic_stat_snooze,
-                                getString(R.string.snooze), piSnooze);
+                        .addAction(R.drawable.ic_local_dining_white_24dp,
+                                getString(R.string.date_of_birth), piDismiss)
+                        .addAction(R.drawable.ic_fitness_center_black_24dp,
+                                getString(R.string.facebook_app_id), piSnooze);
 
         /*
          * Clicking the notification itself displays ResultActivity, which provides
