@@ -26,7 +26,9 @@ import com.parse.SaveCallback;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class NewGoalActivity extends AppCompatActivity {
 
@@ -38,6 +40,7 @@ public class NewGoalActivity extends AppCompatActivity {
     EditText end;
     TextView actualUnit;
     TextView desiredUnit;
+    TextView goalTypeUnit;
     ArrayAdapter<CharSequence> goalType_adapter;
     private DatePickerDialog startDatePickerDialog;
     private DatePickerDialog endDatePickerDialog;
@@ -51,6 +54,7 @@ public class NewGoalActivity extends AppCompatActivity {
 
         newGoal = new Goal();
         goalType = (Spinner) findViewById(R.id.goals_spinner);
+        goalTypeUnit = (TextView) findViewById(R.id.textView_goalTypeUnit);
         actual = (EditText) findViewById(R.id.editText_actual);
         desired = (EditText) findViewById(R.id.editText_desired);
         actualUnit = (TextView) findViewById(R.id.textView_actualUnit);
@@ -71,6 +75,8 @@ public class NewGoalActivity extends AppCompatActivity {
         goalType.setAdapter(goalType_adapter);
 
         if (!isUpdate()) {
+            goalType.setVisibility(View.VISIBLE);
+            goalTypeUnit.setVisibility(View.INVISIBLE);
             setDateTimeField();
             goalType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -122,13 +128,14 @@ public class NewGoalActivity extends AppCompatActivity {
         if (newGoal != null) {
             int pos = goalType_adapter.getPosition(newGoal.getType());
             goalType.setSelection(pos);
+            goalType.setVisibility(View.INVISIBLE);
+            goalTypeUnit.setVisibility(View.VISIBLE);
+            goalTypeUnit.setText(newGoal.getType());
             actual.setText(Integer.toString(newGoal.getActual()));
             desired.setText(Integer.toString(newGoal.getDesired()));
             start.setText(dateFormatter.format(newGoal.getStart()));
-            start.setHint(getString(R.string.start));
             start.setFocusable(true);
             end.setText(dateFormatter.format(newGoal.getEnd()));
-            end.setHint(getString(R.string.end));
             end.setFocusable(true);
         }
     }
@@ -156,6 +163,9 @@ public class NewGoalActivity extends AppCompatActivity {
     }
 
     public void saveGoal(View view) {
+        Map<String,Integer> record = new HashMap<String,Integer>();
+        record.put(start.getText().toString(),Integer.parseInt(actual.getText().toString()));
+        newGoal.setRecord(record);
         newGoal.setUser(ParseUser.getCurrentUser());
         newGoal.setActual(Integer.parseInt(actual.getText().toString()));
         newGoal.setDesired(Integer.parseInt(desired.getText().toString()));

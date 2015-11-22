@@ -6,6 +6,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by Leticia on 17/11/2015.
@@ -42,6 +43,14 @@ public class Goal extends ParseObject{
 
     public void setActive(boolean active) {
         put("isActive", active);
+    }
+
+    public Map<String,Integer> getRecord() {
+        return getMap("record");
+    }
+
+    public void setRecord(Map<String,Integer> record) {
+        put("record", record);
     }
 
     public ParseUser getUser(){
