@@ -133,4 +133,5 @@
     <string name="title_activity_popup">popup</string>
     <string name="title_activity_exercise_schedule">ExerciseScheduleActivity</string>
     <string name="no_exercise_schedule_message">You don\'t events. Create one.</string>
+    <string name="title_activity_diet_schedule">DietScheduleActivity</string>
 </resources>

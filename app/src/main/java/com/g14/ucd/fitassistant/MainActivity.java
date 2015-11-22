@@ -25,7 +25,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import com.facebook.appevents.AppEventsLogger;
-import com.g14.ucd.fitassistant.models.Day;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -43,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
     private GregorianCalendar today;
-    private Day dayToday;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,25 +92,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         today = new GregorianCalendar();
-        dayToday = null;
-
-        ParseQuery<Day> query = ParseQuery.getQuery("Day");
-        query.whereEqualTo("user", ParseUser.getCurrentUser());
-        query.whereEqualTo("monthDay", today.get(GregorianCalendar.DAY_OF_MONTH));
-        query.findInBackground(new FindCallback<Day>() {
-            @Override
-            public void done(List<Day> days, ParseException exception) {
-                if (exception == null && days.size() > 0) { // found diets
-                    dayToday = days.get(0);
-
-                } else if (exception != null) {
-                    Log.d("FitAssistant", "Error: " + exception.getMessage());
-                } else {
-
-                }
-            }
-        });
-
     }
 
     /* Called whenever we call invalidateOptionsMenu() */
@@ -195,6 +174,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void openScheduleDietActivity() {
+        Intent intent = new Intent(MainActivity.this, DietScheduleActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new DietFragment(), "Diet");
@@ -246,8 +232,8 @@ public class MainActivity extends AppCompatActivity {
                 openExerciseActivity();
                 break;
             case(3):
+                openScheduleDietActivity();
                 break;
-                //openGym
             case(4):
                 openGoalActivity();
                 break;

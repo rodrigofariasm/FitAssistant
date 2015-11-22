@@ -44,6 +44,9 @@ public class ExerciseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
+        initialize();
+    }
+    private void initialize(){
 
         exercises = new ArrayList<FitActivity>();
         gymExercises = new HashMap<FitActivity, ArrayList<Exercise>>();
@@ -58,14 +61,17 @@ public class ExerciseActivity extends AppCompatActivity {
             @Override
             public void done(List<Gym> activities, ParseException exception) {
                 if (exception == null ) {
+
                     if(activities.size() > 0)
-                    exercises.addAll(activities);
+                        exercises.addAll(activities);
+
                 } else {
                     error_dialog.show();
                     Log.d("FitAssistant", "Error: " + exception.getMessage());
                 }
             }
         });
+
 
         dialog.show();
         ParseQuery<Other> queryOther = ParseQuery.getQuery("Other");
@@ -76,9 +82,9 @@ public class ExerciseActivity extends AppCompatActivity {
                 if (exception == null) {
                     if(!activities.isEmpty())
                         exercises.addAll(activities);
-                        for(Other a: activities){
-                            gymExercises.put(a,new ArrayList<Exercise>());
-                        }
+                    for(Other a: activities){
+                        gymExercises.put(a,new ArrayList<Exercise>());
+                    }
 
                 } else {
                     Log.d("FitAssistant", "Error: " + exception.getMessage());
@@ -95,7 +101,7 @@ public class ExerciseActivity extends AppCompatActivity {
                 if (exception == null) {
 
                     for (Exercise e:activities
-                         ) {
+                            ) {
                         Log.d("FIT", e.getActivityID()+ " "+ e.getName() );
                         if(gymExercises.containsKey(e.getActivityID())){
                             ArrayList<Exercise> newAc = gymExercises.get(e.getActivityID());
@@ -127,10 +133,7 @@ public class ExerciseActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
-
 
     private void listExercises(List<FitActivity> activities){
         ExpandableListAdapter mAdapter = new ExpandableListAdapter(
@@ -147,7 +150,7 @@ public class ExerciseActivity extends AppCompatActivity {
 
             }
         });
-       
+
 
 
     }
@@ -191,6 +194,7 @@ public class ExerciseActivity extends AppCompatActivity {
 
     private void addNewExercise(){
         Intent intent = new Intent(ExerciseActivity.this, NewExerciseActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
@@ -216,44 +220,33 @@ public class ExerciseActivity extends AppCompatActivity {
 
     public void delete(View v){
         final String objectId = (String) v.getTag();
-        Log.d("TAG: objectId",objectId);
+        Log.d("TAG: objectId", objectId);
 
-        ParseQuery<Gym> query = ParseQuery.getQuery("Gym");
+        final ParseQuery<Gym> query = ParseQuery.getQuery("Gym");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.getInBackground(objectId, new GetCallback<Gym>() {
             @Override
             public void done(Gym activity, final ParseException exception) {
                 if (exception == null) { // found exercises
-                    if(activity.getType() == ActivitiesTypeEnum.GYM.getCode()){
-                        ParseQuery<Exercise> queryExercise = ParseQuery.getQuery("Exercise");
-                        queryExercise.whereEqualTo("user", ParseUser.getCurrentUser());
-                        queryExercise.whereEqualTo("activityId", activity.getObjectId());
-                        try {
-                            queryExercise.findInBackground(new FindCallback<Exercise>() {
-                                @Override
-                                public void done(List<Exercise> list, ParseException e) {
-                                    for (Exercise e2: list
-                                         ) {
-                                        e2.deleteInBackground();
-                                    }
-                                }
-                            });
-                            activity.delete();
-                        } catch (ParseException e) {
-                            Log.d("FitAssistant", "Error deleting gym activity" + e.getMessage());
-                        }
-                    } else {
-                        try {
-                            activity.delete();
-                        } catch (ParseException e) {
-                            Log.d("FitAssistant", "Error deleting other activity" + e.getMessage());
-                        }
+                    ParseQuery<Exercise> queryExercise = ParseQuery.getQuery("Exercise");
+                    queryExercise.whereEqualTo("user", ParseUser.getCurrentUser());
+                    queryExercise.whereEqualTo("activityID", activity);
+                    try {
+                        List<Exercise> exes = queryExercise.find();
+                        ParseObject.deleteAll(exes);
+                        activity.delete();
+                        initialize();
+                    } catch (ParseException e) {
+                        Log.d("FitAssistant", "Error deleting gym activity" + e.getMessage());
                     }
-                } else if (exception != null) {
+
+                } else {
                     Log.d("FitAssistant", "Error finding exercise with id " + objectId + ": " + exception.getMessage());
                 }
             }
+
         });
+
     }
 
     public void view(View view){

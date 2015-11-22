@@ -3,8 +3,8 @@ package com.g14.ucd.fitassistant;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.g14.ucd.fitassistant.models.Day;
 import com.g14.ucd.fitassistant.models.Diet;
+import com.g14.ucd.fitassistant.models.DietEvent;
 import com.g14.ucd.fitassistant.models.Exercise;
 import com.g14.ucd.fitassistant.models.ExerciseEvent;
 import com.g14.ucd.fitassistant.models.FitActivity;
@@ -40,7 +40,7 @@ public class Application extends android.app.Application {
         ParseObject.registerSubclass(Gym.class);
         ParseObject.registerSubclass(Other.class);
         ParseObject.registerSubclass(Exercise.class);
-        ParseObject.registerSubclass(Day.class);
+        ParseObject.registerSubclass(DietEvent.class);
         ParseObject.registerSubclass(Meal.class);
         ParseObject.registerSubclass(Goal.class);
         ParseObject.registerSubclass(ExerciseEvent.class);

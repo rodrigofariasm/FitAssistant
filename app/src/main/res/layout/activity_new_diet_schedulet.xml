@@ -1,12 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     tools:context="com.g14.ucd.fitassistant.newDietScheduletActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/lienar_layout_diet_schedule">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/linear_layout_diet_schedule">
 
         <TextView
             android:layout_width="wrap_content"
@@ -15,22 +15,128 @@
 
         <Spinner
             android:id="@+id/diets_spinner"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:id="@+id/button_save_diet_schedule"
+            android:layout_gravity="bottom" />
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/sundayCheckbox"
+        android:layout_height="30dp"
+        android:layout_width="30dp"
+        android:text="S"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:background="@drawable/weekday_checkbox"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_below="@id/linear_layout_diet_schedule"
+        android:layout_margin="5dp"
+        android:onClick="selectWeekDay"
+        android:tag="1"/>
+
+
+    <TextView
+        android:id="@+id/mondayCheckbox"
+        android:layout_height="30dp"
+        android:layout_width="30dp"
+        android:text="M"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:background="@drawable/weekday_checkbox"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_below="@id/linear_layout_diet_schedule"
+        android:layout_margin="5dp"
+        android:layout_toRightOf="@id/sundayCheckbox"
+        android:onClick="selectWeekDay"
+        android:tag="2"/>
+
+    <TextView
+        android:id="@+id/tuesdayCheckbox"
+        android:layout_height="30dp"
+        android:layout_width="30dp"
+        android:text="T"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:background="@drawable/weekday_checkbox"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_below="@id/linear_layout_diet_schedule"
+        android:layout_margin="5dp"
+        android:layout_toRightOf="@id/mondayCheckbox"
+        android:onClick="selectWeekDay"
+        android:tag="3"/>
+
+    <TextView
+        android:id="@+id/wednesdayCheckbox"
+        android:layout_height="30dp"
+        android:layout_width="30dp"
+        android:text="W"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:background="@drawable/weekday_checkbox"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_below="@id/linear_layout_diet_schedule"
+        android:layout_toRightOf="@id/tuesdayCheckbox"
+        android:layout_margin="5dp"
+        android:onClick="selectWeekDay"
+        android:tag="4"/>
+
+    <TextView
+        android:id="@+id/thursdayCheckbox"
+        android:layout_height="30dp"
+        android:layout_width="30dp"
+        android:text="T"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:background="@drawable/weekday_checkbox"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_below="@id/linear_layout_diet_schedule"
+        android:layout_margin="5dp"
+        android:layout_toRightOf="@id/wednesdayCheckbox"
+        android:onClick="selectWeekDay"
+        android:tag="5"/>
+
+    <TextView
+        android:id="@+id/fridayCheckbox"
+        android:layout_height="30dp"
+        android:layout_width="30dp"
+        android:text="F"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:background="@drawable/weekday_checkbox"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_below="@id/linear_layout_diet_schedule"
+        android:layout_margin="5dp"
+        android:layout_toRightOf="@id/thursdayCheckbox"
+        android:onClick="selectWeekDay"
+        android:tag="6"/>
+
+    <TextView
+        android:id="@+id/saturdayCheckbox"
+        android:layout_height="30dp"
+        android:layout_width="30dp"
+        android:text="S"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:background="@drawable/weekday_checkbox"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_below="@id/linear_layout_diet_schedule"
+        android:layout_margin="5dp"
+        android:layout_toRightOf="@id/fridayCheckbox"
+        android:onClick="selectWeekDay"
+        android:tag="7"/>
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lienar_layout_diet_schedule"
+        android:layout_below="@id/sundayCheckbox"
         android:id="@+id/list_meals_schedule"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        android:layout_below="@id/list_meals_schedule"
-        android:id="@+id/button_save_diet_schedule"/>
 
 
 </RelativeLayout>

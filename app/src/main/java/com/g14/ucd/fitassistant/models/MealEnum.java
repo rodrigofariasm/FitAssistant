@@ -7,7 +7,7 @@ public enum MealEnum {
     BREAKFAST("Breakfast",1),
     MORNING_SNAK("Morning Snak",2),
     LUNCH("Lunch",3),
-    AFTERNOON_SNAK("Afternoon Snak",2),
+    AFTERNOON_SNAK("Afternoon Snak",4),
     DINNER("Dinner",5),
     NIGHT_SNAK("Night Snak",6);
 

@@ -37,7 +37,7 @@ public class Exercise extends ParseObject{
 
     public Gym getActivityID() {
         try {
-            return (Gym) fetchIfNeeded().getParseObject("activityID");
+            return (Gym) getParseObject("activityID");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -71,6 +71,11 @@ public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandable
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
         final Exercise childExercise = (Exercise) getChild(groupPosition, childPosition);
+        if (convertView == null) {
+            LayoutInflater infalInflater = (LayoutInflater) this._context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = infalInflater.inflate(R.layout.exercise_list_group, null);
+        }
         FitActivity header = (FitActivity) _listDataHeader.get(groupPosition);
         LayoutInflater infalInflater = (LayoutInflater) this._context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
