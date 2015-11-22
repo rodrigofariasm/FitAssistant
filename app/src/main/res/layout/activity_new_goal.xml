@@ -25,6 +25,14 @@
             android:layout_toRightOf="@id/textView_goalType"/>
 
         <TextView
+            android:id="@+id/textView_goalTypeUnit"
+            android:paddingTop="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/textView_goalType"/>
+
+        <TextView
             android:id="@+id/textView_actual"
             android:text="Actual:"
             android:paddingTop="10dp"
@@ -79,7 +87,9 @@
         <EditText
             android:id="@+id/editText_start"
             android:layout_width="120dp"
+            android:hint="Start"
             android:layout_height="wrap_content"
+            android:focusableInTouchMode="false"
             android:layout_below="@id/editText_desired"
             android:onClick="showDate"/>
 
@@ -96,7 +106,9 @@
         <EditText
             android:id="@+id/editText_end"
             android:layout_width="120dp"
+            android:hint="End"
             android:layout_height="wrap_content"
+            android:focusableInTouchMode="false"
             android:layout_below="@id/editText_desired"
             android:layout_toRightOf="@id/textView_until"
             android:onClick="showDate"/>
