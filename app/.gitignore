@@ -26,7 +26,6 @@ app/app.iml
 build/*
 *.iml
 .gradle/2.4/taskArtifacts/cache.properties.lock
-app/build.gradle
 build/intermediates/gradle_project_sync_data.bin
 #built application files
 *.apk
