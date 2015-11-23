@@ -42,12 +42,14 @@ import java.util.List;
 public class ExerciseActivity extends AppCompatActivity {
     ArrayList<FitActivity> exercises;
     HashMap<FitActivity, ArrayList<Exercise>> gymExercises;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
         initialize();
     }
+
     private void initialize(){
 
         exercises = new ArrayList<FitActivity>();
@@ -62,18 +64,17 @@ public class ExerciseActivity extends AppCompatActivity {
 
             @Override
             public void done(List<Gym> activities, ParseException exception) {
-                if (exception == null) {
+            if (exception == null) {
 
-                    if (activities.size() > 0)
-                        exercises.addAll(activities);
+                if (activities.size() > 0)
+                    exercises.addAll(activities);
 
-                } else {
-                    error_dialog.show();
-                    Log.d("FitAssistant", "Error: " + exception.getMessage());
-                }
+            } else {
+                error_dialog.show();
+                Log.d("FitAssistant", "Error: " + exception.getMessage());
+            }
             }
         });
-
 
         dialog.show();
         Exercise generic = new Exercise();
@@ -85,17 +86,17 @@ public class ExerciseActivity extends AppCompatActivity {
         queryOther.findInBackground(new FindCallback<Other>() {
             @Override
             public void done(List<Other> activities, ParseException exception) {
-                if (exception == null) {
-                    if(!activities.isEmpty())
-                        exercises.addAll(activities);
-                    for(Other a: activities){
-                        gymExercises.put(a,exes);
-                    }
-
-                } else {
-                    Log.d("FitAssistant", "Error: " + exception.getMessage());
-                    error_dialog.show();
+            if (exception == null) {
+                if(!activities.isEmpty())
+                    exercises.addAll(activities);
+                for(Other a: activities){
+                    gymExercises.put(a,exes);
                 }
+
+            } else {
+                Log.d("FitAssistant", "Error: " + exception.getMessage());
+                error_dialog.show();
+            }
             }
         });
 
@@ -104,38 +105,35 @@ public class ExerciseActivity extends AppCompatActivity {
         queryExercise.findInBackground(new FindCallback<Exercise>() {
             @Override
             public void done(List<Exercise> activities, ParseException exception) {
-                if (exception == null) {
+            if (exception == null) {
 
-                    for (Exercise e:activities
-                            ) {
-                        Log.d("FIT", e.getActivityID()+ " "+ e.getName() );
-                        if(gymExercises.containsKey(e.getActivityID())){
-                            ArrayList<Exercise> newAc = gymExercises.get(e.getActivityID());
-                            newAc.add(e);
-                            gymExercises.put(e.getActivityID(),
-                                    newAc);
+                for (Exercise e:activities
+                        ) {
+                    Log.d("FIT", e.getActivityID()+ " "+ e.getName() );
+                    if(gymExercises.containsKey(e.getActivityID())){
+                        ArrayList<Exercise> newAc = gymExercises.get(e.getActivityID());
+                        newAc.add(e);
+                        gymExercises.put(e.getActivityID(),
+                                newAc);
 
-                        }else{
-                            ArrayList<Exercise> newAc = new ArrayList<Exercise>();
-                            newAc.add(e);
-                            gymExercises.put(e.getActivityID(), newAc);
-                        }
+                    }else{
+                        ArrayList<Exercise> newAc = new ArrayList<Exercise>();
+                        newAc.add(e);
+                        gymExercises.put(e.getActivityID(), newAc);
                     }
-                    dialog.dismiss();
-                    if (!exercises.isEmpty()) {
-                        hideButtons();
-                        listExercises(exercises);
-                        Log.d("FitAssistant", "ok");
-                    }
-
-
-                } else {
-                    Log.d("FitAssistant", "Error: " + exception.getMessage());
-                    error_dialog.show();
                 }
+                dialog.dismiss();
+                if (!exercises.isEmpty()) {
+                    hideButtons();
+                    listExercises(exercises);
+                    Log.d("FitAssistant", "ok");
+                }
+            } else {
+                Log.d("FitAssistant", "Error: " + exception.getMessage());
+                error_dialog.show();
+            }
             }
         });
-
     }
 
     private void listExercises(List<FitActivity> activities){
@@ -159,9 +157,6 @@ public class ExerciseActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-
-
     }
 
     private void hideButtons(){
@@ -194,8 +189,6 @@ public class ExerciseActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
 
     public void addNewExercise(View v){
         addNewExercise();
@@ -231,6 +224,10 @@ public class ExerciseActivity extends AppCompatActivity {
         final String objectId = (String) v.getTag();
         Log.d("TAG: objectId", objectId);
 
+        final ProgressDialog dialog  = new ProgressDialog(this);
+        final Dialog error_dialog = new Dialog(this, "No connection detected", "ok");
+        dialog.setTitle("Deleting exercise");
+        dialog.show();
         final ParseQuery<Gym> query = ParseQuery.getQuery("Gym");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.getInBackground(objectId, new GetCallback<Gym>() {
@@ -244,23 +241,21 @@ public class ExerciseActivity extends AppCompatActivity {
                         List<Exercise> exes = queryExercise.find();
                         ParseObject.deleteAll(exes);
                         activity.delete();
+                        dialog.dismiss();
                         initialize();
                     } catch (ParseException e) {
                         Log.d("FitAssistant", "Error deleting gym activity" + e.getMessage());
                     }
-
                 } else {
                     Log.d("FitAssistant", "Error finding exercise with id " + objectId + ": " + exception.getMessage());
                 }
             }
-
         });
-
     }
 
-    public void view(View view){
-
+    @Override
+    protected void onStart(){
+        super.onStart();
+        initialize();
     }
-
-
 }

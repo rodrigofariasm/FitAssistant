@@ -55,7 +55,10 @@ public class NewDietActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_diet);
+        initialize();
+    }
 
+    private void initialize(){
         if (!isUpdate()) {
             newDiet = new Diet();
             meals = new ArrayList<Meal>();
@@ -244,6 +247,8 @@ public class NewDietActivity extends AppCompatActivity {
                         ParseObject.saveAll(meals);
                         ParseObject.deleteAll(getMealsToDelete(meals, mealsRetreived));
                         dialog.dismiss();
+                        Intent intent = new Intent(NewDietActivity.this, DietActivity.class);
+                        startActivity(intent);
                     } catch (ParseException parseE) {
                         newDiet.deleteInBackground();
                         Log.d("FITASSISTANT", "Error saving meals " + parseE.getMessage());
@@ -251,8 +256,6 @@ public class NewDietActivity extends AppCompatActivity {
                 }
             }
         });
-        Intent intent = new Intent(NewDietActivity.this, DietActivity.class);
-        startActivity(intent);
     }
 
 

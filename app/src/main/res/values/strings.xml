@@ -96,8 +96,8 @@
     <string name="gym_exercises">Gym Exercises</string>
     <string name="progress_loading_exercises">Loading your exercises</string>
     <string name="progress_loading_goals">Loading your goals</string>
-    <string name="progress_deleting_goal">Deleting your goal</string>
     <string name="progress_loading_diets">Loading your diets</string>
+    <string name="progress_saving_goal">Saving goal</string>
     <string name="progress_loading_viewGoal">Loading your goal to view</string>
     <string name="progress_loading">Loading ...</string>
     <string name="sections">Sections</string>

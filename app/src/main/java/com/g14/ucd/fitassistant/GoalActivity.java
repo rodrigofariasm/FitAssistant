@@ -136,6 +136,10 @@ public class GoalActivity extends AppCompatActivity {
         final String objectId = (String) v.getTag();
         Log.d("TAG: objectId", objectId);
 
+        final ProgressDialog dialog  = new ProgressDialog(this);
+        final Dialog error_dialog = new Dialog(this, "No connection detected", "ok");
+        dialog.setTitle("Deleting goal");
+        dialog.show();
         ParseQuery<Goal> query = ParseQuery.getQuery("Goal");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.getInBackground(objectId, new GetCallback<Goal>() {
@@ -144,7 +148,7 @@ public class GoalActivity extends AppCompatActivity {
                 if (exception == null) { // found goals
                     try {
                         goal.delete();
-                        Toast.makeText(getApplicationContext(), "Successful delete", Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
                         initialize();
                     } catch (ParseException e) {
                         Log.d("FitAssistant", "Error deleting goal" + e.getMessage());

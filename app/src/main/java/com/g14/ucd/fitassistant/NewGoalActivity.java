@@ -1,6 +1,7 @@
 package com.g14.ucd.fitassistant;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -196,6 +197,9 @@ public class NewGoalActivity extends AppCompatActivity {
     }
 
     public void saveGoal(View view) {
+        final ProgressDialog dialog  = new ProgressDialog(this);
+        dialog.setTitle(getString(R.string.progress_saving_diet));
+        dialog.show();
         if(actual == null || actual.getText().toString().trim().equals("")){
             Toast.makeText(getApplicationContext(),"Can't save goal without the "+ actualLabel.getText().toString()+" field.",
                     Toast.LENGTH_LONG).show();
@@ -228,6 +232,7 @@ public class NewGoalActivity extends AppCompatActivity {
                     @Override
                     public void done(ParseException e) {
                         if (e == null) {
+                            dialog.dismiss();
                             Intent intent = new Intent(NewGoalActivity.this, GoalActivity.class);
                             startActivity(intent);
                         } else {
