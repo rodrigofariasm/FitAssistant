@@ -22,6 +22,8 @@ public class NotificationFitAssistant extends IntentService{
 
  // The super call is required. The background thread that IntentService
  // starts is labeled with the string argument you pass.
+
+
  super("com.g14.ucd.fitassistant");
  }
 

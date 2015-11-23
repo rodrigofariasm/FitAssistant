@@ -152,8 +152,16 @@ public class ViewGoalActivity extends AppCompatActivity {
                 case("Gain weight"):
                     firstPart = "Gain " + Integer.toString(goalView.getInt("desired") - goalView.getInt("actual")) + "kg in ";
                     break;
+                case("Follow diet"):
+                    firstPart = "Follow the diet for ";
+                    interval = Integer.toString(goalView.getInt("actual"));
+                    break;
+                case("Go to gym"):
+                    firstPart = "Go to gym for ";
+                    interval = Integer.toString(goalView.getInt("actual"));
+                    break;
             }
-            goalTitle.setText(firstPart + interval + " days");
+            goalTitle.setText(firstPart + interval + " day(s)");
         }
     }
 
@@ -163,13 +171,13 @@ public class ViewGoalActivity extends AppCompatActivity {
         Date endDay = goalView.getEnd();
         String message = null;
         if(today.after(startDay) && today.before(endDay)){
-            long difference = Math.abs(today.getTime() - startDay.getTime());
+            long difference = today.getTime() - startDay.getTime();
             long differenceDates = difference / (24 * 60 * 60 * 1000);
             message = "Day number: " + Long.toString(differenceDates+1);
         }else if (today.before(startDay)){
-            long difference = Math.abs(startDay.getTime() - today.getTime());
+            long difference = startDay.getTime() - today.getTime();
             long differenceDates = difference / (24 * 60 * 60 * 1000);
-            if(differenceDates >= 0 || differenceDates < 1){
+            if(differenceDates >= 0 && differenceDates < 1){
                 long differenceHours = difference / (60 * 60 * 1000);
                 message = Long.toString(differenceHours) + " hours to start!";
             }else{
