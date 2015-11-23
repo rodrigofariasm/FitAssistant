@@ -148,8 +148,9 @@
             android:name=".NewDietScheduletActivity"
             android:label="@string/title_activity_new_diet_schedulet"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDietTheme" >
+]        </activity>
         <activity
             android:name=".ViewGoalActivity"
             android:label="@string/title_activity_view_goal"
@@ -169,7 +170,16 @@
         <activity
             android:name=".DietScheduleActivity"
             android:launchMode="singleTask"
-            android:label="@string/title_activity_diet_schedule" >
+            android:label="@string/title_activity_diet_schedule"
+            android:theme="@style/MyDietTheme"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".DietScheduleActivity"
+            android:label="@string/title_activity_diet_schedule"
+            android:theme="@style/MyDietTheme"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
