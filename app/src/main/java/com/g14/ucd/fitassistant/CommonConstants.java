@@ -30,11 +30,13 @@ public final class CommonConstants {
     // to 20 seconds.
     public static final int SNOOZE_DURATION = 20000;
     public static final int DEFAULT_TIMER_DURATION = 10000;
-    public static final String ACTION_PERFORMED = "ACTION_DONE";
+    public static final String ACTION_PERFORMED = "ACTION_PERFORMED";
     public static final String ACTION_UNPERFORMED = "ACTION_UNPERFORMED";
-    public static final String ACTION_PING = "ACTION_PING";
+    public static final String ACTION_MEAL = "ACTION_MEAL";
     public static final String EXTRA_MESSAGE= "EXTRA_MESSAGE";
+    public static final String MEAL_TYPE= "MEALTYPE";
+
     public static final String EXTRA_TIMER = "pingme.EXTRA_TIMER";
-    public static final int NOTIFICATION_ID = 001;
+    public static int NOTIFICATION_ID = 001;
     public static final String DEBUG_TAG = "PingMe";
 }

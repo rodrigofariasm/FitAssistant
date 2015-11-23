@@ -1,10 +1,7 @@
 package com.g14.ucd.fitassistant;
 
 import android.annotation.TargetApi;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.ProgressDialog;
-import android.app.TimePickerDialog;
+import android.app.*;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +26,7 @@ import android.widget.TimePicker;
 import com.g14.ucd.fitassistant.models.Diet;
 import com.g14.ucd.fitassistant.models.DietEvent;
 import com.g14.ucd.fitassistant.models.Meal;
+import com.g14.ucd.fitassistant.models.MealEnum;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -165,7 +163,7 @@ public class NewDietScheduletActivity extends AppCompatActivity {
         });
     }
 
-    public void itemSelected(String dietId){
+    public void itemSelected(String dietId) {
         newDietEvent.setDietId(dietId);
         if(dietId != null && findDietRetrieved(dietId) != null){
             ParseQuery<Meal> query = ParseQuery.getQuery("Meal");
@@ -238,6 +236,7 @@ public class NewDietScheduletActivity extends AppCompatActivity {
         EditText editTextName = (EditText) this.findViewById(R.id.name_diet_schedule);
         newDietEvent.setName(editTextName.getText().toString());
         newDietEvent.setTimes(times);
+        newDietEvent.setNotification(CommonConstants.NOTIFICATION_ID);
         newDietEvent.setWeekDays(weekdays);
         newDietEvent.setUser(ParseUser.getCurrentUser());
         newDietEvent.saveInBackground(new SaveCallback() {
@@ -246,6 +245,8 @@ public class NewDietScheduletActivity extends AppCompatActivity {
                 if (e == null) {
                     dialog.dismiss();
                     Intent intent = new Intent(NewDietScheduletActivity.this, DietScheduleActivity.class);
+                    createAlarms();
+                    CommonConstants.NOTIFICATION_ID = CommonConstants.NOTIFICATION_ID +1;
                     startActivity(intent);
                 } else {
                     Log.d("FITASSISTANT", "Error saving day: " + e.getMessage());
@@ -301,4 +302,30 @@ public class NewDietScheduletActivity extends AppCompatActivity {
         }
     }
 
+    public void createAlarms(){
+        ArrayList<AlarmManager> notifications = new ArrayList<>();
+        for(Meal meal: mealsRetreived){
+            Intent mealIntent = new Intent(this, StartServiceReceiver.class);
+            mealIntent.putExtra(CommonConstants.EXTRA_MESSAGE, MealEnum.fromCode(meal.getType()).getValue());
+            mealIntent.setAction(CommonConstants.ACTION_MEAL);
+
+            mealIntent.putExtra(CommonConstants.EXTRA_TIMER, 10000);
+
+            PendingIntent pendingIntent = PendingIntent.getService(this, 0, mealIntent, 0);
+
+            AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+            Date mealDate = times.get(""+MealEnum.fromCode(meal.getType()).getCode());
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, mealDate.getHours());
+            calendar.set(Calendar.MINUTE, mealDate.getMinutes());
+            calendar.set(Calendar.SECOND, 00);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 24 * 60 * 60 * 1000, pendingIntent);
+            notifications.add(MealEnum.fromCode(meal.getType()).getCode() - 1, alarmManager);
+
+        }
+        Log.d(CommonConstants.DEBUG_TAG, ""+CommonConstants.NOTIFICATION_ID);
+        Log.d(CommonConstants.DEBUG_TAG, notifications.toString());
+        Application.notifications.put(CommonConstants.NOTIFICATION_ID, notifications);
+
+    }
 }

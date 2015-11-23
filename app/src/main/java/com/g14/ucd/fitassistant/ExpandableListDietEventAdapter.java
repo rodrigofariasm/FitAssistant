@@ -23,6 +23,7 @@ import com.g14.ucd.fitassistant.models.Gym;
 import com.g14.ucd.fitassistant.models.Meal;
 import com.g14.ucd.fitassistant.models.MealEnum;
 import com.g14.ucd.fitassistant.models.Other;
+import com.g14.ucd.fitassistant.models.WeekDays;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.parse.ParseObject;
 
@@ -115,7 +116,7 @@ public class ExpandableListDietEventAdapter<T extends ParseObject> extends BaseE
             String everyDayweek = "Every ";
             List<Integer> weekdays = header.getList("weekDays");
             for(Integer wd : weekdays){
-                everyDayweek = everyDayweek + MealEnum.fromCode(wd).getValue();
+                everyDayweek = everyDayweek + WeekDays.fromCode(wd).getValue();
                 if(weekdays.indexOf(wd) != weekdays.size() - 1){
                     everyDayweek = everyDayweek + ", ";
                 }

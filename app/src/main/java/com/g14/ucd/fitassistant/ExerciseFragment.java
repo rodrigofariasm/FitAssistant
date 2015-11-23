@@ -31,13 +31,7 @@ public class ExerciseFragment extends Fragment {
 
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
-        mServiceIntent = new Intent(getActivity(), NotificationFitAssistant.class);
-        Log.d(getString(R.string.facebook_app_id), "lancou");
-        mServiceIntent.putExtra(CommonConstants.EXTRA_MESSAGE, "Standard Notification");
-        mServiceIntent.setAction(CommonConstants.ACTION_PERFORMED);
-        mServiceIntent.putExtra(CommonConstants.EXTRA_TIMER, 15000);
-        // Launches IntentService "PingService" to set timer.
-        getActivity().startService(mServiceIntent);
+
 
 
     }
