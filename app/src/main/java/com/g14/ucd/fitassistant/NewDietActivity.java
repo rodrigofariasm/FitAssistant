@@ -21,6 +21,7 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.g14.ucd.fitassistant.models.Diet;
 import com.g14.ucd.fitassistant.models.Meal;
@@ -163,7 +164,6 @@ public class NewDietActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
     public void addNewOption(View view) {
         addNewOption(view, null, null);
     }
@@ -258,7 +258,6 @@ public class NewDietActivity extends AppCompatActivity {
         });
     }
 
-
     private void createMeal(int id) {
         String mealId = null;
         Meal meal = new Meal();
@@ -296,7 +295,6 @@ public class NewDietActivity extends AppCompatActivity {
         }
         return null;
     }
-
 
     private List<Meal> getMealsToDelete(List<Meal> mealsUpdated, List<Meal> mealsRetreived){
         List<Meal> mealsDeleted = new ArrayList<Meal>();
