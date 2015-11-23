@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -109,6 +110,28 @@ public class ExpandableListDietEventAdapter<T extends ParseObject> extends BaseE
         mealOptions.setText(options);
         convertView.setFocusableInTouchMode(false);
 
+        if(childPosition == 0){
+            TextView weekdaysRepeat = (TextView) convertView.findViewById(R.id.text_view_weekday_repeat);
+            String everyDayweek = "Every ";
+            List<Integer> weekdays = header.getList("weekDays");
+            for(Integer wd : weekdays){
+                everyDayweek = everyDayweek + MealEnum.fromCode(wd).getValue();
+                if(weekdays.indexOf(wd) != weekdays.size() - 1){
+                    everyDayweek = everyDayweek + ", ";
+                }
+            }
+            if(weekdaysRepeat != null){
+                weekdaysRepeat.setVisibility(View.VISIBLE);
+                weekdaysRepeat.setText(everyDayweek);
+            }
+        }
+
+        CheckBox checkBoxDone = (CheckBox) convertView.findViewById(R.id.checkbox_done);
+        if(checkBoxDone != null){
+            checkBoxDone.setTag(childMeal.getType());
+        }
+
+
         return convertView;
     }
 
@@ -146,6 +169,7 @@ public class ExpandableListDietEventAdapter<T extends ParseObject> extends BaseE
         T obj = (T) getGroup(groupPosition);
         String id = obj.getObjectId();
         if(obj != null){
+
             TextView name = (TextView) convertView.findViewById(textViewId);
             ImageButton delete = (ImageButton) convertView.findViewById(button1);
             ImageButton update = (ImageButton) convertView.findViewById(button2);
@@ -161,6 +185,7 @@ public class ExpandableListDietEventAdapter<T extends ParseObject> extends BaseE
             if(delete != null){
                 delete.setTag(id);
             }
+
         }
 
         return convertView;
