@@ -128,8 +128,7 @@ public class ExpandableListDietEventAdapter<T extends ParseObject> extends BaseE
 
         CheckBox checkBoxDone = (CheckBox) convertView.findViewById(R.id.checkbox_done);
         if(checkBoxDone != null){
-            checkBoxDone.setTag(childMeal.getType(),);
-            checkBoxDone.getTa
+            checkBoxDone.setTag(childMeal.getType());
         }
 
 
