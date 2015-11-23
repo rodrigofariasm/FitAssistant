@@ -3,11 +3,10 @@ package com.g14.ucd.fitassistant;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.g14.ucd.fitassistant.notifications.CommonConstants;
 
 
 public class ExerciseFragment extends Fragment {
@@ -19,7 +18,7 @@ public class ExerciseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mServiceIntent = new Intent(getActivity(), MainActivity.class);
+
     }
 
     @Override
@@ -32,11 +31,14 @@ public class ExerciseFragment extends Fragment {
 
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
+        mServiceIntent = new Intent(getActivity(), NotificationFitAssistant.class);
+        Log.d(getString(R.string.facebook_app_id), "lancou");
         mServiceIntent.putExtra(CommonConstants.EXTRA_MESSAGE, "Standard Notification");
-        mServiceIntent.setAction(CommonConstants.ACTION_PING);
-        mServiceIntent.putExtra(CommonConstants.EXTRA_TIMER, 10000);
+        mServiceIntent.setAction(CommonConstants.ACTION_PERFORMED);
+        mServiceIntent.putExtra(CommonConstants.EXTRA_TIMER, 15000);
         // Launches IntentService "PingService" to set timer.
         getActivity().startService(mServiceIntent);
+
 
     }
 

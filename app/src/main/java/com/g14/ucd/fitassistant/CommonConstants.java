@@ -1,4 +1,4 @@
-package com.g14.ucd.fitassistant.notifications;
+package com.g14.ucd.fitassistant;
 /*
  * Copyright (C) 2012 The Android Open Source Project
  *

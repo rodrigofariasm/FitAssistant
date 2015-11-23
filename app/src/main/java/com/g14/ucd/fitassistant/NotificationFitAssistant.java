@@ -1,4 +1,4 @@
-package com.g14.ucd.fitassistant.notifications;
+package com.g14.ucd.fitassistant;
 
 import android.app.IntentService;
 import android.app.Notification;
@@ -7,9 +7,6 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-
-import com.g14.ucd.fitassistant.MainActivity;
-import com.g14.ucd.fitassistant.R;
 
 /**
  * Created by rodrigofarias on 11/22/15.
@@ -40,6 +37,7 @@ public class NotificationFitAssistant extends IntentService{
         // This section handles the 3 possible actions:
         // ping, snooze, and dismiss.
         if(action.equals(CommonConstants.ACTION_PERFORMED)) {
+            Log.d("ActionPerformed", mMessage);
             issueNotification(intent, mMessage);
         } else if (action.equals(CommonConstants.ACTION_UNPERFORMED)) {
             nm.cancel(CommonConstants.NOTIFICATION_ID);
@@ -58,11 +56,11 @@ public class NotificationFitAssistant extends IntentService{
 
         // Sets up the Snooze and Dismiss action buttons that will appear in the
         // expanded view of the notification.
-        Intent dismissIntent = new Intent(this, MainActivity.class);
+        Intent dismissIntent = new Intent(this, ExerciseActivity.class);
         dismissIntent.setAction(CommonConstants.ACTION_PERFORMED);
         PendingIntent piDismiss = PendingIntent.getService(this, 0, dismissIntent, 0);
 
-        Intent snoozeIntent = new Intent(this, MainActivity.class);
+        Intent snoozeIntent = new Intent(this, ExerciseActivity.class);
         snoozeIntent.setAction(CommonConstants.ACTION_UNPERFORMED);
         PendingIntent piSnooze = PendingIntent.getService(this, 0, snoozeIntent, 0);
 
@@ -73,13 +71,6 @@ public class NotificationFitAssistant extends IntentService{
                         .setContentTitle("Notification!!!")
                         .setContentText("It is time for breakfast")
                         .setDefaults(Notification.DEFAULT_ALL) // requires VIBRATE permission
-                /*
-                 * Sets the big view "big text" style and supplies the
-                 * text (the user's reminder message) that will be displayed
-                 * in the detail area of the expanded notification.
-                 * These calls are ignored by the support library for
-                 * pre-4.1 devices.
-                 */
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(msg))
                         .addAction(R.drawable.ic_local_dining_white_24dp,
@@ -92,7 +83,7 @@ public class NotificationFitAssistant extends IntentService{
          * UI for snoozing or dismissing the notification.
          * This is available through either the normal view or big view.
          */
-        Intent resultIntent = new Intent(this, MainActivity.class);
+        Intent resultIntent = new Intent(this, ExerciseActivity.class);
         resultIntent.putExtra(CommonConstants.EXTRA_MESSAGE, msg);
         resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
@@ -106,9 +97,9 @@ public class NotificationFitAssistant extends IntentService{
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
 
-        builder.setContentIntent(resultPendingIntent);
-
-    }
+    builder.setContentIntent(resultPendingIntent);
+    startTimer(mMillis);
+}
 
     private void issueNotification(NotificationCompat.Builder builder) {
         mNotificationManager = (NotificationManager)
@@ -117,6 +108,16 @@ public class NotificationFitAssistant extends IntentService{
         mNotificationManager.notify(CommonConstants.NOTIFICATION_ID, builder.build());
     }
 
+    // Starts the timer according to the number of seconds the user specified.
+    private void startTimer(int millis) {
+        try {
+            Thread.sleep(millis);
+            Log.d(CommonConstants.DEBUG_TAG, "millis "+ millis);
+        } catch (InterruptedException e) {
+            Log.d(CommonConstants.DEBUG_TAG, "error"+ e.getMessage().toString());
+        }
+        issueNotification(builder);
+    }
 
 
 }

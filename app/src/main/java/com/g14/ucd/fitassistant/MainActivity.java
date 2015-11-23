@@ -6,7 +6,6 @@ import android.support.design.widget.TabLayout;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.Fragment;
@@ -25,10 +24,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import com.facebook.appevents.AppEventsLogger;
-import com.g14.ucd.fitassistant.notifications.NotificationFitAssistant;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
     private GregorianCalendar today;
-    static Intent mServiceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
         setSupportActionBar(toolbar);
-        mServiceIntent = new Intent(getApplicationContext(), NotificationFitAssistant.class);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
