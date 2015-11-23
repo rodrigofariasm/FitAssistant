@@ -305,13 +305,11 @@ public class NewDietScheduletActivity extends AppCompatActivity {
     public void createAlarms(){
         ArrayList<AlarmManager> notifications = new ArrayList<>();
         for(Meal meal: mealsRetreived){
-            Intent mealIntent = new Intent(this, StartServiceReceiver.class);
+            Intent mealIntent = new Intent(this, NotificationFitAssistant.class);
+            Log.d(CommonConstants.DEBUG_TAG, MealEnum.fromCode(meal.getType()).getValue());
             mealIntent.putExtra(CommonConstants.EXTRA_MESSAGE, MealEnum.fromCode(meal.getType()).getValue());
             mealIntent.setAction(CommonConstants.ACTION_MEAL);
-
-            mealIntent.putExtra(CommonConstants.EXTRA_TIMER, 10000);
-
-            PendingIntent pendingIntent = PendingIntent.getService(this, 0, mealIntent, 0);
+            PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(), notifications.size(), mealIntent, PendingIntent.FLAG_ONE_SHOT);
 
             AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
             Date mealDate = times.get(""+MealEnum.fromCode(meal.getType()).getCode());
@@ -319,7 +317,9 @@ public class NewDietScheduletActivity extends AppCompatActivity {
             calendar.set(Calendar.HOUR_OF_DAY, mealDate.getHours());
             calendar.set(Calendar.MINUTE, mealDate.getMinutes());
             calendar.set(Calendar.SECOND, 00);
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 24 * 60 * 60 * 1000, pendingIntent);
+            long when = calendar.getTimeInMillis();
+            Log.d(CommonConstants.DEBUG_TAG, calendar.getTime().toString());
+            alarmManager.set(AlarmManager.RTC, when, pendingIntent);
             notifications.add(MealEnum.fromCode(meal.getType()).getCode() - 1, alarmManager);
 
         }

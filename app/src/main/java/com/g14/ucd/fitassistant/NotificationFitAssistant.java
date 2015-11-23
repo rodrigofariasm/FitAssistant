@@ -88,9 +88,9 @@ public class NotificationFitAssistant extends IntentService{
          * UI for snoozing or dismissing the notification.
          * This is available through either the normal view or big view.
          */
-        Intent resultIntent = new Intent(this, ExerciseActivity.class);
+        Intent resultIntent = new Intent(this, MainActivity.class);
         resultIntent.putExtra(CommonConstants.EXTRA_MESSAGE, msg);
-        resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
 
         // Because clicking the notification opens a new ("special") activity, there's
         // no need to create an artificial back stack.
@@ -99,7 +99,7 @@ public class NotificationFitAssistant extends IntentService{
                         this,
                         0,
                         resultIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT
+                        0
                 );
 
     builder.setContentIntent(resultPendingIntent);
