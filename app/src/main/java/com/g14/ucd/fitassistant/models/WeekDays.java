@@ -4,13 +4,13 @@ package com.g14.ucd.fitassistant.models;
  * Created by Natália on 16/10/2015.
  */
 public enum WeekDays {
-    SUNDAY("Sunday",1),
-    MONDAY ("Monday",2),
-    TUESDAY ("Tueasdy",3),
-    WEDNESDAY ("Wednesday",4),
-    THURSDAY ("Thursday",5),
-    FRIDAY ("Friday",6),
-    SATURDAY ("Saturday",7);
+    SUNDAY("Sun",1),
+    MONDAY ("Mon",2),
+    TUESDAY ("Tue",3),
+    WEDNESDAY ("Wed",4),
+    THURSDAY ("Thu",5),
+    FRIDAY ("Fri",6),
+    SATURDAY ("Sat",7);
 
     private String value;
     private int code;

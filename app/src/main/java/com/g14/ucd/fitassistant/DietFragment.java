@@ -20,6 +20,7 @@ import java.util.List;
 
 public class DietFragment extends Fragment {
 
+
     public DietFragment() {
         // Required empty public constructor
     }
@@ -54,14 +55,18 @@ public class DietFragment extends Fragment {
         query.whereContainsAll("weekDays",todayOption);
         query.findInBackground(new FindCallback<DietEvent>() {
             @Override
-            public void done(List<DietEvent> dietEvent, ParseException exception) {
+            public void done(List<DietEvent> dietEvents, ParseException exception) {
                 if (exception == null) { // found diets
-                    
+                    createHistoricForDay(dietEvents);
                 } else if (exception != null) {
                     Log.d("FitAssistant", "Error: " + exception.getMessage());
                 }
             }
         });
+    }
+
+    public void createHistoricForDay(List<DietEvent> dietEvents){
+
     }
 
 }
