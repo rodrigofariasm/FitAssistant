@@ -199,11 +199,10 @@ public class NewGoalActivity extends AppCompatActivity {
         if(actual == null || actual.getText().toString().trim().equals("")){
             Toast.makeText(getApplicationContext(),"Can't save goal without the "+ actualLabel.getText().toString()+" field.",
                     Toast.LENGTH_LONG).show();
-        }else if(!(goalType.getSelectedItemPosition() == 3 || goalType.getSelectedItemPosition() == 4)){
-            if(desired == null || desired.getText().toString().trim().equals("")){
-                Toast.makeText(getApplicationContext(),"Can't save goal without the "+ desiredLabel.getText().toString()+" field.",
-                        Toast.LENGTH_LONG).show();
-            }
+        }else if((desired == null || desired.getText().toString().trim().equals("")) &&
+                (!(goalType.getSelectedItemPosition() == 3 || goalType.getSelectedItemPosition() == 4))){
+            Toast.makeText(getApplicationContext(),"Can't save goal without the "+ desiredLabel.getText().toString()+" field.",
+                    Toast.LENGTH_LONG).show();
         }else if(start == null || start.getText().toString().trim().equals("")){
             Toast.makeText(getApplicationContext(),"Can't save goal without the start date field.",
                     Toast.LENGTH_LONG).show();
@@ -211,34 +210,34 @@ public class NewGoalActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Can't save goal without the end date field.",
                     Toast.LENGTH_LONG).show();
         }else{
-            Map<String,Integer> record = new HashMap<String,Integer>();
-            record.put(start.getText().toString(), Integer.parseInt(actual.getText().toString()));
-            newGoal.setRecord(record);
-            newGoal.setUser(ParseUser.getCurrentUser());
-            newGoal.setActual(Integer.parseInt(actual.getText().toString()));
-            if(!desired.getText().toString().trim().equals("")){
-                newGoal.setDesired(Integer.parseInt(desired.getText().toString()));
-            }
-            newGoal.setType(goalType.getSelectedItem().toString());
             try {
+                Map<String,Integer> record = new HashMap<String,Integer>();
+                record.put(start.getText().toString(), Integer.parseInt(actual.getText().toString()));
+                newGoal.setRecord(record);
+                newGoal.setUser(ParseUser.getCurrentUser());
+                newGoal.setActual(Integer.parseInt(actual.getText().toString()));
+                if(!desired.getText().toString().trim().equals("")){
+                    newGoal.setDesired(Integer.parseInt(desired.getText().toString()));
+                }
+                newGoal.setType(goalType.getSelectedItem().toString());
                 Date startDate = dateFormatter.parse(start.getText().toString());
                 Date endDate = dateFormatter.parse(end.getText().toString());
                 newGoal.setStart(startDate);
                 newGoal.setEnd(endDate);
+                newGoal.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            Intent intent = new Intent(NewGoalActivity.this, GoalActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Log.d("Fit assitant", " error saving goal: " + e.getMessage());
+                        }
+                    }
+                });
             } catch (java.text.ParseException e) {
                 e.printStackTrace();
             }
-            newGoal.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e == null) {
-                        Intent intent = new Intent(NewGoalActivity.this, GoalActivity.class);
-                        startActivity(intent);
-                    } else {
-                        Log.d("Fit assitant", " error saving goal: " + e.getMessage());
-                    }
-                }
-            });
         }
     }
 

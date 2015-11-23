@@ -1,5 +1,6 @@
 package com.g14.ucd.fitassistant;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,9 +11,11 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.g14.ucd.fitassistant.models.Goal;
 import com.gc.materialdesign.views.ButtonFloat;
+import com.gc.materialdesign.widgets.Dialog;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -33,6 +36,10 @@ public class GoalActivity extends AppCompatActivity {
     }
 
     private void initialize(){
+        final ProgressDialog dialog  = new ProgressDialog(this);
+        final Dialog error_dialog = new Dialog(this, "No connection detected", "ok");
+        dialog.setTitle(getString(R.string.progress_loading_goals));
+        dialog.show();
         ParseQuery<Goal> query = ParseQuery.getQuery("Goal");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<Goal>() {
@@ -40,10 +47,13 @@ public class GoalActivity extends AppCompatActivity {
             public void done(List<Goal> goals, ParseException exception) {
                 if (exception == null) { // found goals
                     listGoals(goals);
+                    dialog.dismiss();
                     if (goals.size() == 0) {
                         showButtons();
                     }
-                } else if (exception != null) {
+                }
+                else if (exception != null) {
+                    error_dialog.show();
                     Log.d("FitAssistant", "Error: " + exception.getMessage());
                 }
             }
@@ -122,10 +132,9 @@ public class GoalActivity extends AppCompatActivity {
         });
     }
 
-
     public void delete(View v){
         final String objectId = (String) v.getTag();
-        Log.d("TAG: objectId",objectId);
+        Log.d("TAG: objectId", objectId);
 
         ParseQuery<Goal> query = ParseQuery.getQuery("Goal");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
@@ -135,6 +144,7 @@ public class GoalActivity extends AppCompatActivity {
                 if (exception == null) { // found goals
                     try {
                         goal.delete();
+                        Toast.makeText(getApplicationContext(), "Successful delete", Toast.LENGTH_LONG).show();
                         initialize();
                     } catch (ParseException e) {
                         Log.d("FitAssistant", "Error deleting goal" + e.getMessage());
@@ -182,19 +192,31 @@ public class GoalActivity extends AppCompatActivity {
         final String objectId = (String) v.getTag();
         Log.d("TAG: objectId", objectId);
 
+        final ProgressDialog dialog  = new ProgressDialog(this);
+        final Dialog error_dialog = new Dialog(this, "No connection detected", "ok");
+        dialog.setTitle(getString(R.string.progress_loading_viewGoal));
+        dialog.show();
         ParseQuery<Goal> query = ParseQuery.getQuery("Goal");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.getInBackground(objectId, new GetCallback<Goal>() {
             @Override
             public void done(Goal goal, final ParseException exception) {
                 if (exception == null) { // found goal
+                    dialog.dismiss();
                     Intent intent = new Intent(GoalActivity.this, ViewGoalActivity.class);
                     intent.putExtra("goal", objectId);
                     startActivity(intent);
                 } else if (exception != null) {
+                    error_dialog.show();
                     Log.d("FitAssistant", "Error finding goal with id " + objectId + ": " + exception.getMessage());
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        initialize();
     }
 }
