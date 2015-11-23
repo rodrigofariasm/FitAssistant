@@ -18,6 +18,7 @@ import android.widget.TableRow;
 import android.widget.Toast;
 
 import com.g14.ucd.fitassistant.models.Other;
+import com.g14.ucd.fitassistant.notifications.NotificationFitAssistant;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -42,6 +43,7 @@ public class GeneralActivityFragment extends android.support.v4.app.Fragment imp
     // Bool to track whether the app is already resolving an error
     private boolean mResolvingError = false;
     private OnFragmentInteractionListener mListener;
+    private Intent mServiceIntent;
 
     public GeneralActivityFragment() {
         // Required empty public constructor
@@ -58,8 +60,10 @@ public class GeneralActivityFragment extends android.support.v4.app.Fragment imp
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
-
+        
         super.onViewCreated(view, savedInstanceState);
+        mServiceIntent = new Intent(getActivity().getApplicationContext(), NotificationFitAssistant.class);
+
         mGoogleApiClient = new GoogleApiClient
                 .Builder(getActivity())
                 .addApi(Places.GEO_DATA_API)
