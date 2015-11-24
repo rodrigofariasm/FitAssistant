@@ -32,6 +32,7 @@ public final class CommonConstants {
     public static final String ACTION_PERFORMED = "ACTION_PERFORMED";
     public static final String ACTION_UNPERFORMED = "ACTION_UNPERFORMED";
     public static final String ACTION_MEAL = "ACTION_MEAL";
+    public static final String ACTION_EXERCISE = "ACTION_EXERCISE";
     public static final String EXTRA_MESSAGE= "EXTRA_MESSAGE";
     public static final String MEAL_TYPE= "MEALTYPE";
 

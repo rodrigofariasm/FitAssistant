@@ -1,9 +1,11 @@
 package com.g14.ucd.fitassistant;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -28,6 +30,8 @@ import com.g14.ucd.fitassistant.models.Exercise;
 import com.g14.ucd.fitassistant.models.ExerciseEvent;
 import com.g14.ucd.fitassistant.models.FitActivity;
 import com.g14.ucd.fitassistant.models.Gym;
+import com.g14.ucd.fitassistant.models.Meal;
+import com.g14.ucd.fitassistant.models.MealEnum;
 import com.g14.ucd.fitassistant.models.Other;
 import com.g14.ucd.fitassistant.models.WeekDays;
 import com.gc.materialdesign.views.ButtonFloat;
@@ -50,6 +54,8 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
     private static EditText editText;
     private static Spinner spinnerFitActivity;
     private static CheckBox repeat;
+    private Date time;
+    private FitActivity fitActivity;
     private ExerciseEvent newEvent;
     private List<Integer> weekdays;
 
@@ -200,14 +206,14 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
         final ProgressDialog dialog  = new ProgressDialog(this);
         dialog.setTitle(getString(R.string.progress_saving_event));
         dialog.show();
-        FitActivity fitActivity = (FitActivity) spinnerFitActivity.getSelectedItem();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("H:mm");
+        fitActivity = (FitActivity) spinnerFitActivity.getSelectedItem();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
         try{
-            Date time = dateFormat.parse(editText.getText().toString());
+            time = dateFormat.parse(editText.getText().toString());
             newEvent.setRepeat(repeat.isCheck());
             Log.d(CommonConstants.DEBUG_TAG, "" + repeat.isCheck());
             newEvent.setTime(time);
-            dialog.dismiss();
+
         } catch (java.text.ParseException e) {
             e.printStackTrace();
         }
@@ -219,10 +225,13 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
         newEvent.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if (e != null) {
-                    Log.d("FitAssistant", "Error: " + e.getMessage());
-                } else {
+                if (e == null) {
+                    createAlarms();
+                    dialog.dismiss();
                     initialize();
+                } else {
+                    Log.d("FitAssistant", "Error: " + e.getMessage());
+
                 }
             }
         });
@@ -291,5 +300,40 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             editText.setText(hourOfDay + ":" + minute);
         }
+    }
+
+
+    public void createAlarms(){
+        ArrayList<AlarmManager> notifications = new ArrayList<>();
+        for(Integer weekday : weekdays){
+            Intent exerciseIntent = new Intent(this, NotificationFitAssistant.class);
+            exerciseIntent.putExtra(CommonConstants.EXTRA_MESSAGE, fitActivity.getName());
+            exerciseIntent.setAction(CommonConstants.ACTION_EXERCISE);
+            PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(), Application.notification_counter,
+                    exerciseIntent, PendingIntent.FLAG_ONE_SHOT);
+            Application.notification_counter++;
+            AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+            Date mealDate = new Date(time.getTime());
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.DAY_OF_WEEK, weekday);
+            calendar.set(Calendar.HOUR_OF_DAY, mealDate.getHours());
+            calendar.set(Calendar.MINUTE, mealDate.getMinutes());
+            calendar.set(Calendar.SECOND, 00);
+            long when = calendar.getTimeInMillis();
+            Log.d(CommonConstants.DEBUG_TAG, calendar.getTime().toString());
+
+            if(repeat.isCheck()){
+                alarmManager.set(AlarmManager.RTC_WAKEUP, when, pendingIntent);
+            }else{
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, when, 7*24*60*60*1000, pendingIntent);
+            }
+            notifications.add(alarmManager);
+
+        }
+
+    Log.d(CommonConstants.DEBUG_TAG, ""+CommonConstants.NOTIFICATION_ID);
+    Log.d(CommonConstants.DEBUG_TAG, notifications.toString());
+    Application.notifications.put(CommonConstants.NOTIFICATION_ID, notifications);
+
     }
 }

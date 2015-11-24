@@ -143,5 +143,6 @@
     <string name="go_there">Go there</string>
     <string name="repeat">Repeat</string>
     <string name="add_exercise_event">+ExerciseEvent</string>
+    <string name="title_activity_result">ResultActivity</string>
 
 </resources>
