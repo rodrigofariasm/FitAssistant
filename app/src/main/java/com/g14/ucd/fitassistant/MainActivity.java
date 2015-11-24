@@ -6,7 +6,6 @@ import android.support.design.widget.TabLayout;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.Fragment;
@@ -32,16 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.facebook.appevents.AppEventsLogger;
-import com.g14.ucd.fitassistant.models.DietEvent;
-import com.g14.ucd.fitassistant.models.Historic;
-import com.g14.ucd.fitassistant.models.HistoricType;
-import com.g14.ucd.fitassistant.notifications.NotificationFitAssistant;
-import com.gc.materialdesign.views.CheckBox;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -69,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         mServiceIntent = new Intent(getApplicationContext(), NotificationFitAssistant.class);
         dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
-
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 

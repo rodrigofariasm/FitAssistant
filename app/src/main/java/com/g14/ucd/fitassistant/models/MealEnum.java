@@ -5,11 +5,11 @@ package com.g14.ucd.fitassistant.models;
  */
 public enum MealEnum {
     BREAKFAST("Breakfast",1),
-    MORNING_SNAK("Morning Snak",2),
+    MORNING_SNACK("Morning Snack",2),
     LUNCH("Lunch",3),
-    AFTERNOON_SNAK("Afternoon Snak",4),
+    AFTERNOON_SNACK("Afternoon Snack",4),
     DINNER("Dinner",5),
-    NIGHT_SNAK("Night Snak",6);
+    NIGHT_SNACK("Night Snack",6);
 
     private String value;
     private int code;

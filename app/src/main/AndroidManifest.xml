@@ -14,22 +14,32 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
 
     <application
         android:name=".Application"
         android:allowBackup="true"
         android:icon="@mipmap/fitnessicon"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        >
-        <meta-data android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+        android:theme="@style/AppTheme" >
+        <service
+            android:name=".NotificationFitAssistant"
+            android:exported="false" />
+
+        <receiver android:name=".NotificationPublisher" >
+        </receiver>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCdswkTRjwSKyvpAKqysB8ddl8nDCjsvAI"/>
+            android:value="AIzaSyCdswkTRjwSKyvpAKqysB8ddl8nDCjsvAI" />
+
         <activity
             android:name=".DispatchActivity"
             android:label="@string/app_name"
@@ -85,8 +95,8 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <meta-data
-            android:launchMode="singleTask"
             android:name="com.facebook.sdk.ApplicationId"
+            android:launchMode="singleTask"
             android:value="@string/facebook_app_id" />
 
         <activity
@@ -127,8 +137,8 @@
         <activity
             android:name=".GoalActivity"
             android:label="@string/title_activity_goal"
-            android:screenOrientation="portrait"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/MyDietTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -137,8 +147,8 @@
         <activity
             android:name=".NewGoalActivity"
             android:label="@string/title_activity_new_goal"
-            android:screenOrientation="portrait"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/MyDietTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -150,12 +160,13 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/MyDietTheme" >
-]        </activity>
+]        
+        </activity>
         <activity
             android:name=".ViewGoalActivity"
             android:label="@string/title_activity_view_goal"
-            android:screenOrientation="portrait"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/MyDietTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -164,22 +175,26 @@
         <activity
             android:name=".ExerciseScheduleActivity"
             android:label="@string/title_activity_exercise_schedule"
-            android:launchMode="singleTask">
-
-        </activity>
-        <activity
-            android:name=".DietScheduleActivity"
             android:launchMode="singleTask"
-            android:label="@string/title_activity_diet_schedule"
-            android:theme="@style/MyDietTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDietTheme" >
         </activity>
         <activity
             android:name=".DietScheduleActivity"
             android:label="@string/title_activity_diet_schedule"
-            android:theme="@style/MyDietTheme"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDietTheme" >
+        </activity>
+        <activity
+            android:name=".ResultActivity"
+            android:parentActivityName=".MainActivity"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:excludeFromRecents="true">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
         </activity>
     </application>
 

@@ -132,4 +132,13 @@
         android:onClick="selectWeekDay"
         android:tag="7"/>
 
+    <com.gc.materialdesign.views.CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/repeat"
+        android:id="@+id/repeat"
+        android:layout_below="@+id/sundayCheckbox"
+        android:checked="true" />
+
+
 </RelativeLayout>

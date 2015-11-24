@@ -21,6 +21,7 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.g14.ucd.fitassistant.models.Diet;
 import com.g14.ucd.fitassistant.models.Meal;
@@ -55,7 +56,10 @@ public class NewDietActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_diet);
+        initialize();
+    }
 
+    private void initialize(){
         if (!isUpdate()) {
             newDiet = new Diet();
             meals = new ArrayList<Meal>();
@@ -160,7 +164,6 @@ public class NewDietActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
     public void addNewOption(View view) {
         addNewOption(view, null, null);
     }
@@ -244,6 +247,8 @@ public class NewDietActivity extends AppCompatActivity {
                         ParseObject.saveAll(meals);
                         ParseObject.deleteAll(getMealsToDelete(meals, mealsRetreived));
                         dialog.dismiss();
+                        Intent intent = new Intent(NewDietActivity.this, DietActivity.class);
+                        startActivity(intent);
                     } catch (ParseException parseE) {
                         newDiet.deleteInBackground();
                         Log.d("FITASSISTANT", "Error saving meals " + parseE.getMessage());
@@ -251,10 +256,7 @@ public class NewDietActivity extends AppCompatActivity {
                 }
             }
         });
-        Intent intent = new Intent(NewDietActivity.this, DietActivity.class);
-        startActivity(intent);
     }
-
 
     private void createMeal(int id) {
         String mealId = null;
@@ -293,7 +295,6 @@ public class NewDietActivity extends AppCompatActivity {
         }
         return null;
     }
-
 
     private List<Meal> getMealsToDelete(List<Meal> mealsUpdated, List<Meal> mealsRetreived){
         List<Meal> mealsDeleted = new ArrayList<Meal>();

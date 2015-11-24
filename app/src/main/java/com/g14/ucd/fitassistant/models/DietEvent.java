@@ -1,6 +1,7 @@
 package com.g14.ucd.fitassistant.models;
 
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -68,6 +69,24 @@ public class DietEvent extends ParseObject{
             put("user",value);
         }
     }
+    public void setNotification(int i ){
+        put("notificationGroup", i);
+    }
 
+    public int getNotification(){
+        try{
+            return fetchIfNeeded().getInt("notificationGroup");
+        }catch(ParseException e){
+
+        }
+        return 0;
+    }
+
+    public boolean getRepeat(){
+        return getBoolean("repeat");
+    }
+    public void setRepeat(boolean repeat){
+        put("repeat", repeat);
+    }
 
 }

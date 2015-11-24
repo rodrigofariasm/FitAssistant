@@ -95,20 +95,19 @@
     <string name="title_activity_view_goal">View Goal</string>
     <string name="gym_exercises">Gym Exercises</string>
     <string name="progress_loading_exercises">Loading your exercises</string>
+    <string name="progress_loading_goals">Loading your goals</string>
     <string name="progress_loading_diets">Loading your diets</string>
+    <string name="progress_saving_goal">Saving goal</string>
+    <string name="progress_loading_viewGoal">Loading your goal to view</string>
     <string name="progress_loading">Loading ...</string>
     <string name="sections">Sections</string>
     <string name="repetitions">Repetitions</string>
     <string-array name="goals_array">
         <item>Lose fat</item>
-        <item>Gain weight</item>
+        <item>Gain body mass</item>
         <item>Lose weight</item>
-    </string-array>
-    <string-array name="time_array">
-        <item>day(s)</item>
-        <item>week(s)</item>
-        <item>month(s)</item>
-        <item>years(s)</item>
+        <item>Follow diet</item>
+        <item>Go to gym</item>
     </string-array>
     <string-array name="series_array">
         <item>Series</item>
@@ -142,5 +141,8 @@
     <string name="no_exercise_schedule_message">You don\'t have events. Create one.</string>
     <string name="title_activity_diet_schedule">Diet Events</string>
     <string name="go_there">Go there</string>
+    <string name="repeat">Repeat</string>
+    <string name="add_exercise_event">+ExerciseEvent</string>
+    <string name="title_activity_result">ResultActivity</string>
 
 </resources>

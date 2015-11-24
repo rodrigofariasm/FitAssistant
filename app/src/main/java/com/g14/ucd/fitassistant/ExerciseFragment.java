@@ -9,14 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.g14.ucd.fitassistant.models.DietEvent;
-import com.g14.ucd.fitassistant.models.Exercise;
 import com.g14.ucd.fitassistant.models.ExerciseEvent;
 import com.g14.ucd.fitassistant.models.FitActivity;
 import com.g14.ucd.fitassistant.models.Gym;
 import com.g14.ucd.fitassistant.models.Historic;
 import com.g14.ucd.fitassistant.models.Other;
-import com.g14.ucd.fitassistant.notifications.CommonConstants;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -26,7 +23,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
-
 
 public class ExerciseFragment extends Fragment {
     Intent mServiceIntent;
@@ -41,7 +37,7 @@ public class ExerciseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mServiceIntent = new Intent(getActivity(), MainActivity.class);
+
     }
 
     @Override
@@ -54,11 +50,6 @@ public class ExerciseFragment extends Fragment {
 
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
-        mServiceIntent.putExtra(CommonConstants.EXTRA_MESSAGE, "Standard Notification");
-        mServiceIntent.setAction(CommonConstants.ACTION_PING);
-        mServiceIntent.putExtra(CommonConstants.EXTRA_TIMER, 10000);
-        // Launches IntentService "PingService" to set timer.
-        getActivity().startService(mServiceIntent);
         initialize();
     }
 
@@ -98,7 +89,7 @@ public class ExerciseFragment extends Fragment {
                 R.id.checkbox_exercise_done,// The ID of the textview to populate.
                 events,exercises,null);
 
-        ListView listView = (ListView) getActivity().findViewById(R.id.listView_dietSchedule);
+        ListView listView = (ListView) getActivity().findViewById(R.id.listView_exercise_Schedule);
         listView.setAdapter(mAdapter);
     }
 

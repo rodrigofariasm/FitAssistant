@@ -1,31 +1,24 @@
 package com.g14.ucd.fitassistant;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TableRow;
 import android.widget.Toast;
 
 import com.g14.ucd.fitassistant.models.Other;
-import com.g14.ucd.fitassistant.notifications.NotificationFitAssistant;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;

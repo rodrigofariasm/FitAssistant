@@ -1,5 +1,7 @@
 package com.g14.ucd.fitassistant;
 
+import android.app.AlarmManager;
+import android.app.Notification;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -20,6 +22,9 @@ import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.facebook.FacebookSdk;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -28,14 +33,16 @@ import com.facebook.FacebookSdk;
 public class Application extends android.app.Application {
 
     public static final boolean APPDEBUG = false;
-
+    public static Integer notification_counter;
     private static SharedPreferences preferences;
-
+    static Map<Integer, ArrayList<AlarmManager>> notifications;
     private static ConfigHelper configHelper;
     public static final String APPTAG = "FitAssistant";
     @Override
     public void onCreate(){
+
         super.onCreate();
+        notification_counter = 1;
         ParseObject.registerSubclass(Diet.class);
         ParseObject.registerSubclass(FitActivity.class);
         ParseObject.registerSubclass(Gym.class);
@@ -61,6 +68,7 @@ public class Application extends android.app.Application {
 
         ParseInstallation pi = ParseInstallation.getCurrentInstallation();
         FacebookSdk.sdkInitialize(getApplicationContext());
+        notifications = new HashMap<Integer, ArrayList<AlarmManager>>();
 
 
         // Initialize the SDK before executing any other operations,

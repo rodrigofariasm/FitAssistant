@@ -156,7 +156,15 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:layout_below="@id/weekday_buttons"/>
-
+         <com.gc.materialdesign.views.CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/repeat"
+            android:id="@+id/repeat_diet"
+             android:checked="true"
+             android:layout_alignParentBottom="true"
+             android:layout_alignLeft="@+id/list_meals_schedule"
+             android:layout_alignStart="@+id/list_meals_schedule" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -164,6 +172,9 @@
             android:id="@+id/button_save_diet_schedule"
             android:layout_gravity="bottom"
             android:onClick="saveEvent"
-            android:layout_below="@id/list_meals_schedule"/>
+            android:gravity="right"
+            android:layout_alignTop="@+id/repeat_diet"
+            android:layout_alignRight="@+id/weekday_buttons"
+            android:layout_alignEnd="@+id/weekday_buttons" />
 
 </RelativeLayout>

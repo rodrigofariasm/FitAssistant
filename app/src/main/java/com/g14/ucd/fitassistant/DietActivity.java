@@ -22,6 +22,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.g14.ucd.fitassistant.models.Diet;
 import com.g14.ucd.fitassistant.models.Meal;
@@ -62,7 +63,7 @@ public class DietActivity extends AppCompatActivity {
             public void done(List<Diet> diets, ParseException exception) {
                 if (exception == null) { // found diets
                     listDiets(diets);
-                    if (diets.size() == 0){
+                    if (diets.size() == 0) {
                         showButtons();
                     }
                 } else if (exception != null) {
@@ -155,6 +156,10 @@ public class DietActivity extends AppCompatActivity {
         final String objectId = (String) v.getTag();
         Log.d("TAG: objectId",objectId);
 
+        final ProgressDialog dialog  = new ProgressDialog(this);
+        final Dialog error_dialog = new Dialog(this, "No connection detected", "ok");
+        dialog.setTitle("Deleting diet");
+        dialog.show();
         ParseQuery<Diet> query = ParseQuery.getQuery("Diet");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.getInBackground(objectId, new GetCallback<Diet>() {
@@ -169,6 +174,7 @@ public class DietActivity extends AppCompatActivity {
                         List<Meal> meals = query.find();
                         ParseObject.deleteAll(meals);
                         diet.delete();
+                        dialog.dismiss();
                         initialize();
                     } catch (ParseException e) {
                         Log.d("FitAssistant", "Error deleting diet" + e.getMessage());
@@ -178,6 +184,12 @@ public class DietActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        initialize();
     }
 
 }
