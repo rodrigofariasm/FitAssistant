@@ -18,6 +18,7 @@ import com.g14.ucd.fitassistant.models.DietEvent;
 import com.g14.ucd.fitassistant.models.ExerciseEvent;
 import com.g14.ucd.fitassistant.models.Meal;
 import com.gc.materialdesign.views.ButtonFloat;
+import com.gc.materialdesign.widgets.Dialog;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -46,6 +47,7 @@ public class DietScheduleActivity extends AppCompatActivity {
         newDietEvent = new DietEvent();
         events = new ArrayList<DietEvent>();
         final ProgressDialog dialog  = new ProgressDialog(this);
+        final Dialog error_dialog = new Dialog(this, "No connection detected", "ok");
         dialog.setTitle(getString(R.string.progress_loading));
         dialog.show();
 
@@ -63,10 +65,12 @@ public class DietScheduleActivity extends AppCompatActivity {
                         listDietEvents();
                         hideButtons();
                     }
-                    dialog.dismiss();
+
                 } else if (exception != null) {
                     Log.d("FitAssistant", "Error: " + exception.getMessage());
+                    error_dialog.show();
                 }
+                dialog.dismiss();
             }
         });
     }

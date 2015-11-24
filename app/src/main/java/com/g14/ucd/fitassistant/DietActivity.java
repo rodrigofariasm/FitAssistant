@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.g14.ucd.fitassistant.models.Diet;
 import com.g14.ucd.fitassistant.models.Meal;
 import com.gc.materialdesign.views.ButtonFloat;
+import com.gc.materialdesign.widgets.Dialog;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -51,6 +52,7 @@ public class DietActivity extends AppCompatActivity {
 
     private void initialize(){
         final ProgressDialog dialog  = new ProgressDialog(this);
+        final Dialog error_dialog = new Dialog(this, "No connection detected", "ok");
         dialog.setTitle(getString(R.string.progress_loading_diets));
         dialog.show();
         ParseQuery<Diet> query = ParseQuery.getQuery("Diet");
@@ -63,10 +65,11 @@ public class DietActivity extends AppCompatActivity {
                     if (diets.size() == 0){
                         showButtons();
                     }
-                    dialog.dismiss();
                 } else if (exception != null) {
                     Log.d("FitAssistant", "Error: " + exception.getMessage());
+                    error_dialog.show();
                 }
+                dialog.dismiss();
             }
         });
     }

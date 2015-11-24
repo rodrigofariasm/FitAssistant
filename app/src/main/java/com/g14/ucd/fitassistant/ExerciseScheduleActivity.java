@@ -63,6 +63,8 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
         weekdays = new ArrayList<Integer>();
         newEvent = new ExerciseEvent();
         final ProgressDialog dialog  = new ProgressDialog(this);
+
+        final com.gc.materialdesign.widgets.Dialog error_dialog = new com.gc.materialdesign.widgets.Dialog(this, "No connection detected", "ok");
         dialog.setTitle(getString(R.string.progress_loading));
         dialog.show();
         ParseQuery<ExerciseEvent> query = ParseQuery.getQuery("ExerciseEvent");
@@ -77,10 +79,11 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
                     }else{
                         hideButtons();
                     }
-                    dialog.dismiss();
                 } else if (exception != null) {
                     Log.d("FitAssistant", "Error: " + exception.getMessage());
-                }
+                    error_dialog.show();
+            }
+                dialog.dismiss();
             }
         });
     }

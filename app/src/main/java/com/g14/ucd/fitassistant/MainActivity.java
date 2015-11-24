@@ -18,18 +18,30 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.facebook.appevents.AppEventsLogger;
+import com.g14.ucd.fitassistant.models.DietEvent;
+import com.g14.ucd.fitassistant.models.Historic;
+import com.g14.ucd.fitassistant.models.HistoricType;
 import com.g14.ucd.fitassistant.notifications.NotificationFitAssistant;
+import com.gc.materialdesign.views.CheckBox;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private String mActivityTitle;
     private GregorianCalendar today;
     static Intent mServiceIntent;
+    private SimpleDateFormat dateFormatter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         setupViewPager(viewPager);
         setSupportActionBar(toolbar);
         mServiceIntent = new Intent(getApplicationContext(), NotificationFitAssistant.class);
+        dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
@@ -132,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         // Logs 'install' and 'app activate' App Events.
         AppEventsLogger.activateApp(this);
     }
@@ -140,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
     }
@@ -247,6 +259,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -259,5 +272,6 @@ public class MainActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
+
 
 }
