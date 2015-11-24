@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.g14.ucd.fitassistant.models.Diet;
+import com.g14.ucd.fitassistant.models.DietEvent;
 import com.g14.ucd.fitassistant.models.Exercise;
 import com.g14.ucd.fitassistant.models.ExerciseEvent;
 import com.g14.ucd.fitassistant.models.FitActivity;
@@ -37,6 +38,7 @@ import com.g14.ucd.fitassistant.models.WeekDays;
 import com.gc.materialdesign.views.ButtonFloat;
 import com.gc.materialdesign.views.CheckBox;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -98,8 +100,8 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
 
         ListAdapter mAdapter = new ListAdapter(
                 this, // The current context (this activity)
-                R.layout.list_item_diet, // The name of the layout ID.
-                R.id.list_item_name_diet,R.id.button_view, R.id.button_update,R.id.button_delete, -1,// The ID of the textview to populate.
+                R.layout.list_item_exercise_event, // The name of the layout ID.
+                R.id.list_item_name_exercise_event, 0, R.id.button_update_exercise_event,R.id.button_delete_exercise_event, -1,// The ID of the textview to populate.
                 exerciseEvents);
 
         ListView listView = (ListView) findViewById(R.id.listView_exerciseSchedule);
@@ -211,7 +213,6 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
         try{
             time = dateFormat.parse(editText.getText().toString());
             newEvent.setRepeat(repeat.isCheck());
-            Log.d(CommonConstants.DEBUG_TAG, "" + repeat.isCheck());
             newEvent.setTime(time);
 
         } catch (java.text.ParseException e) {
@@ -334,6 +335,56 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
     Log.d(CommonConstants.DEBUG_TAG, ""+CommonConstants.NOTIFICATION_ID);
     Log.d(CommonConstants.DEBUG_TAG, notifications.toString());
     Application.notifications.put(CommonConstants.NOTIFICATION_ID, notifications);
+
+    }
+
+    public void delete(View v){
+        final String objectId = (String) v.getTag();
+        Log.d("TAG: objectId",objectId);
+
+        ParseQuery<ExerciseEvent> query = ParseQuery.getQuery("ExerciseEvent");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.getInBackground(objectId, new GetCallback<ExerciseEvent>() {
+            @Override
+            public void done(ExerciseEvent exeEvent, final ParseException exception) {
+                if (exception == null) { // found diets
+                    try {
+                        exeEvent.delete();
+                        initialize();
+                    } catch (ParseException e) {
+                        Log.d("FitAssistant", "Error deleting exercise event" + e.getMessage());
+                    }
+                } else if (exception != null) {
+                    Log.d("FitAssistant", "Error finding exercise event with id " + objectId + ": " + exception.getMessage());
+                }
+            }
+        });
+    }
+
+    public void update(View v){
+        final String objectId = (String) v.getTag();
+        Log.d("TAG: objectId",objectId);
+
+        ParseQuery<ExerciseEvent> query = ParseQuery.getQuery("ExerciseEvent");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.getInBackground(objectId, new GetCallback<ExerciseEvent>() {
+            @Override
+            public void done(ExerciseEvent exeEvent, final ParseException exception) {
+                if (exception == null) { // found diets
+                    showInputDialog();
+                    fillFields(exeEvent);
+                } else if (exception != null) {
+                    Log.d("FitAssistant", "Error finding exercise event with id " + objectId + ": " + exception.getMessage());
+                }
+            }
+        });
+    }
+
+    private void fillFields(ExerciseEvent event){
+        spinnerFitActivity.setPrompt(event.getName());
+
+        editText.setText(""+event.getTime().getHours()+":"+event.getTime().getMinutes());
+        repeat.setChecked(event.getRepeat());
 
     }
 }

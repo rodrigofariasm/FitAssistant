@@ -47,11 +47,10 @@ public class ExerciseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
-        initialize();
+
     }
 
     private void initialize(){
-
         exercises = new ArrayList<FitActivity>();
         gymExercises = new HashMap<FitActivity, ArrayList<Exercise>>();
         ParseQuery<Gym> query = ParseQuery.getQuery("Gym");

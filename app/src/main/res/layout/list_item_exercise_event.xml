@@ -10,10 +10,10 @@
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:gravity="center"
         android:textSize="14sp"
-        android:id="@+id/list_item_name_diet_event"
+        android:id="@+id/list_item_name_exercise_event"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/button_update_diet_event"
+        android:layout_toLeftOf="@+id/button_update_exercise_event"
         android:layout_alignParentTop="true">
     </TextView>
 
@@ -21,18 +21,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_edit_blue"
-        android:id="@+id/button_update_diet_event"
-        android:layout_alignTop="@+id/button_delete_diet_event"
-        android:layout_toLeftOf="@+id/button_delete_diet_event"
-        android:layout_toStartOf="@+id/button_delete_diet_event"
+        android:id="@+id/button_update_exercise_event"
+        android:layout_alignTop="@+id/button_delete_exercise_event"
+        android:layout_toLeftOf="@+id/button_delete_exercise_event"
+        android:layout_toStartOf="@+id/button_delete_exercise_event"
         android:onClick="update"/>
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_trash_blue"
-        android:id="@+id/button_delete_diet_event"
-        android:layout_alignBottom="@+id/list_item_name_diet_event"
+        android:id="@+id/button_delete_exercise_event"
+        android:layout_alignBottom="@+id/list_item_name_exercise_event"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:onClick="delete"/>
