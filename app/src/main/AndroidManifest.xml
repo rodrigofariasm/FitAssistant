@@ -173,7 +173,9 @@
         <activity
             android:name=".ExerciseScheduleActivity"
             android:label="@string/title_activity_exercise_schedule"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDietTheme">
 
         </activity>
         <activity

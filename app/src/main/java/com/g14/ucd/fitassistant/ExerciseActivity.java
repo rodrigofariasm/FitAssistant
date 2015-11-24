@@ -126,7 +126,6 @@ public class ExerciseActivity extends AppCompatActivity {
                 if (!exercises.isEmpty()) {
                     hideButtons();
                     listExercises(exercises);
-                    Log.d("FitAssistant", "ok");
                 }
             } else {
                 Log.d("FitAssistant", "Error: " + exception.getMessage());

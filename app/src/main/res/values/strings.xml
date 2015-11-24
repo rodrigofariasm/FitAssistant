@@ -141,5 +141,7 @@
     <string name="no_exercise_schedule_message">You don\'t have events. Create one.</string>
     <string name="title_activity_diet_schedule">Diet Events</string>
     <string name="go_there">Go there</string>
+    <string name="repeat">Repeat</string>
+    <string name="add_exercise_event">+ExerciseEvent</string>
 
 </resources>

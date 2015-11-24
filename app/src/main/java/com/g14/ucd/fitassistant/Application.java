@@ -32,7 +32,7 @@ import java.util.Map;
 public class Application extends android.app.Application {
 
     public static final boolean APPDEBUG = false;
-
+    public static Integer notification_counter;
     private static SharedPreferences preferences;
     static Map<Integer, ArrayList<AlarmManager>> notifications;
     private static ConfigHelper configHelper;
@@ -41,7 +41,7 @@ public class Application extends android.app.Application {
     public void onCreate(){
 
         super.onCreate();
-
+        notification_counter = 0;
         ParseObject.registerSubclass(Diet.class);
         ParseObject.registerSubclass(FitActivity.class);
         ParseObject.registerSubclass(Gym.class);

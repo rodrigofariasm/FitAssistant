@@ -5,7 +5,7 @@ package com.g14.ucd.fitassistant.models;
  */
 public enum MealEnum {
     BREAKFAST("Breakfast",1),
-    MORNING_SNAcK("Morning Snack",2),
+    MORNING_SNACK("Morning Snack",2),
     LUNCH("Lunch",3),
     AFTERNOON_SNACK("Afternoon Snack",4),
     DINNER("Dinner",5),

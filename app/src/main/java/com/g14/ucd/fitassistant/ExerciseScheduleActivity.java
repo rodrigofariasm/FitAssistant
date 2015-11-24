@@ -31,6 +31,7 @@ import com.g14.ucd.fitassistant.models.Gym;
 import com.g14.ucd.fitassistant.models.Other;
 import com.g14.ucd.fitassistant.models.WeekDays;
 import com.gc.materialdesign.views.ButtonFloat;
+import com.gc.materialdesign.views.CheckBox;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -48,6 +49,7 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
 
     private static EditText editText;
     private static Spinner spinnerFitActivity;
+    private static CheckBox repeat;
     private ExerciseEvent newEvent;
     private List<Integer> weekdays;
 
@@ -74,7 +76,7 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
                     listActivities(exerciseEvents);
                     if (exerciseEvents.size() == 0) {
                         showButtons();
-                    }else{
+                    } else {
                         hideButtons();
                     }
                     dialog.dismiss();
@@ -155,6 +157,7 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
         if (exercises.size() > 0) {
             spinnerFitActivity = (Spinner) promptView.findViewById(R.id.exerciseSpinner);
             editText = (EditText) promptView.findViewById(R.id.editText_timePicker);
+            repeat = (CheckBox) promptView.findViewById(R.id.repeat);
             SpinnerAdapter<Exercise> adapter = new SpinnerAdapter(
                     ExerciseScheduleActivity.this, // The current context (this activity)
                     R.layout.spinner_item_diet, // The name of the layout ID.
@@ -201,6 +204,8 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("H:mm");
         try{
             Date time = dateFormat.parse(editText.getText().toString());
+            newEvent.setRepeat(repeat.isCheck());
+            Log.d(CommonConstants.DEBUG_TAG, "" + repeat.isCheck());
             newEvent.setTime(time);
             dialog.dismiss();
         } catch (java.text.ParseException e) {
@@ -214,9 +219,9 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
         newEvent.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if(e != null){
+                if (e != null) {
                     Log.d("FitAssistant", "Error: " + e.getMessage());
-                }else{
+                } else {
                     initialize();
                 }
             }
@@ -252,9 +257,16 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }else if (id == R.id.add_exercise_event){
+            openNewExerciseScheduleActivity();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void openNewExerciseScheduleActivity(){
+        showInputDialog();
+        return;
     }
 
     public void showTimePickerDialog(View v) {

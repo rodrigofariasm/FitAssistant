@@ -82,4 +82,11 @@ public class DietEvent extends ParseObject{
         return 0;
     }
 
+    public boolean getRepeat(){
+        return getBoolean("repeat");
+    }
+    public void setRepeat(boolean repeat){
+        put("repeat", repeat);
+    }
+
 }

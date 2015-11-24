@@ -27,6 +27,7 @@ import com.g14.ucd.fitassistant.models.Diet;
 import com.g14.ucd.fitassistant.models.DietEvent;
 import com.g14.ucd.fitassistant.models.Meal;
 import com.g14.ucd.fitassistant.models.MealEnum;
+import com.gc.materialdesign.views.CheckBox;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -50,6 +51,7 @@ public class NewDietScheduletActivity extends AppCompatActivity {
     List<Meal> mealsRetreived;
     DietEvent newDietEvent;
     ListView listView;
+    CheckBox repeat;
     static EditText time;
     TextView meal;
     static Map<String,Date> times;
@@ -63,6 +65,7 @@ public class NewDietScheduletActivity extends AppCompatActivity {
         time = (EditText) findViewById(R.id.meal_time);
         meal = (TextView) findViewById(R.id.item_name_meal);
         selectbox = (Spinner) findViewById(R.id.diets_spinner);
+        repeat = (CheckBox) findViewById(R.id.repeat_diet);
         dietsRetreived = new ArrayList<Diet>();
         mealsRetreived = new ArrayList<Meal>();
         times = new HashMap<String,Date>();
@@ -236,6 +239,7 @@ public class NewDietScheduletActivity extends AppCompatActivity {
         EditText editTextName = (EditText) this.findViewById(R.id.name_diet_schedule);
         newDietEvent.setName(editTextName.getText().toString());
         newDietEvent.setTimes(times);
+        newDietEvent.setRepeat(repeat.isCheck());
         newDietEvent.setNotification(CommonConstants.NOTIFICATION_ID);
         newDietEvent.setWeekDays(weekdays);
         newDietEvent.setUser(ParseUser.getCurrentUser());
@@ -305,22 +309,31 @@ public class NewDietScheduletActivity extends AppCompatActivity {
     public void createAlarms(){
         ArrayList<AlarmManager> notifications = new ArrayList<>();
         for(Meal meal: mealsRetreived){
-            Intent mealIntent = new Intent(this, NotificationFitAssistant.class);
-            Log.d(CommonConstants.DEBUG_TAG, MealEnum.fromCode(meal.getType()).getValue());
-            mealIntent.putExtra(CommonConstants.EXTRA_MESSAGE, MealEnum.fromCode(meal.getType()).getValue());
-            mealIntent.setAction(CommonConstants.ACTION_MEAL);
-            PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(), notifications.size(), mealIntent, PendingIntent.FLAG_ONE_SHOT);
+            for(Integer weekday : weekdays){
+                Intent mealIntent = new Intent(this, NotificationFitAssistant.class);
+                Log.d(CommonConstants.DEBUG_TAG, MealEnum.fromCode(meal.getType()).getValue());
+                mealIntent.putExtra(CommonConstants.EXTRA_MESSAGE, MealEnum.fromCode(meal.getType()).getValue());
+                mealIntent.setAction(CommonConstants.ACTION_MEAL);
+                PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(), Application.notification_counter, mealIntent, PendingIntent.FLAG_ONE_SHOT);
+                Application.notification_counter++;
+                AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+                Date mealDate = times.get(""+MealEnum.fromCode(meal.getType()).getCode());
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.DAY_OF_WEEK, weekday);
+                calendar.set(Calendar.HOUR_OF_DAY, mealDate.getHours());
+                calendar.set(Calendar.MINUTE, mealDate.getMinutes());
+                calendar.set(Calendar.SECOND, 00);
+                long when = calendar.getTimeInMillis();
+                Log.d(CommonConstants.DEBUG_TAG, calendar.getTime().toString());
 
-            AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-            Date mealDate = times.get(""+MealEnum.fromCode(meal.getType()).getCode());
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, mealDate.getHours());
-            calendar.set(Calendar.MINUTE, mealDate.getMinutes());
-            calendar.set(Calendar.SECOND, 00);
-            long when = calendar.getTimeInMillis();
-            Log.d(CommonConstants.DEBUG_TAG, calendar.getTime().toString());
-            alarmManager.set(AlarmManager.RTC, when, pendingIntent);
-            notifications.add(MealEnum.fromCode(meal.getType()).getCode() - 1, alarmManager);
+                if(repeat.isCheck()){
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, when, pendingIntent);
+                }else{
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, when, 7*24*60*60*1000, pendingIntent);
+                }
+                notifications.add(MealEnum.fromCode(meal.getType()).getCode() - 1, alarmManager);
+
+            }
 
         }
         Log.d(CommonConstants.DEBUG_TAG, ""+CommonConstants.NOTIFICATION_ID);
@@ -328,4 +341,6 @@ public class NewDietScheduletActivity extends AppCompatActivity {
         Application.notifications.put(CommonConstants.NOTIFICATION_ID, notifications);
 
     }
+
+
 }
