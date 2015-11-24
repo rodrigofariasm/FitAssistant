@@ -41,7 +41,7 @@ public class Application extends android.app.Application {
     public void onCreate(){
 
         super.onCreate();
-        notification_counter = 0;
+        notification_counter = 1;
         ParseObject.registerSubclass(Diet.class);
         ParseObject.registerSubclass(FitActivity.class);
         ParseObject.registerSubclass(Gym.class);

@@ -45,8 +45,6 @@ public class NotificationFitAssistant extends IntentService{
             issueNotification(intent, mMessage);
         } else if (action.equals(CommonConstants.ACTION_PERFORMED)) {
             nm.cancel(CommonConstants.NOTIFICATION_ID);
-            //Log.d(CommonConstants.DEBUG_TAG, getString(R.string.snoozing));
-            // Sets a snooze-specific "done snoozing" message.
             issueNotification(intent,"done unperformed");
 
         } else if (action.equals(CommonConstants.ACTION_UNPERFORMED)) {
@@ -62,13 +60,13 @@ public class NotificationFitAssistant extends IntentService{
 
         // Sets up the Snooze and Dismiss action buttons that will appear in the
         // expanded view of the notification.
-        Intent dismissIntent = new Intent(this, MainActivity.class);
+        Intent dismissIntent = new Intent(this, NotificationFitAssistant.class);
         dismissIntent.setAction(CommonConstants.ACTION_PERFORMED);
-        PendingIntent piDismiss = PendingIntent.getService(this, 0, dismissIntent, 0);
+        PendingIntent piPerformed = PendingIntent.getService(this, CommonConstants.NOTIFICATION_ID*1397, dismissIntent, PendingIntent.FLAG_ONE_SHOT);
 
-        Intent snoozeIntent = new Intent(this, MainActivity.class);
+        Intent snoozeIntent = new Intent(this, NotificationFitAssistant.class);
         snoozeIntent.setAction(CommonConstants.ACTION_UNPERFORMED);
-        PendingIntent piSnooze = PendingIntent.getService(this, 0, snoozeIntent, 0);
+        PendingIntent piUnperformed = PendingIntent.getService(this, CommonConstants.NOTIFICATION_ID*1398, snoozeIntent, PendingIntent.FLAG_ONE_SHOT);
 
         // Constructs the Builder object.
         if(intent.getAction().equals(CommonConstants.ACTION_MEAL)) {
@@ -80,9 +78,9 @@ public class NotificationFitAssistant extends IntentService{
                             .setStyle(new NotificationCompat.BigTextStyle()
                                     .bigText(msg))
                             .addAction(R.drawable.ic_local_dining_white_24dp,
-                                    "Ate", piDismiss)
+                                    "Ate", piPerformed)
                             .addAction(R.drawable.ic_not_interested_white_24dp,
-                                    "Missed the meal", piSnooze);
+                                    "Missed", piUnperformed);
 
         }else{
             builder = new NotificationCompat.Builder(this)
@@ -93,18 +91,18 @@ public class NotificationFitAssistant extends IntentService{
                     .setStyle(new NotificationCompat.BigTextStyle()
                             .bigText(msg))
                     .addAction(R.drawable.ic_fitness_center_black_24dp,
-                            "Performed", piDismiss)
+                            "Performed", piPerformed)
                     .addAction(R.drawable.ic_not_interested_white_24dp,
-                            "Missed the exercise", piSnooze);
+                            "Missed", piUnperformed);
         }
-        Intent resultIntent = new Intent(this, ResultActivity.class);
+        Intent resultIntent = new Intent(this, MainActivity.class);
         resultIntent.putExtra(CommonConstants.EXTRA_MESSAGE, msg);
         // Because clicking the notification opens a new ("special") activity, there's
         // no need to create an artificial back stack.
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(
                         this,
-                        0,
+                        CommonConstants.NOTIFICATION_ID,
                         resultIntent,
                         0
                 );

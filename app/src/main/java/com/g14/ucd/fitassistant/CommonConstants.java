@@ -26,8 +26,6 @@ public final class CommonConstants {
         // don't allow the class to be instantiated
     }
 
-    // Milliseconds in the snooze duration, which translates
-    // to 20 seconds.
     public static final int DEFAULT_TIMER_DURATION = 10000;
     public static final String ACTION_PERFORMED = "ACTION_PERFORMED";
     public static final String ACTION_UNPERFORMED = "ACTION_UNPERFORMED";
