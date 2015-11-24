@@ -12,6 +12,7 @@ import com.g14.ucd.fitassistant.models.ExerciseEvent;
 import com.g14.ucd.fitassistant.models.FitActivity;
 import com.g14.ucd.fitassistant.models.Gym;
 import com.g14.ucd.fitassistant.models.Goal;
+import com.g14.ucd.fitassistant.models.Historic;
 import com.g14.ucd.fitassistant.models.Meal;
 import com.g14.ucd.fitassistant.models.Other;
 import com.parse.Parse;
@@ -51,6 +52,7 @@ public class Application extends android.app.Application {
         ParseObject.registerSubclass(Meal.class);
         ParseObject.registerSubclass(Goal.class);
         ParseObject.registerSubclass(ExerciseEvent.class);
+        ParseObject.registerSubclass(Historic.class);
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "IWa3fIqg1uxV59ZpqqqKwm5E7FUIWINYe6GYUGnF", "vdBuoTC4AJfADhwdxwwTapoUGoY84Idc4o9uF6FT");
         ParseFacebookUtils.initialize(this);

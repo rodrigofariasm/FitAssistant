@@ -127,11 +127,6 @@ public class ExpandableListDietEventAdapter<T extends ParseObject> extends BaseE
             }
         }
 
-        CheckBox checkBoxDone = (CheckBox) convertView.findViewById(R.id.checkbox_done);
-        if(checkBoxDone != null){
-            checkBoxDone.setTag(childMeal.getType());
-        }
-
 
         return convertView;
     }
@@ -174,16 +169,17 @@ public class ExpandableListDietEventAdapter<T extends ParseObject> extends BaseE
             TextView name = (TextView) convertView.findViewById(textViewId);
             ImageButton delete = (ImageButton) convertView.findViewById(button1);
             ImageButton update = (ImageButton) convertView.findViewById(button2);
-            delete.setFocusable(false);
-            update.setFocusable(false);
+
             if(name != null){
                 name.setText(obj.getString("name"));
             }
 
             if(update != null){
                 update.setTag(id);
+                update.setFocusable(false);
             }
             if(delete != null){
+                delete.setFocusable(false);
                 delete.setTag(id);
             }
 

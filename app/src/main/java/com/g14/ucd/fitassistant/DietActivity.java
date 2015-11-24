@@ -53,6 +53,7 @@ public class DietActivity extends AppCompatActivity {
 
     private void initialize(){
         final ProgressDialog dialog  = new ProgressDialog(this);
+        final Dialog error_dialog = new Dialog(this, "No connection detected", "ok");
         dialog.setTitle(getString(R.string.progress_loading_diets));
         dialog.show();
         ParseQuery<Diet> query = ParseQuery.getQuery("Diet");
@@ -65,10 +66,11 @@ public class DietActivity extends AppCompatActivity {
                     if (diets.size() == 0) {
                         showButtons();
                     }
-                    dialog.dismiss();
                 } else if (exception != null) {
                     Log.d("FitAssistant", "Error: " + exception.getMessage());
+                    error_dialog.show();
                 }
+                dialog.dismiss();
             }
         });
     }
