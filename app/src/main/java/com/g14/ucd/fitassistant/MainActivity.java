@@ -233,22 +233,22 @@ public class MainActivity extends AppCompatActivity {
     private void selectItem(int position) {
         // Create a new fragment and specify the planet to show based on position
         switch(position){
-            case(0)://schedule exercise
-                openScheduleExerciseActivity();
-                break;
-            case(1)://diet
+            case(0)://diet
                 openDietActivity();
                 break;
-            case(2):
+            case(1)://exercise
                 openExerciseActivity();
                 break;
-            case(3):
+            case(2)://schedule diet
                 openScheduleDietActivity();
                 break;
-            case(4):
+            case(3):// schedule exercise
+                openScheduleExerciseActivity();
+                break;
+            case(4): // goal
                 openGoalActivity();
                 break;
-            case(5):
+            case(5): // logout
                 logout();
                 break;
         }

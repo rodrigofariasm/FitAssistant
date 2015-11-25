@@ -160,7 +160,9 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/MyDietTheme" >
-]        
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DietScheduleActivity" />
         </activity>
         <activity
             android:name=".ViewGoalActivity"
@@ -178,6 +180,9 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/MyDietTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".DietScheduleActivity"
@@ -185,6 +190,9 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/MyDietTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".ResultActivity"

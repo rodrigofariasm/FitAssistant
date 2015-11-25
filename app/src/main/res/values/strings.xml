@@ -38,7 +38,7 @@
     <string name="diet">Diet</string>
     <string name="title_activity_diet">Diet</string>
     <string name="add_diet">+ Diet</string>
-    <string name="add_diet_event">+ Diet Event</string>
+    <string name="add_diet_event">+Event</string>
     <string name="view_diet">view</string>
     <string name="no_diet_message">You don\'t have diet. Please create one.</string>
     <string name="title_activity_new_diet">New Diet</string>
@@ -77,10 +77,10 @@
 <!-- String to drawer -->
     <string-array
         name="drawer_string_array">
-        <item>Schedule</item>
         <item>Diet</item>
         <item>Exercises</item>
-        <item>Gym</item>
+        <item>Schedule Diet</item>
+        <item>Schedule Exercise</item>
         <item>Goals</item>
         <item>Logout</item>
     </string-array>
@@ -142,7 +142,7 @@
     <string name="title_activity_diet_schedule">Diet Events</string>
     <string name="go_there">Go there</string>
     <string name="repeat">Repeat</string>
-    <string name="add_exercise_event">+ExerciseEvent</string>
+    <string name="add_exercise_event">+Event</string>
     <string name="title_activity_result">ResultActivity</string>
 
 </resources>

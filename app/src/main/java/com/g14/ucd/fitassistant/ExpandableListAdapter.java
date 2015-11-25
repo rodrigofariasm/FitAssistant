@@ -166,7 +166,7 @@ public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandable
         ImageButton update = (ImageButton) convertView.findViewById(button2);
         update.setFocusable(false);
         if(obj instanceof  Other){
-            headerTitle = ((Other) getGroup(groupPosition)).getDescription();
+            headerTitle = ((Other) getGroup(groupPosition)).getName();
             icone.setImageResource(R.drawable.sprint);
         }else{
             headerTitle = ((Gym) getGroup(groupPosition)).getName();

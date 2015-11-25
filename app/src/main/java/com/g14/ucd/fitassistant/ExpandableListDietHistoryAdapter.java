@@ -157,7 +157,7 @@ public class ExpandableListDietHistoryAdapter<T extends ParseObject> extends Bas
                     checkBox.setChecked(b);
                 }
             });
-            if(history.getMealsAte() != null){
+            if(history.getMealsAte() != null && history.getMealsAte().size() > 0){
                 checkBox.setChecked(history.getMealsAte().get(typeString));
             }
         }

@@ -47,7 +47,6 @@ public class ExerciseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
-
     }
 
     private void initialize(){
@@ -63,19 +62,16 @@ public class ExerciseActivity extends AppCompatActivity {
 
             @Override
             public void done(List<Gym> activities, ParseException exception) {
-            if (exception == null) {
+                if (exception == null) {
+                    if (activities.size() > 0)
+                        exercises.addAll(activities);
 
-                if (activities.size() > 0)
-                    exercises.addAll(activities);
-
-            } else {
-                error_dialog.show();
-                Log.d("FitAssistant", "Error: " + exception.getMessage());
-            }
+                } else {
+                    error_dialog.show();
+                    Log.d("FitAssistant", "Error: " + exception.getMessage());
+                }
             }
         });
-
-        dialog.show();
         Exercise generic = new Exercise();
         final ArrayList<Exercise> exes = new ArrayList<Exercise>();
         exes.add(generic);
@@ -91,6 +87,7 @@ public class ExerciseActivity extends AppCompatActivity {
                 for(Other a: activities){
                     gymExercises.put(a,exes);
                 }
+                dialog.dismiss();
 
             } else {
                 Log.d("FitAssistant", "Error: " + exception.getMessage());
@@ -121,7 +118,6 @@ public class ExerciseActivity extends AppCompatActivity {
                         gymExercises.put(e.getActivityID(), newAc);
                     }
                 }
-                dialog.dismiss();
                 if (!exercises.isEmpty()) {
                     hideButtons();
                     listExercises(exercises);
@@ -202,7 +198,7 @@ public class ExerciseActivity extends AppCompatActivity {
         final String objectId = (String) view.getTag();
         Log.d("TAG: objectId", objectId);
 
-        ParseQuery<Gym> query = ParseQuery.getQuery("Activity");
+        ParseQuery<Gym> query = ParseQuery.getQuery("Gym");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.getInBackground(objectId, new GetCallback<Gym>() {
             @Override
