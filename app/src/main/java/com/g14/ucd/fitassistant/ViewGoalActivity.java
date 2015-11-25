@@ -27,11 +27,15 @@ import com.parse.SaveCallback;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class ViewGoalActivity extends AppCompatActivity {
 
@@ -41,6 +45,7 @@ public class ViewGoalActivity extends AppCompatActivity {
     private EditText current;
     SimpleDateFormat dateFormatter;
     private GraphView graph;
+    private Button registerHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +54,9 @@ public class ViewGoalActivity extends AppCompatActivity {
 
         goalTitle = (TextView) findViewById(R.id.textView_goalTitle);
         dayNumber = (TextView) findViewById(R.id.textView_dayNumber);
-        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
 
-        Button registerHistory = (Button) findViewById(R.id.button_registerHistory);
+        registerHistory = (Button) findViewById(R.id.button_registerHistory);
         registerHistory.setOnClickListener(new Button.OnClickListener(){
 
             @Override
@@ -125,7 +130,6 @@ public class ViewGoalActivity extends AppCompatActivity {
                             goalView = goal;
                             loadTitle();
                             loadDayNumber();
-                            loadGraph();
                         } else if (exception != null) {
                             Log.d("FitAssistant", "Error finding diet with id " + objectId + ": " + exception.getMessage());
                         }
@@ -142,6 +146,7 @@ public class ViewGoalActivity extends AppCompatActivity {
             long differenceDates = difference / (24 * 60 * 60 * 1000);
             String interval = Long.toString(differenceDates);
             String firstPart = null;
+            registerHistory.setVisibility(View.VISIBLE);
             switch (goalType){
                 case("Lose fat"):
                     firstPart = "Lose " + Integer.toString(goalView.getInt("actual") - goalView.getInt("desired")) + "% of fat in ";
@@ -155,10 +160,12 @@ public class ViewGoalActivity extends AppCompatActivity {
                 case("Follow diet"):
                     firstPart = "Follow the diet for ";
                     interval = Integer.toString(goalView.getInt("actual"));
+                    registerHistory.setVisibility(View.INVISIBLE);
                     break;
                 case("Go to gym"):
                     firstPart = "Go to gym for ";
                     interval = Integer.toString(goalView.getInt("actual"));
+                    registerHistory.setVisibility(View.INVISIBLE);
                     break;
             }
             goalTitle.setText(firstPart + interval + " day(s)");
@@ -174,6 +181,7 @@ public class ViewGoalActivity extends AppCompatActivity {
             long difference = today.getTime() - startDay.getTime();
             long differenceDates = difference / (24 * 60 * 60 * 1000);
             message = "Day number: " + Long.toString(differenceDates+1);
+            loadGraph();
         }else if (today.before(startDay)){
             long difference = startDay.getTime() - today.getTime();
             long differenceDates = difference / (24 * 60 * 60 * 1000);
@@ -212,24 +220,25 @@ public class ViewGoalActivity extends AppCompatActivity {
         Map<String,Integer> record = goalView.getRecord();
 
         LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
+        SortedSet<String> keys = new TreeSet<String>(record.keySet());
         int max = 0;
-        for(String r : record.keySet()){
+        for(String r : keys){
             try {
-                series.appendData(new DataPoint(dateFormatter.parse(r).getTime(),record.get(r)),true,30);
-                if (record.get(r) > max){
+                if(max < record.get(r)){
                     max = record.get(r);
                 }
+                series.appendData(new DataPoint(dateFormatter.parse(r).getTime(),record.get(r)),true,max);
             } catch (java.text.ParseException e) {
                 e.printStackTrace();
             }
         }
+
         graph.addSeries(series);
 
-        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
+        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(ViewGoalActivity.this));
         graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
 
-        graph.getViewport().setMinY(0);
-        graph.getViewport().setMaxY(max);
+// set manual x bounds to have nice steps
         graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().setScrollable(true);
     }

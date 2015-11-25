@@ -109,6 +109,7 @@ public class NewGoalActivity extends AppCompatActivity {
                     desiredUnit.setVisibility(View.VISIBLE);
                     desired.setVisibility(View.VISIBLE);
                     desiredLabel.setVisibility(View.VISIBLE);
+                    actualLabel.setText("Actual :");
                     if (position == 0) {
                         actualUnit.setText("%");
                         desiredUnit.setText("%");
@@ -116,6 +117,7 @@ public class NewGoalActivity extends AppCompatActivity {
                         actualUnit.setText("kg");
                         desiredUnit.setText("kg");
                     } else {
+                        actualLabel.setText("Interval :");
                         actualUnit.setText("days");
                         desiredUnit.setVisibility(View.INVISIBLE);
                         desired.setVisibility(View.INVISIBLE);
@@ -123,7 +125,6 @@ public class NewGoalActivity extends AppCompatActivity {
                         desiredLabel.setVisibility(View.INVISIBLE);
                     }
                 }
-
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                     actualUnit.setText("%");
@@ -267,8 +268,6 @@ public class NewGoalActivity extends AppCompatActivity {
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-
-
     }
 
     public static java.util.Date getDateFromDatePicker(DatePicker datePicker){
