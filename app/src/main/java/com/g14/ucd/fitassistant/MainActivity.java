@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +33,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.facebook.appevents.AppEventsLogger;
+import com.g14.ucd.fitassistant.models.Diet;
+import com.g14.ucd.fitassistant.models.DietEvent;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
@@ -260,6 +267,37 @@ public class MainActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    public ArrayList<DietEvent> getListEvents(ArrayList<Integer> todayOption){
+        ParseQuery<DietEvent> query = new ParseQuery<DietEvent>("DietEvent");;
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.whereContainsAll("weekDays", todayOption);
+        final ArrayList<DietEvent> events = new ArrayList<DietEvent>();
+        query.findInBackground(new FindCallback<DietEvent>() {
+            @Override
+            public void done(List<DietEvent> dietEvents, ParseException exception) {
+                if (exception == null) { // found diets
+                    if (dietEvents.size() > 0) {
+                        events.addAll(dietEvents);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Create a diet event", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                } else if (exception != null) {
+                    Log.d("FitAssistant", "Error: " + exception.getMessage());
+                }
+            }
+        });
+        return events;
+    }
+
+    public void performed(View v){
+        final String objectId = (String) v.getTag();
+        Log.d("TAG: objectId", objectId);
+        //HashMap<String, Date> dates = evento.get(0).getTimes();
+
+
     }
 
 
