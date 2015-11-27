@@ -25,6 +25,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,8 +39,13 @@ import java.util.TreeSet;
 import com.facebook.appevents.AppEventsLogger;
 import com.g14.ucd.fitassistant.models.Diet;
 import com.g14.ucd.fitassistant.models.DietEvent;
+import com.g14.ucd.fitassistant.models.Exercise;
+import com.g14.ucd.fitassistant.models.ExerciseEvent;
+import com.g14.ucd.fitassistant.models.FitActivity;
+import com.g14.ucd.fitassistant.models.Gym;
 import com.g14.ucd.fitassistant.models.Historic;
 import com.g14.ucd.fitassistant.models.Meal;
+import com.g14.ucd.fitassistant.models.Other;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -60,13 +66,18 @@ public class MainActivity extends AppCompatActivity {
     private String mActivityTitle;
     static Intent mServiceIntent;
     public static ArrayList<DietEvent> events;
+    public static ArrayList<ExerciseEvent> exeEvents;
     public static Historic history_today;
-    static Map<String, Boolean> mapMealsAte;
-    static ArrayList<Meal> meals;
-    static TreeSet<Integer> idx;
-    static Exception e;
-    static HashMap<Meal, ArrayList<String>> opts;
-    static HashMap<String, Date> dates;
+    public static Map<String, Boolean> mapMealsAte;
+    public static Map<String, Boolean> exercisesPerformed;
+    public static ArrayList<Meal> meals;
+    public static TreeSet<Integer> idx;
+    public static Exception e;
+    public static ArrayList<FitActivity> exercises;
+    public static HashMap<Meal, ArrayList<String>> opts;
+    public static HashMap<FitActivity, ArrayList<Exercise>> gym_exes;
+    public static HashMap<String, Date> dates;
+    public static HashMap<String, Date> fitsdates;
     public ProgressDialog pd;
     public static boolean initialize;
 
@@ -298,8 +309,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void findTodayHistoric(){
+        fitsdates = new HashMap<String, Date>();
         events = new ArrayList<DietEvent>();
+        exercises = new ArrayList<FitActivity>();
+        exeEvents = new ArrayList<ExerciseEvent>();
         mapMealsAte = new HashMap<>();
+        gym_exes = new HashMap<FitActivity, ArrayList<Exercise>>();
+        exercisesPerformed = new HashMap<>();
         Calendar day = Calendar.getInstance();
         final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         ParseQuery<Historic> query = ParseQuery.getQuery("Historic");
@@ -311,6 +327,7 @@ public class MainActivity extends AppCompatActivity {
                 if (e2 == null) {
                     history_today = object;
                     mapMealsAte = history_today.getMealsAte();
+                    exercisesPerformed = history_today.getExercisesDone();
                     setupHistory(false);
                 } else {
                     history_today = new Historic();
@@ -349,6 +366,25 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        ParseQuery<ExerciseEvent> query2 = ParseQuery.getQuery("ExerciseEvent");
+        query2.whereEqualTo("user", ParseUser.getCurrentUser());
+        query2.whereContainsAll("weekdays", todayOption);
+        query2.findInBackground(new FindCallback<ExerciseEvent>() {
+            @Override
+            public void done(List<ExerciseEvent> events, ParseException exception) {
+                if (exception == null) { // found diets
+                    pd.dismiss();
+                    if (events.size() > 0) {
+                        exeEvents.addAll(events);
+                        Log.d("size exeevents", "" +exeEvents.size());
+                        populateExercises();
+                    }
+                } else if (exception != null) {
+                    Log.d("FitAssistant", "Error: " + exception.getMessage());
+                }
+            }
+        });
         return  e;
     }
     public static void setCheckBox(com.gc.materialdesign.views.CheckBox checkBox, Integer meal){
@@ -358,6 +394,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void findMeals( final boolean newMealsAte){
+        pd.show();
         idx = new TreeSet<Integer>();
         meals = new ArrayList<Meal>();
         opts = new HashMap<Meal, ArrayList<String>>();
@@ -401,10 +438,76 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    public void populateExercises(){
+
+        for(final ExerciseEvent event : exeEvents){
+            pd.show();
+            history_today.setEventExercises(exeEvents);
+            ParseQuery<Other> queryOther = ParseQuery.getQuery("Other");
+            queryOther.whereEqualTo("user", ParseUser.getCurrentUser());
+            queryOther.whereEqualTo("objectId", event.getExerciseID());
+
+            ParseQuery<Gym> queryGym = ParseQuery.getQuery("Gym");
+            queryGym.whereEqualTo("user", ParseUser.getCurrentUser());
+            queryGym.whereEqualTo("objectId", event.getExerciseID());
+            queryGym.findInBackground(new FindCallback<Gym>() {
+                @Override
+                public void done(List<Gym> gyms, ParseException e) {
+                    if (gyms.size() > 0) {
+                        exercises.add(gyms.get(0));
+                        findExercises(gyms.get(0));
+                        fitsdates.put(exercises.get(exercises.size() - 1).getObjectId(), event.getTime());
+                        pd.dismiss();
+                        ((ViewPagerAdapter) viewPager.getAdapter()).getItem(1).onStart();
+                    }
+                }
+            });
+            queryOther.findInBackground(new FindCallback<Other>() {
+                @Override
+                public void done(List<Other> others, ParseException e) {
+                    if (others.size() > 0) {
+                        exercises.add(others.get(0));
+                        ArrayList<Exercise> gen = new ArrayList<>();
+                        gen.add(new Exercise());
+                        gym_exes.put(others.get(0), gen);
+                        fitsdates.put(exercises.get(exercises.size() - 1).getObjectId(), event.getTime());
+                        pd.dismiss();
+                        ((ViewPagerAdapter) viewPager.getAdapter()).getItem(1).onStart();
+                    }
+                }
+            });
+
+
+
+        }
+
+
+
+    }
+
+    private void findExercises(final Gym gym) {
+
+        ParseQuery<Exercise> queryExercise = ParseQuery.getQuery("Exercise");
+        queryExercise.whereEqualTo("user", ParseUser.getCurrentUser());
+        queryExercise.whereEqualTo("activityID", gym);
+        queryExercise.findInBackground(new FindCallback<Exercise>() {
+            @Override
+            public void done(List<Exercise> activities, ParseException exception) {
+                if (exception == null) {
+                    gym_exes.put(gym, (ArrayList<Exercise>) activities);
+                } else {
+                    Log.d("FitAssistant", "Error: " + exception.getMessage());
+                }
+            }
+        });
+    }
+
     public void saveHistory(){
-        history_today.setUser(ParseUser.getCurrentUser());
-        history_today.setEventId(events.get(0).getObjectId());
+        if(events.size() > 0)  history_today.setEventId(events.get(0).getObjectId());
+        if(exeEvents.size() > 0) history_today.setEventExercises(exeEvents);
         try{
+            history_today.setUser(ParseUser.getCurrentUser());
             history_today.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
@@ -414,8 +517,6 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e1){
             Toast.makeText(this, R.string.no_connection, Toast.LENGTH_LONG).show();
         }
-
-
 
     }
 

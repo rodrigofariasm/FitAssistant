@@ -5,10 +5,10 @@
     xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
     tools:context="com.g14.ucd.fitassistant.ExerciseFragment">
 
-    <ListView
+    <ExpandableListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/listView_exercise_Schedule"
+        android:id="@+id/listView_exercise_schedule"
         android:layout_gravity="bottom"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"

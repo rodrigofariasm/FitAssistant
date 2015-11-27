@@ -4,58 +4,54 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.g14.ucd.fitassistant.models.Exercise;
 import com.g14.ucd.fitassistant.models.FitActivity;
 import com.g14.ucd.fitassistant.models.Gym;
+import com.g14.ucd.fitassistant.models.Historic;
+import com.g14.ucd.fitassistant.models.Meal;
+import com.g14.ucd.fitassistant.models.MealEnum;
 import com.g14.ucd.fitassistant.models.Other;
 import com.gc.materialdesign.views.ButtonFlat;
+import com.gc.materialdesign.views.CheckBox;
 import com.parse.ParseObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by rodrigofarias on 11/19/15.
+ * Created by rodrigofarias on 11/27/15.
  */
-public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandableListAdapter {
+public class ExpandableListExerciseHistoryAdapter<T extends ParseObject> extends BaseExpandableListAdapter {
 
     private Context _context;
     private List<T> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<FitActivity, ArrayList<Exercise>> _listDataChild;
+    private HashMap<String, Date> dates;
     private int textViewId;
     private int resourceId;
-    private int button1;
-    private int button2;
-    private int button3;
-    private int button4;
-    private int icon;
+    private int checkbox;
+    Historic history;
 
-    public ExpandableListAdapter(Context context, int resource, int textViewResourceId, int update,
-                                 int delete, int activate, List<T> objects, HashMap<FitActivity,
-                                 ArrayList<Exercise>> listDataChild, int icon)  {
+    public ExpandableListExerciseHistoryAdapter(Context context, int resource, int textViewResourceId, int check_box,
+                                            HashMap<String, Date> dateset, List<T> objects, HashMap<FitActivity,
+            ArrayList<Exercise>> listDataChild, Historic historic)  {
         this._context = context;
         this._listDataHeader = objects;
         this._listDataChild = listDataChild;
         textViewId = textViewResourceId;
         resourceId = resource;
-        button1 = delete;
-        button2 = update;
-        button4 = activate;
-        this.icon = icon;
-
+        dates = dateset;
+        checkbox= check_box;
     }
 
     @Override
@@ -73,7 +69,6 @@ public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandable
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-
         final Exercise childExercise = (Exercise) getChild(groupPosition, childPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -82,7 +77,7 @@ public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandable
         }
 
         final FitActivity header = (FitActivity) _listDataHeader.get(groupPosition);
-       if(header instanceof Gym){
+        if(header instanceof Gym){
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.exercise_list_group,null);
@@ -91,7 +86,7 @@ public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandable
             TextView repetitions = (TextView) convertView.findViewById(R.id.child_exercise_repetition);
             name.setText(childExercise.getName().toString());
             series.setText(""+childExercise.getSections()+" sets of ");
-           repetitions.setText(""+childExercise.getRepetitions()+ " repetitions");
+            repetitions.setText(""+childExercise.getRepetitions()+ " repetitions");
             convertView.setFocusableInTouchMode(false);
         }else{
             final Other other = (Other) header;
@@ -154,36 +149,37 @@ public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandable
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_item_exercise, null);
+            convertView = infalInflater.inflate(R.layout.list_item_meal_historic, null);
         }
-        T obj = (T) getGroup(groupPosition);
-        String id = obj.getObjectId();
-        ImageView icone = (ImageView) convertView
-                .findViewById(icon);
 
-        ImageButton delete = (ImageButton) convertView.findViewById(button1);
-        delete.setFocusable(false);
-        ImageButton update = (ImageButton) convertView.findViewById(button2);
-        update.setFocusable(false);
-        if(obj instanceof  Other){
-            headerTitle = ((Other) getGroup(groupPosition)).getName();
-            icone.setImageResource(R.drawable.sprint);
-        }else{
-            headerTitle = ((Gym) getGroup(groupPosition)).getName();
-            icone.setImageResource(R.drawable.dumbbell);
-        }
+        FitActivity obj = (FitActivity) getGroup(groupPosition);
+        headerTitle = obj.getName();
+        String id = obj.getObjectId();
+        TextView time1 = (TextView) convertView.findViewById(R.id.list_meal_time);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("H:mm");
+        Date data = dates.get(id);
+        time1.setText(dateFormat.format(data));
         TextView lblListHeader = (TextView) convertView
-                .findViewById(R.id.list_item_name_exercise);
+                .findViewById(R.id.list_meal_name);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
-        if(update != null){
-            update.setTag(id);
-        }
-        if(delete != null){
-            delete.setTag(id);
-        }
 
 
+        CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.checkbox_meal_done);
+
+
+        checkBox.setFocusable(false);
+        if(checkBox!= null){
+            checkBox.setTag(id);
+            checkBox.setOncheckListener(new CheckBox.OnCheckListener() {
+                @Override
+                public void onCheck(CheckBox checkBox, boolean b) {
+                    checkBox.setChecked(b);
+//                    MainActivity.exercisesPerformed.put(checkBox.getTag().toString(), b);
+//                    MainActivity.history_today.setExercisesDone(MainActivity.exercisesPerformed);
+                }
+            });
+        }
 
 
         return convertView;
@@ -198,4 +194,7 @@ public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandable
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
+
+
 }

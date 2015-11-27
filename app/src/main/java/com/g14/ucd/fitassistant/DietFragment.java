@@ -137,7 +137,7 @@ public class DietFragment extends Fragment {
         listView = (ExpandableListView) getActivity().findViewById(R.id.listView_dietSchedule);
         listView.setAdapter(mAdapter);
         MainActivity.initialize = false;
-    }x  
+    }
 
 
 

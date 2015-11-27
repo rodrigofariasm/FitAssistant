@@ -37,12 +37,12 @@ public class Historic extends ParseObject {
         put("eventId",eventId);
     }
 
-    public String getEventExerciseId() {
-        return getString("eventExerciseId");
+    public List<Object> getEventExercises() {
+        return getList("eventExercises");
     }
 
-    public void setEventExerciseId(String eventId) {
-        put("eventExerciseId",eventId);
+    public void setEventExercises(ArrayList<ExerciseEvent> events) {
+        put("eventExercises",events);
     }
 
 
@@ -60,11 +60,6 @@ public class Historic extends ParseObject {
 
     public void setExercisesDone(Map<String,Boolean> mealsAte){
         put("exercisesDone",mealsAte);
-    }
-
-
-    public void setExerciseDone(boolean done){
-        put("exerciseDone",done);
     }
 
 
