@@ -110,7 +110,7 @@
         <item>Go to gym</item>
     </string-array>
     <string-array name="series_array">
-        <item>Series</item>
+        <item>Sets</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -144,5 +144,9 @@
     <string name="repeat">Repeat</string>
     <string name="add_exercise_event">+Event</string>
     <string name="title_activity_result">ResultActivity</string>
+    <string name="no_diet_scheduled">You have no diet scheduled for today</string>
+    <string name="schedule_a_diet">You do not have any diet scheduled for today</string>
+    <string name="schedule_a_exercise">You do not have any exercise scheduled for today</string>
+    <string name="no_connection">No internet connection</string>
 
 </resources>

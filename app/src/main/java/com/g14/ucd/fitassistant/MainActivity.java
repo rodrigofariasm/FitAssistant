@@ -1,5 +1,6 @@
 package com.g14.ucd.fitassistant;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.design.widget.TabLayout;
@@ -18,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -31,14 +33,19 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import com.facebook.appevents.AppEventsLogger;
 import com.g14.ucd.fitassistant.models.Diet;
 import com.g14.ucd.fitassistant.models.DietEvent;
+import com.g14.ucd.fitassistant.models.Historic;
+import com.g14.ucd.fitassistant.models.Meal;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,9 +58,17 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
-    private GregorianCalendar today;
     static Intent mServiceIntent;
-    private SimpleDateFormat dateFormatter;
+    public static ArrayList<DietEvent> events;
+    public static Historic history_today;
+    static Map<String, Boolean> mapMealsAte;
+    static ArrayList<Meal> meals;
+    static TreeSet<Integer> idx;
+    static Exception e;
+    static HashMap<Meal, ArrayList<String>> opts;
+    static HashMap<String, Date> dates;
+    public ProgressDialog pd;
+    public static boolean initialize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
         setupViewPager(viewPager);
         setSupportActionBar(toolbar);
         mServiceIntent = new Intent(getApplicationContext(), NotificationFitAssistant.class);
-        dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -77,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList.setAdapter(mAdapter);
         // Set the list's click listener
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
 
         mActivityTitle = getTitle().toString();
 
@@ -103,8 +116,11 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        pd = new ProgressDialog(this);
+        pd.setTitle("Loading Meals");
+        pd.show();
 
-        today = new GregorianCalendar();
+
     }
 
     /* Called whenever we call invalidateOptionsMenu() */
@@ -120,6 +136,16 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        final ProgressDialog pd = new ProgressDialog(this);
+
+        findTodayHistoric();
+
+
     }
 
     @Override
@@ -150,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         // Logs 'app deactivate' App Event.
+        saveHistory();
         AppEventsLogger.deactivateApp(this);
     }
 
@@ -269,33 +296,125 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    public ArrayList<DietEvent> getListEvents(ArrayList<Integer> todayOption){
-        ParseQuery<DietEvent> query = new ParseQuery<DietEvent>("DietEvent");;
+
+    public void findTodayHistoric(){
+        events = new ArrayList<DietEvent>();
+        mapMealsAte = new HashMap<>();
+        Calendar day = Calendar.getInstance();
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        ParseQuery<Historic> query = ParseQuery.getQuery("Historic");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.whereEqualTo("date", Application.singleton_date);
+        query.getFirstInBackground(new GetCallback<Historic>() {
+            @Override
+            public void done(Historic object, ParseException e2) {
+                if (e2 == null) {
+                    history_today = object;
+                    mapMealsAte = history_today.getMealsAte();
+                    setupHistory(false);
+                } else {
+                    history_today = new Historic();
+                    try {
+                        history_today.setDate(Application.singleton_date);
+                        setupHistory(true);
+                    } catch (Exception e1) {
+                        Log.d(CommonConstants.DEBUG_TAG, "Couldn't create history today");
+                    }
+                }
+            }
+        });
+
+    }
+
+    private Exception setupHistory(final boolean newMealsAte) {
+        GregorianCalendar today = new GregorianCalendar();
+        List<Integer> todayOption = new ArrayList<>();
+        int option = today.get(GregorianCalendar.DAY_OF_WEEK);
+        todayOption.add(new Integer(option));
+        ParseQuery<DietEvent> query = new ParseQuery<DietEvent>("DietEvent");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.whereContainsAll("weekDays", todayOption);
-        final ArrayList<DietEvent> events = new ArrayList<DietEvent>();
         query.findInBackground(new FindCallback<DietEvent>() {
             @Override
             public void done(List<DietEvent> dietEvents, ParseException exception) {
+                e = exception;
                 if (exception == null) { // found diets
+                    Log.d("events", "" + dietEvents.size());
                     if (dietEvents.size() > 0) {
                         events.addAll(dietEvents);
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Create a diet event", Toast.LENGTH_LONG).show();
-                        return;
+                        findMeals(newMealsAte);
                     }
                 } else if (exception != null) {
                     Log.d("FitAssistant", "Error: " + exception.getMessage());
                 }
             }
         });
-        return events;
+        return  e;
+    }
+    public static void setCheckBox(com.gc.materialdesign.views.CheckBox checkBox, Integer meal){
+        if(!initialize){
+            checkBox.setChecked(MainActivity.history_today.getMealsAte().get(""+meal));
+        }
+
+    }
+    public void findMeals( final boolean newMealsAte){
+        idx = new TreeSet<Integer>();
+        meals = new ArrayList<Meal>();
+        opts = new HashMap<Meal, ArrayList<String>>();
+        dates = new HashMap<String, Date>();
+        ParseQuery<Meal> querym = ParseQuery.getQuery("Meal");
+        querym.whereEqualTo("user", ParseUser.getCurrentUser());
+        querym.whereEqualTo("dietID", events.get(0).getDietId());
+        querym.findInBackground(new FindCallback<Meal>() {
+            @Override
+            public void done(List<Meal> meal, ParseException exception) {
+                if (exception == null) { // found diets
+                    e = exception;
+                    Log.d("Meal size", "" + meal.size());
+                    if (meal.size() > 0) {
+                        for (Meal m : meal) {
+                            idx.add(m.getType());
+                        }
+                        for (int i = 0; i < meal.size(); i++) {
+                            Meal aux = meal.get(idx.first()-1);
+                            meals.add(aux);
+                            dates.put("" + (idx.first()), events.get(0).getTimes().get("" + (idx.first())));
+                            opts.put(aux, (ArrayList<String>) aux.getOptions());
+                            if (newMealsAte) {
+                                mapMealsAte.put("" + (idx.pollFirst()), false);
+                                history_today.setMealsAte(mapMealsAte);
+                            }else{
+                                idx.pollFirst();
+                            }
+
+                            pd.dismiss();
+                            ((ViewPagerAdapter) viewPager.getAdapter()).getItem(0).onStart();
+                        }
+                    }
+
+                } else if (exception != null) {
+                    e = exception;
+                    Log.d("FitAssistant", "Error: " + exception.getMessage());
+
+                }
+            }
+        });
     }
 
-    public void performed(View v){
-        final String objectId = (String) v.getTag();
-        Log.d("TAG: objectId", objectId);
-        //HashMap<String, Date> dates = evento.get(0).getTimes();
+    public void saveHistory(){
+        history_today.setUser(ParseUser.getCurrentUser());
+        history_today.setEventId(events.get(0).getObjectId());
+        try{
+            history_today.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+
+                }
+            });
+        }catch (Exception e1){
+            Toast.makeText(this, R.string.no_connection, Toast.LENGTH_LONG).show();
+        }
+
 
 
     }

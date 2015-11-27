@@ -1,6 +1,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.g14.ucd.fitassistant.DietFragment"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
+    tools:context="com.g14.ucd.fitassistant.DietFragment"
     android:id="@+id/diet_fragment">
 
     <ExpandableListView
@@ -14,6 +17,24 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <com.gc.materialdesign.views.ButtonFloat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_schedule_button"
+        materialdesign:iconDrawable="@drawable/ic_new_white"
+        android:background="#1E88E5"
+        android:layout_gravity="center">
+    </com.gc.materialdesign.views.ButtonFloat>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="200dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/schedule_a_diet"
+        android:id="@+id/create_schedule_text"
+        android:layout_gravity="center_horizontal|bottom" />
 
 
 </FrameLayout>

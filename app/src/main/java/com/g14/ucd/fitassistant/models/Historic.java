@@ -5,6 +5,7 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,12 @@ import java.util.Map;
 public class Historic extends ParseObject {
 
     public String getDate() {
-        return getString("date");
+        try{
+            return fetchIfNeeded().getString("date");
+        }catch (Exception e){
+            return "";
+        }
+
     }
 
     public void setDate(String date) {
@@ -31,6 +37,15 @@ public class Historic extends ParseObject {
         put("eventId",eventId);
     }
 
+    public String getEventExerciseId() {
+        return getString("eventExerciseId");
+    }
+
+    public void setEventExerciseId(String eventId) {
+        put("eventExerciseId",eventId);
+    }
+
+
     public Map<String,Boolean> getMealsAte(){
         return getMap("mealsAte");
     }
@@ -39,17 +54,19 @@ public class Historic extends ParseObject {
         put("mealsAte",mealsAte);
     }
 
+    public Map<String,Boolean> getExercisesDone(){
+        return getMap("exercisesDone");
+    }
+
+    public void setExercisesDone(Map<String,Boolean> mealsAte){
+        put("exercisesDone",mealsAte);
+    }
+
+
     public void setExerciseDone(boolean done){
         put("exerciseDone",done);
     }
 
-    public void setType(int type){
-        put("type",type);
-    }
-
-    public int getType(){
-        return getInt("type");
-    }
 
     public ParseUser getUser(){
         return getParseUser("user");

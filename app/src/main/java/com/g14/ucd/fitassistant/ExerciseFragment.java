@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.g14.ucd.fitassistant.models.ExerciseEvent;
 import com.g14.ucd.fitassistant.models.FitActivity;
 import com.g14.ucd.fitassistant.models.Gym;
 import com.g14.ucd.fitassistant.models.Historic;
 import com.g14.ucd.fitassistant.models.Other;
+import com.gc.materialdesign.views.ButtonFloat;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -27,7 +29,6 @@ import java.util.List;
 public class ExerciseFragment extends Fragment {
     Intent mServiceIntent;
     List<FitActivity> exercises;
-    Historic historicExercise;
     SimpleDateFormat dateFormatter;
 
     public ExerciseFragment() {
@@ -51,10 +52,19 @@ public class ExerciseFragment extends Fragment {
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
         initialize();
+        ButtonFloat buttonFloat = (ButtonFloat) getActivity().findViewById(R.id.create_schedule_exe_button);
+        buttonFloat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ExerciseScheduleActivity.class);
+                startActivity(intent);
+
+            }
+        });
     }
 
     private void initialize(){
-        historicExercise = new Historic();
+
         dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
         exercises = new ArrayList<FitActivity>();
 
@@ -71,6 +81,7 @@ public class ExerciseFragment extends Fragment {
             public void done(List<ExerciseEvent> events, ParseException exception) {
                 if (exception == null) { // found diets
                     if (events.size() > 0) {
+
                         createHistoricForDay(events);
                     }
                 } else if (exception != null) {
@@ -81,6 +92,7 @@ public class ExerciseFragment extends Fragment {
     }
 
     public void createHistoricForDay(List<ExerciseEvent> events){
+        hideButtons();
         populateExercises(events);
         ListAdapterHistoric mAdapter = new ListAdapterHistoric(
                 getActivity(), // The current context (this activity)
@@ -92,6 +104,14 @@ public class ExerciseFragment extends Fragment {
         ListView listView = (ListView) getActivity().findViewById(R.id.listView_exercise_Schedule);
         listView.setAdapter(mAdapter);
     }
+
+    public void hideButtons(){
+        ButtonFloat buttonFloat = (ButtonFloat) getActivity().findViewById(R.id.create_schedule_exe_button);
+        buttonFloat.setVisibility(View.INVISIBLE);
+        TextView textView = (TextView) getActivity().findViewById(R.id.create_schedule_exe_text);
+        textView.setVisibility(View.INVISIBLE);
+    }
+
 
     public void populateExercises(List<ExerciseEvent> events){
         for(ExerciseEvent event : events){

@@ -2,8 +2,11 @@ package com.g14.ucd.fitassistant;
 
 import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.g14.ucd.fitassistant.models.Diet;
 import com.g14.ucd.fitassistant.models.DietEvent;
@@ -15,16 +18,27 @@ import com.g14.ucd.fitassistant.models.Goal;
 import com.g14.ucd.fitassistant.models.Historic;
 import com.g14.ucd.fitassistant.models.Meal;
 import com.g14.ucd.fitassistant.models.Other;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseACL;
+import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.facebook.FacebookSdk;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 
 /**
@@ -38,11 +52,14 @@ public class Application extends android.app.Application {
     static Map<Integer, ArrayList<AlarmManager>> notifications;
     private static ConfigHelper configHelper;
     public static final String APPTAG = "FitAssistant";
+    public static String singleton_date;
+
+
     @Override
     public void onCreate(){
 
         super.onCreate();
-        notification_counter = 1;
+        notification_counter = Calendar.getInstance().getTime().getYear()*Calendar.getInstance().getTime().getDay();
         ParseObject.registerSubclass(Diet.class);
         ParseObject.registerSubclass(FitActivity.class);
         ParseObject.registerSubclass(Gym.class);
@@ -57,6 +74,7 @@ public class Application extends android.app.Application {
         Parse.initialize(this, "IWa3fIqg1uxV59ZpqqqKwm5E7FUIWINYe6GYUGnF", "vdBuoTC4AJfADhwdxwwTapoUGoY84Idc4o9uF6FT");
         ParseFacebookUtils.initialize(this);
 
+
         preferences = getSharedPreferences("com.parse.les142", Context.MODE_PRIVATE);
         configHelper = new ConfigHelper();
         configHelper.fetchConfigIfNeeded();
@@ -68,11 +86,14 @@ public class Application extends android.app.Application {
 
         ParseInstallation pi = ParseInstallation.getCurrentInstallation();
         FacebookSdk.sdkInitialize(getApplicationContext());
-        notifications = new HashMap<Integer, ArrayList<AlarmManager>>();
 
+        if(ParseUser.getCurrentUser() != null){
+            notifications = new HashMap<Integer, ArrayList<AlarmManager>>();
+            if(singleton_date == null || singleton_date != findToday()){
+                singleton_date = findToday();
+            }
 
-        // Initialize the SDK before executing any other operations,
-        // especially, if you're using Facebook UI elements.
+        }
 
 
     }
@@ -80,5 +101,12 @@ public class Application extends android.app.Application {
     public static ConfigHelper getConfigHelper() {
         return configHelper;
     }
+
+    public String findToday(){
+        Calendar day = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return dateFormat.format(day.getTime());
+    }
+
 
 }

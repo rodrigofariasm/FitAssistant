@@ -42,7 +42,7 @@ public class ExpandableListDietHistoryAdapter<T extends ParseObject> extends Bas
     private List<T> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<Meal, ArrayList<String>> _listDataChild;
-    private ArrayList< Date> dates;
+    private HashMap<String, Date> dates;
     private int textViewId;
     private int resourceId;
     private int checkbox;
@@ -50,7 +50,7 @@ public class ExpandableListDietHistoryAdapter<T extends ParseObject> extends Bas
     private Map<String,Boolean> mapCheckbox;
 
     public ExpandableListDietHistoryAdapter(Context context, int resource, int textViewResourceId, int check_box,
-                                            ArrayList<Date> dateset, List<T> objects, HashMap<Meal,
+                                            HashMap<String, Date> dateset, List<T> objects, HashMap<Meal,
                                             ArrayList<String>> listDataChild, Historic historic)  {
         this._context = context;
         this._listDataHeader = objects;
@@ -136,9 +136,11 @@ public class ExpandableListDietHistoryAdapter<T extends ParseObject> extends Bas
         T obj = (T) getGroup(groupPosition);
         headerTitle = MealEnum.fromCode(obj.getInt("type")).getValue();
         String id = obj.getObjectId();
-        TextView time = (TextView) convertView.findViewById(R.id.list_meal_time);
+        TextView time1 = (TextView) convertView.findViewById(R.id.list_meal_time);
         SimpleDateFormat dateFormat = new SimpleDateFormat("H:mm");
-        time.setText(dateFormat.format(dates.get(groupPosition)));
+        Integer meal = MealEnum.fromCode(obj.getInt("type")).getCode();
+        Date data = dates.get(""+meal);
+        time1.setText(dateFormat.format(data));
         TextView lblListHeader = (TextView) convertView
                 .findViewById(R.id.list_meal_name);
         lblListHeader.setTypeface(null, Typeface.BOLD);
@@ -147,20 +149,21 @@ public class ExpandableListDietHistoryAdapter<T extends ParseObject> extends Bas
         final String typeString = "" + obj.getInt("type");
 
         CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.checkbox_meal_done);
+        MainActivity.setCheckBox(checkBox, meal);
+
         checkBox.setFocusable(false);
         if(checkBox!= null){
             checkBox.setTag(obj.getInt("type"));
             checkBox.setOncheckListener(new CheckBox.OnCheckListener() {
                 @Override
                 public void onCheck(CheckBox checkBox, boolean b) {
-                    mapCheckbox.put(typeString,b);
                     checkBox.setChecked(b);
+                    MainActivity.mapMealsAte.put(checkBox.getTag().toString(), b);
+                    MainActivity.history_today.setMealsAte(MainActivity.mapMealsAte);
                 }
             });
-            if(history.getMealsAte() != null && history.getMealsAte().size() > 0){
-                checkBox.setChecked(history.getMealsAte().get(typeString));
-            }
         }
+
 
         return convertView;
     }
@@ -176,11 +179,5 @@ public class ExpandableListDietHistoryAdapter<T extends ParseObject> extends Bas
     }
 
 
-    public Map<String, Boolean> getMapCheckbox() {
-        return mapCheckbox;
-    }
 
-    public void setMapCheckbox(Map<String, Boolean> mapCheckbox) {
-        this.mapCheckbox = mapCheckbox;
-    }
 }
