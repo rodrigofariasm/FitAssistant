@@ -2,6 +2,7 @@ package com.g14.ucd.fitassistant.models;
 
 /**
  * Created by Leticia on 24/11/2015.
+ * Enum that maps the types of the historic with the values from parse used in
  */
 public enum HistoricType {
     DIET("Diet",0),

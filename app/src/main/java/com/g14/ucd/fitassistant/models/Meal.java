@@ -11,10 +11,13 @@ import java.util.List;
 
 /**
  * Created by Leticia on 17/10/2015.
+ * Parse Object que represent one of the meal that the user can register of they diet.
  */
 @ParseClassName("Meal")
 public class Meal extends ParseObject implements Comparable{
 
+    /*Type of the diet, maped on the types strings in the MealEnum
+    * */
     public int getType() {
         return getInt("type");
     }
@@ -23,6 +26,7 @@ public class Meal extends ParseObject implements Comparable{
         put("type",type);
     }
 
+    /*List of options that the user can eat in the meal*/
     public List<String> getOptions() {
         return getList("options");
     }
@@ -31,21 +35,24 @@ public class Meal extends ParseObject implements Comparable{
         put("options", options);
     }
 
+    /*Méthod to add a new option to the list of meals*/
     public void addOption(String option){
-        List<String> options = getOptions();
-        if(options == null){
-            options = new ArrayList<String>();
+        List<String> options = getOptions(); //get the list of options from parse
+        if(options == null){ //if the list doesn't exists yet
+            options = new ArrayList<String>(); //create one
          }
-        options.add(option);
-        setOptions(options);
+        options.add(option); // add the option
+        setOptions(options); // set the list of options to Parse
     }
 
+    /*Méthod to remove a option from the list of meals*/
     public void removeOption(String optionID){
-        List<String> options = getOptions();
-        options.remove(optionID);
-        setOptions(options);
+        List<String> options = getOptions();  //get the list of options from parse
+        options.remove(optionID); // remove the string from the list
+        setOptions(options); // set the list of options to Parse
     }
 
+    /*id of the diet which this meal belongs*/
     public String getDietID(){
         try {
             return fetchIfNeeded().getString("dietID");
@@ -59,6 +66,7 @@ public class Meal extends ParseObject implements Comparable{
         put("dietID", dietID);
     }
 
+    /*user of the meal*/
     public void setUser(ParseUser user) {
         if (user != null) {
             put("user", user);
@@ -69,7 +77,7 @@ public class Meal extends ParseObject implements Comparable{
         return ParseQuery.getQuery(Meal.class);
     }
 
-
+    /*Compare to used to order meals by type*/
     @Override
     public int compareTo(Object another) {
         if(another instanceof Meal) {

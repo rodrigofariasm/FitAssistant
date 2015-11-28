@@ -2,6 +2,7 @@ package com.g14.ucd.fitassistant.models;
 
 /**
  * Created by Natália on 17/10/2015.
+ * Enum that maps the days of week with the values from parse
  */
 public enum ActivitiesTypeEnum {
     GYM("gym",1),
@@ -15,7 +16,7 @@ public enum ActivitiesTypeEnum {
         this.value = s;
         this.code = c;
     }
-
+    /*name of the type*/
     public String getValue() {
         return value;
     }
@@ -24,6 +25,7 @@ public enum ActivitiesTypeEnum {
         this.value = value;
     }
 
+    /*code for the type in parse*/
     public int getCode() {
         return code;
     }

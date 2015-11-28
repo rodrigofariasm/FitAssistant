@@ -29,8 +29,8 @@ public class SpinnerAdapter <T extends ParseObject> extends ArrayAdapter {
 
     private Context context = null;
     private List<T> objects = null;
-    private int textViewId;
-    private int resourceId;
+    private int textViewId; // id of the view to fill with the name of the object
+    private int resourceId; //id of the xml used to create a item of the list
 
 
     public SpinnerAdapter(Context context, int resource, int textViewResourceId, List<T> objects) {
@@ -53,18 +53,20 @@ public class SpinnerAdapter <T extends ParseObject> extends ArrayAdapter {
 
         T obj = (T) getItem(position);
         if(obj != null){
-            TextView name = (TextView) v.findViewById(textViewId);
-            String id = obj.getObjectId();
+            TextView name = (TextView) v.findViewById(textViewId); // texteView to show on the adapter
+            String id = obj.getObjectId(); // id of the parseobject
 
             String itemName = obj.getString("name");
-            if(name != null && itemName != null){
-                name.setText(itemName);
-                name.setTag(id);
+            if(name != null && itemName != null){ // if the textview is found in the resource
+                name.setText(itemName); // set the text, the name of the object
+                name.setTag(id); // and the id as a tag
             }
         }
         return v;
     }
 
+    /**To set the dropdown view of the spinner with the names of the objects in the list
+     * */
     @Override
     public View getDropDownView(int position, View convertView,
                                 ViewGroup parent) {
@@ -74,6 +76,8 @@ public class SpinnerAdapter <T extends ParseObject> extends ArrayAdapter {
         return label;
     }
 
+    /**Method to return the position from the list in the adapter using the objectId
+     * */
     public int getPosition(String itemId){
         for(ParseObject obj : objects){
             if(obj.getObjectId().equals(itemId)){

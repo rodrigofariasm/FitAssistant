@@ -6,11 +6,13 @@ import com.parse.ParseGeoPoint;
 
 /**
  * Created by Natália on 17/10/2015.
+ * This ParseObject represents other kind of exercise which the type is not gym. Such as classes, sports.
  */
 
 @ParseClassName("Other")
 public class Other extends FitActivity {
 
+    /*Drescription of the activity*/
     public String getDescription() {
         try{
             return fetchIfNeeded().getString("description");
@@ -22,6 +24,7 @@ public class Other extends FitActivity {
         put("description",description);
     }
 
+    /*Locaion of the activity*/
     public String getLocation() {
         try{
             return fetchIfNeeded().getString("location");

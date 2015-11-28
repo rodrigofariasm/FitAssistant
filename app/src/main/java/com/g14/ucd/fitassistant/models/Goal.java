@@ -10,9 +10,11 @@ import java.util.Map;
 
 /**
  * Created by Leticia on 17/11/2015.
+ * This object represent one goeal, related to dieting and exercising, that the user can create to accomplish whit some amount of time.
  */
 @ParseClassName("Goal")
 public class Goal extends ParseObject{
+    /* type of goal*/
     public String getType() {
         return getString("type");
     }
@@ -21,6 +23,7 @@ public class Goal extends ParseObject{
         put("type",type);
     }
 
+    /* actual measure of the user*/
     public int getActual() {
         return getInt("actual");
     }
@@ -29,6 +32,7 @@ public class Goal extends ParseObject{
         put("actual",actual);
     }
 
+    /* Desired measure of the user*/
     public int getDesired() {
         return getInt("desired");
     }
@@ -37,6 +41,7 @@ public class Goal extends ParseObject{
         put("desired",desired);
     }
 
+    /*boolean that indicates if the goal is active for the user*/
     public boolean isActive() {
         return getBoolean("isActive");
     }
@@ -45,6 +50,7 @@ public class Goal extends ParseObject{
         put("isActive", active);
     }
 
+    /*Record of measures of the user for this goal*/
     public Map<String,Integer> getRecord() {
         return getMap("record");
     }
@@ -53,6 +59,7 @@ public class Goal extends ParseObject{
         put("record", record);
     }
 
+    /*user of the goal*/
     public ParseUser getUser(){
         return getParseUser("user");
     }
@@ -67,6 +74,7 @@ public class Goal extends ParseObject{
         return ParseQuery.getQuery(Goal.class);
     }
 
+    /*begining date of the goal*/
     public void setStart(Date start) {
         put("start",start);
     }
@@ -75,6 +83,7 @@ public class Goal extends ParseObject{
         return getDate("start");
     }
 
+    /*End date of the goal*/
     public void setEnd(Date end) {
         put("end",end);
     }

@@ -12,10 +12,12 @@ import java.util.Map;
 
 /**
  * Created by Natália on 17/10/2015.
+ * This parseObject represents the historic of one day for Diet, gym or other exercise that the user recorded using the app. As done and not done.
  */
 @ParseClassName("Historic")
 public class Historic extends ParseObject {
 
+    /*Date of this hitoric*/
     public String getDate() {
         try{
             return fetchIfNeeded().getString("date");
@@ -29,6 +31,7 @@ public class Historic extends ParseObject {
         put("date",date);
     }
 
+    /*id of the event associated to this historic*/
     public String getEventId() {
         return getString("eventId");
     }
@@ -45,7 +48,7 @@ public class Historic extends ParseObject {
         put("eventExercises",events);
     }
 
-
+    /*Map that stores the information about which meals in were ate and which not*/
     public Map<String,Boolean> getMealsAte(){
         return getMap("mealsAte");
     }
@@ -54,6 +57,7 @@ public class Historic extends ParseObject {
         put("mealsAte",mealsAte);
     }
 
+    /*Map that stores the information about which exercises in were done and which not*/
     public Map<String,Boolean> getExercisesDone(){
         return getMap("exercisesDone");
     }
@@ -62,7 +66,7 @@ public class Historic extends ParseObject {
         put("exercisesDone",mealsAte);
     }
 
-
+    /*user of the historic*/
     public ParseUser getUser(){
         return getParseUser("user");
     }
