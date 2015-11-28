@@ -44,6 +44,10 @@ import java.util.TreeSet;
 /**
  * Created by rodrigofarias on 10/16/15.
  */
+/**
+ * Class reprensenting the Application, the Application establishes the connection with the Parse,
+ * which is our server.
+ */
 public class Application extends android.app.Application {
 
     public static final boolean APPDEBUG = false;
@@ -102,6 +106,9 @@ public class Application extends android.app.Application {
         return configHelper;
     }
 
+
+    //Find the current day, necessary for showing the main screen and another features
+    //of the app
     public String findToday(){
         Calendar day = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");

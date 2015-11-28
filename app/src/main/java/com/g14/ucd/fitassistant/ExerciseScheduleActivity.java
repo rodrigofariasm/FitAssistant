@@ -25,9 +25,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.g14.ucd.fitassistant.models.exercise;
-import com.g14.ucd.fitassistant.models.exerciseEvent;
 import com.g14.ucd.fitassistant.models.Exercise;
+import com.g14.ucd.fitassistant.models.ExerciseEvent;
 import com.g14.ucd.fitassistant.models.ExerciseEvent;
 import com.g14.ucd.fitassistant.models.FitActivity;
 import com.g14.ucd.fitassistant.models.Gym;
@@ -52,7 +51,7 @@ import java.util.List;
 import java.util.SimpleTimeZone;
 
 /**
- * Class reprensenting the schedule of a exercise. The creation of an exercise event.
+ * Class representing the schedule of a exercise. The creation of an exercise event.
  */
 public class ExerciseScheduleActivity extends AppCompatActivity {
 
@@ -65,7 +64,7 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
     private List<Integer> weekdays;
 
 	/**
-	 * Method called everytime the activity is created.
+	 * Method called every time the activity is created.
 	 * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,7 +192,7 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
             repeat = (CheckBox) promptView.findViewById(R.id.repeat);
             SpinnerAdapter<Exercise> adapter = new SpinnerAdapter(
                     ExerciseScheduleActivity.this, // The current context (this activity)
-                    R.layout.spinner_item_exercise, // The name of the layout ID.
+                    R.layout.spinner_item_diet, // The name of the layout ID.
                     R.id.textView_spinner_name, // The ID of the textview to populate.
                     exercises);
 

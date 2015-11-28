@@ -17,6 +17,13 @@ import static com.g14.ucd.fitassistant.R.*;
 /**
  * Created by Rodrigo on 17/10/2015.
  */
+
+/**
+ * First Activity seen by the user, that offers 3 options
+ * Login
+ * SignUp
+ * and Login using Facebook
+ */
 public class WelcomeActivity extends Activity {
 
     @Override
@@ -53,6 +60,9 @@ public class WelcomeActivity extends Activity {
 
     }
 
+    /**
+     * Login with Facebook
+     */
     private void loginWithFB() {
         ParseFacebookUtils.logInWithReadPermissionsInBackground(this, null, new LogInCallback() {
             @Override

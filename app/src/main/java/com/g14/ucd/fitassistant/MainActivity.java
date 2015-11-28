@@ -53,6 +53,10 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+/**
+ * MainActivity that is performed right after the login
+ */
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -130,6 +134,15 @@ public class MainActivity extends AppCompatActivity {
         pd = new ProgressDialog(this);
         pd.setTitle("Loading Meals");
         pd.show();
+        fitsdates = new HashMap<String, Date>();
+        events = new ArrayList<DietEvent>();
+        exercises = new ArrayList<FitActivity>();
+        exeEvents = new ArrayList<ExerciseEvent>();
+        mapMealsAte = new HashMap<String, Boolean>();
+        history_today = new Historic();
+        gym_exes = new HashMap<FitActivity, ArrayList<Exercise>>();
+        exercisesPerformed = new HashMap<String, Boolean>();
+
 
 
     }
@@ -149,11 +162,14 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * On the start the activity calls the findTodayHistoric, that will make the server queries, to
+     * populate the content of the fragments.
+     */
     @Override
     public void onStart(){
         super.onStart();
         final ProgressDialog pd = new ProgressDialog(this);
-
         findTodayHistoric();
 
 
@@ -237,6 +253,9 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
+    /**
+     * Adapter to the MainActivity's ViewPager
+     */
     public class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
@@ -261,6 +280,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Setup the navigation drawer listener
+     */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
@@ -268,6 +290,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Call the right activity for the selected item.
+     * @param position
+     */
     private void selectItem(int position) {
         // Create a new fragment and specify the planet to show based on position
         switch(position){
@@ -307,15 +333,11 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-
+    /**
+     * find The history of today, if already there is a history in the server use it for setup, if not create a
+     * new historic and set the parameters for the other methods.
+     */
     public void findTodayHistoric(){
-        fitsdates = new HashMap<String, Date>();
-        events = new ArrayList<DietEvent>();
-        exercises = new ArrayList<FitActivity>();
-        exeEvents = new ArrayList<ExerciseEvent>();
-        mapMealsAte = new HashMap<>();
-        gym_exes = new HashMap<FitActivity, ArrayList<Exercise>>();
-        exercisesPerformed = new HashMap<>();
         Calendar day = Calendar.getInstance();
         final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         ParseQuery<Historic> query = ParseQuery.getQuery("Historic");
@@ -328,12 +350,17 @@ public class MainActivity extends AppCompatActivity {
                     history_today = object;
                     mapMealsAte = history_today.getMealsAte();
                     exercisesPerformed = history_today.getExercisesDone();
-                    setupHistory(false);
+                    if(mapMealsAte == null && exercisesPerformed == null){
+                        setupHistory(false, true);
+                    }else if(mapMealsAte == null){
+                        setupHistory(true, false);
+                    }else if(exercisesPerformed == null){
+                        setupHistory(false, true);
+                    }else  setupHistory(false, false);
                 } else {
-                    history_today = new Historic();
                     try {
                         history_today.setDate(Application.singleton_date);
-                        setupHistory(true);
+                        setupHistory(true, true);
                     } catch (Exception e1) {
                         Log.d(CommonConstants.DEBUG_TAG, "Couldn't create history today");
                     }
@@ -343,7 +370,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private Exception setupHistory(final boolean newMealsAte) {
+    /**
+     *
+     * find the meals and exercises that are scheduled for this day of the week
+     * @param newMealsAte
+     * @param exercisesPerformed
+     * @return
+     */
+    private Exception setupHistory(final boolean newMealsAte, final boolean exercisesPerformed) {
         GregorianCalendar today = new GregorianCalendar();
         List<Integer> todayOption = new ArrayList<>();
         int option = today.get(GregorianCalendar.DAY_OF_WEEK);
@@ -360,6 +394,7 @@ public class MainActivity extends AppCompatActivity {
                     if (dietEvents.size() > 0) {
                         events.addAll(dietEvents);
                         findMeals(newMealsAte);
+                        saveHistory();
                     }
                 } else if (exception != null) {
                     Log.d("FitAssistant", "Error: " + exception.getMessage());
@@ -378,7 +413,8 @@ public class MainActivity extends AppCompatActivity {
                     if (events.size() > 0) {
                         exeEvents.addAll(events);
                         Log.d("size exeevents", "" +exeEvents.size());
-                        populateExercises();
+                        populateExercises(exercisesPerformed);
+                        saveHistory();
                     }
                 } else if (exception != null) {
                     Log.d("FitAssistant", "Error: " + exception.getMessage());
@@ -387,12 +423,23 @@ public class MainActivity extends AppCompatActivity {
         });
         return  e;
     }
+
+    /**
+     * setCheckBox if the meal has already been eaten.
+     * @param checkBox
+     * @param meal
+     */
     public static void setCheckBox(com.gc.materialdesign.views.CheckBox checkBox, Integer meal){
-        if(!initialize){
-            checkBox.setChecked(MainActivity.history_today.getMealsAte().get(""+meal));
+        if(initialize && history_today.getMealsAte() != null){
+            checkBox.setChecked(history_today.getMealsAte().get(""+meal));
         }
 
     }
+
+    /**
+     * findMeals for the day
+     * @param newMealsAte
+     */
     public void findMeals( final boolean newMealsAte){
         pd.show();
         idx = new TreeSet<Integer>();
@@ -438,8 +485,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-    public void populateExercises(){
+    /**
+     * findTheExercises for the day
+     * @param exercisesPerformed
+     */
+    public void populateExercises(final boolean exercisesPerformed){
 
         for(final ExerciseEvent event : exeEvents){
             pd.show();
@@ -486,6 +536,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Find the gym exercises, to be shown at the expandablelistview
+     * @param gym
+     */
     private void findExercises(final Gym gym) {
 
         ParseQuery<Exercise> queryExercise = ParseQuery.getQuery("Exercise");
@@ -503,6 +557,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Save the history on the server.
+     */
     public void saveHistory(){
         if(events.size() > 0)  history_today.setEventId(events.get(0).getObjectId());
         if(exeEvents.size() > 0) history_today.setEventExercises(exeEvents);

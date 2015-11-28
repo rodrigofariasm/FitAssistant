@@ -8,6 +8,11 @@ import com.parse.ParseException;
  * Created by Rodrigo on 27/11/2014.
  */
 
+/**
+ * Class necessary to configure some Parse configurations, just following
+ * the tutorial
+ */
+
 public class ConfigHelper {
     private ParseConfig config;
     private long configLastFetchedTime;

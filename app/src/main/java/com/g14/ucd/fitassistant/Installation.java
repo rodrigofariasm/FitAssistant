@@ -12,6 +12,13 @@ import java.util.Map;
 /**
  * Created by rodrigofarias on 10/17/15.
  */
+
+/**
+ * Installation is created by Parse, and informs to the server that the application is already
+ * installed.
+ * Subscribe the user in the general broadcast channel, that in the future can be used to send
+ * push notifications.
+ */
 public class Installation {
     public Installation(){
 

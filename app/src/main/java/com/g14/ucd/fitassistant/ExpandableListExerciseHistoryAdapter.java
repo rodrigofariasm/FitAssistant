@@ -30,6 +30,12 @@ import java.util.List;
 /**
  * Created by rodrigofarias on 11/27/15.
  */
+
+/**
+ * ExpandableListExerciseHistoryAdapter is used at ExerciseFragment of MainActivity
+ *
+ * @param <T>
+ */
 public class ExpandableListExerciseHistoryAdapter<T extends ParseObject> extends BaseExpandableListAdapter {
 
     private Context _context;
@@ -97,7 +103,9 @@ public class ExpandableListExerciseHistoryAdapter<T extends ParseObject> extends
                 TextView name = (TextView) convertView.findViewById(R.id.child_other_description);
                 name.setText( header.getString("description"));
             }
-
+            /**
+             * button GoThere will open a Google Maps application, to the selected location at the exercise.
+             */
             if(header.getString("location")!= null){
                 TextView location = (TextView) convertView.findViewById(R.id.child_other_location);
                 location.setText(header.getString("location"));

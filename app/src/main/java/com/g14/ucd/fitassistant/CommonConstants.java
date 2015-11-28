@@ -37,5 +37,5 @@ public final class CommonConstants {
 
     public static final String EXTRA_TIMER = "pingme.EXTRA_TIMER";
     public static int NOTIFICATION_ID = 001;
-    public static final String DEBUG_TAG = "PingMe";
+    public static final String DEBUG_TAG = "FitAssitant";
 }

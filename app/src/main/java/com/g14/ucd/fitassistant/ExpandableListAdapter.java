@@ -29,6 +29,12 @@ import java.util.List;
 /**
  * Created by rodrigofarias on 11/19/15.
  */
+
+
+/**
+ * ExpandableListAdapter used at ExpandableListView of ExerciseActitivy
+ * @param <T>
+ */
 public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandableListAdapter {
 
     private Context _context;
@@ -69,6 +75,21 @@ public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandable
         return childPosition;
     }
 
+
+    /**
+     * Method that shows the content at the inflation of a group
+     * and configure it,
+     * the child has two types of contents, the layout for gym
+     * and the other is for general activities.
+     * If it is a gym activity, the button go there will open
+     * the maps application with the activity location pinned
+     * @param groupPosition
+     * @param childPosition
+     * @param isLastChild
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
@@ -146,6 +167,14 @@ public class ExpandableListAdapter<T extends ParseObject> extends BaseExpandable
         return groupPosition;
     }
 
+    /**
+     * Header inflater
+     * @param groupPosition
+     * @param isExpanded
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {

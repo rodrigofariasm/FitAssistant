@@ -40,11 +40,7 @@ import bolts.Continuation;
 import bolts.Task;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link GymFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link GymFragment} factory method to
+ * Method used to create a Gym Model, which has Exercises.
  * create an instance of this fragment.
  */
 public class GymFragment extends Fragment {
@@ -73,6 +69,12 @@ public class GymFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_gym, container, false);
     }
 
+    /**
+     * Setup the Layout components, and start the count variable, that will inform how many rows
+     * has at tableExercisesGym
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         count = 1;
@@ -107,6 +109,10 @@ public class GymFragment extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
+
+    /**
+     * Save the Gym model at Parse, but only if the input is correct.
+     */
     public void saveActivity() {
         Log.d("checkinput", "" + checkInput());
         if (!checkInput()) {
@@ -136,6 +142,11 @@ public class GymFragment extends Fragment {
             });
         }
     }
+
+    /**
+     * After save the Gym object, this method will save the exercises linked to the Gym object.
+     * @param activity
+     */
         private void saveArrayExercises(Gym activity){
             final ProgressDialog dialog = new ProgressDialog(getActivity());
             dialog.setTitle(getString(R.string.progress_saving_exercise));
@@ -177,7 +188,10 @@ public class GymFragment extends Fragment {
         }
 
 
-
+    /**
+     * Check if the input is correct before save.
+     * @return
+     */
     private boolean checkInput() {
         EditText name = (EditText) getActivity().findViewById(R.id.edittext_name_exercise_gym);
         Log.d("äff", ""+name.getText().toString().trim());
@@ -206,7 +220,10 @@ public class GymFragment extends Fragment {
         return true;
     }
 
-
+    /**
+     * Add new row to the tableExercisesGym
+     * @param v
+     */
     @TargetApi(16)
     public void addNewOption(View v){
 
@@ -270,6 +287,11 @@ public class GymFragment extends Fragment {
         tableExercisesGym.addView(newRow2);
     }
 
+    /**
+     * Delete a row from the table ExercisesGym
+     * @param v
+     * @param v2
+     */
     public void deleteOption(View v, View v2){
         View rootView = (View) v.getParent();
         View rootView2 = (View) v2.getParent();

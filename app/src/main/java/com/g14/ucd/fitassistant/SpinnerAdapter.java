@@ -20,6 +20,11 @@ import java.util.List;
 /**
  * Created by Natália on 17/11/2015.
  */
+
+/**
+ * Adapter used at the GoalActivities spinners
+ * @param <T>
+ */
 public class SpinnerAdapter <T extends ParseObject> extends ArrayAdapter {
 
     private Context context = null;

@@ -22,6 +22,12 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+/**
+ * GeneralActivityFragment is used to create Other objects
+ * This activity has a EditText view, that at the click will open the google
+ * place picker, so the user can choose the place which the activity will occur.
+ */
 public class GeneralActivityFragment extends android.support.v4.app.Fragment implements GoogleApiClient.ConnectionCallbacks
         ,GoogleApiClient.OnConnectionFailedListener {
     private static final int REQUEST_PLACE_PICKER = 1;
@@ -51,6 +57,12 @@ public class GeneralActivityFragment extends android.support.v4.app.Fragment imp
         return inflater.inflate(R.layout.fragment_general_activity, container, false);
     }
 
+    /**
+     * After the view be created, the Views of the layout will be instanciated to provide its
+     * contents.
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         
@@ -152,6 +164,10 @@ public class GeneralActivityFragment extends android.support.v4.app.Fragment imp
         public void onFragmentInteraction(Uri uri);
     }
 
+
+    /**
+     * Method to save the Other Object in Parse(which are our server).
+     */
     public void saveActivity() {
         final ProgressDialog dialog = new ProgressDialog(getActivity());
         dialog.setTitle(getString(R.string.progress_saving_exercise));
@@ -185,6 +201,9 @@ public class GeneralActivityFragment extends android.support.v4.app.Fragment imp
         });
     }
 
+    /**
+     * Opens the Google PlacePicker
+     */
     public void goLocation(){
         try{
             PlacePicker.IntentBuilder intentBuilder =
@@ -196,6 +215,13 @@ public class GeneralActivityFragment extends android.support.v4.app.Fragment imp
         }
 
     }
+
+    /**
+     * get the result of the Google PlacePicker activity
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == REQUEST_PLACE_PICKER) {
@@ -207,6 +233,11 @@ public class GeneralActivityFragment extends android.support.v4.app.Fragment imp
             }
         }
     }
+
+    /**
+     * Before save the GeneralActivity this method will check if all the inputs are correct.
+     * @return
+     */
     private boolean checkInput(){
         if(name.getText().toString().trim().length() == 0 ){
             Toast.makeText(this.getContext(), "Activity must have a name", Toast.LENGTH_SHORT).show();

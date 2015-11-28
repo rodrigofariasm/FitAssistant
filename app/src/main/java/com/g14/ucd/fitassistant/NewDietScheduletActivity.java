@@ -44,6 +44,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Activity used to schedule a diet to the week.
+ */
 public class NewDietScheduletActivity extends AppCompatActivity {
 
     Spinner selectbox;
@@ -77,6 +80,10 @@ public class NewDietScheduletActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * find the user diets on the Parse
+     * @param dietUpdateId
+     */
     private void findDiets(final String dietUpdateId){
 
         ParseQuery<Diet> query = ParseQuery.getQuery("Diet");
@@ -96,8 +103,12 @@ public class NewDietScheduletActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This activity is also used to edit one scheduled diet, so it will update
+     * the acitity;
+     * @return
+     */
     private boolean isUpdate() {
-        //Para recuperar os dados do Bundle em outra FitActivity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             final String objectId = extras.getString("dietEvent");
@@ -121,6 +132,9 @@ public class NewDietScheduletActivity extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * fill the views with the DietEvent passed to be edited
+     */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void fillFields(){
         findDiets(newDietEvent.getDietId());
@@ -230,7 +244,10 @@ public class NewDietScheduletActivity extends AppCompatActivity {
         Button addNewDiet = (Button) findViewById(R.id.button_add_diet);
     }
 
-
+    /**
+     * Save the DietEvent in the Parse Server
+     * @param v
+     */
     public void saveEvent(View v){
         final ProgressDialog dialog  = new ProgressDialog(this);
         dialog.setTitle(getString(R.string.progress_saving_event));
@@ -272,6 +289,10 @@ public class NewDietScheduletActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * create a dialog to select the meal time
+     * @param v
+     */
     public void showTimePickerDialog(View v) {
         time = (EditText) v;
         DialogFragment newFragment = new TimePickerFragment();
@@ -306,6 +327,9 @@ public class NewDietScheduletActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * create notifications to notify the user when its time to eat.
+     */
     public void createAlarms(){
         ArrayList<AlarmManager> notifications = new ArrayList<>();
         for(Meal meal: mealsRetreived){

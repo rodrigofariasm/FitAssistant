@@ -11,6 +11,10 @@ import android.util.Log;
 /**
  * Created by rodrigofarias on 11/22/15.
  */
+
+/**
+ * Class that controls and manages the App's notifications
+ */
 public class NotificationFitAssistant extends IntentService{
     private NotificationManager mNotificationManager;
     private String mMessage;
@@ -27,6 +31,10 @@ public class NotificationFitAssistant extends IntentService{
  super("com.g14.ucd.fitassistant");
  }
 
+    /**
+     * This methods is called when a notification is clicked.
+     * @param intent
+     */
     @Override
     protected void onHandleIntent(Intent intent) {
         // The reminder message the user set.
@@ -54,6 +62,11 @@ public class NotificationFitAssistant extends IntentService{
         }
     }
 
+    /**
+     * Show the notification
+     * @param intent
+     * @param msg
+     */
     private void issueNotification(Intent intent, String msg) {
         mNotificationManager = (NotificationManager)
                 getSystemService(NOTIFICATION_SERVICE);

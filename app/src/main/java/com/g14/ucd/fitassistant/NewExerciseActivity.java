@@ -29,6 +29,10 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This activity is like the MainActivity, which has two fragments, one to create Gym objects
+ * and the second to create an Other object
+ */
 public class    NewExerciseActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;

@@ -23,6 +23,10 @@ import static com.g14.ucd.fitassistant.R.*;
 /**
  * Created by rodrigofarias on 10/17/15.
  */
+
+/**
+ * Standard Login Activity
+ */
 public class LoginActivity extends Activity {
     // UI references.
     private EditText usernameEditText;
@@ -62,6 +66,10 @@ public class LoginActivity extends Activity {
         });
     }
 
+    /**
+     * It performs the login in the system.
+     * Checking and making the user aware of any errors at login.
+     */
     private void login() {
         String username = usernameEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();

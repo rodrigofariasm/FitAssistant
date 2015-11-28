@@ -30,12 +30,12 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Fragment representing the exercise tab of the MainScreen of the Application
+ * to the ExpandableListView listView and its adapter mAdapter
+ */
 public class ExerciseFragment extends Fragment {
-    Intent mServiceIntent;
-    List<FitActivity> exercises;
-    SimpleDateFormat dateFormatter;
     ExpandableListExerciseHistoryAdapter mAdapter;
-    HashMap<FitActivity, ArrayList<Exercise>> child;
     ExpandableListView listView;
 
     public ExerciseFragment() {
@@ -76,11 +76,13 @@ public class ExerciseFragment extends Fragment {
         initialize();
     }
 
+    /*
+    * Called to initialize the fragment and setup its components.
+     */
     private void initialize(){
         final ProgressDialog pd = new ProgressDialog(getActivity());
         pd.setTitle("Loading");
         pd.show();
-        MainActivity.initialize = true;
         if( MainActivity.exeEvents.size() > 0){
             hideButtons();
             createHistoricForDay();
@@ -94,6 +96,9 @@ public class ExerciseFragment extends Fragment {
 
     }
 
+    /***
+     * Setup expandablelistview
+     */
     public void createHistoricForDay(){
         //populateExercises(events);
         mAdapter = new ExpandableListExerciseHistoryAdapter(
@@ -107,6 +112,9 @@ public class ExerciseFragment extends Fragment {
         listView.setAdapter(mAdapter);
     }
 
+    /**
+     * hide buttons that must not be shown if there is some activity scheduled
+     */
     public void hideButtons(){
         ButtonFloat buttonFloat = (ButtonFloat) getActivity().findViewById(R.id.create_schedule_exe_button);
         buttonFloat.setVisibility(View.INVISIBLE);

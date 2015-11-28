@@ -10,6 +10,11 @@ import com.facebook.appevents.AppEventsLogger;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+
+/**
+ * Launch Activity, basically checks if there is as logged user or not
+ * If logged launch the mainActivity, else launch the welcome activity.
+ */
 public class DispatchActivity extends AppCompatActivity {
 
 

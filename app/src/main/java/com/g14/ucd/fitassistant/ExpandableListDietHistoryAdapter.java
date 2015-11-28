@@ -36,6 +36,11 @@ import java.util.Map;
 /**
  * Created by rodrigofarias on 11/19/15.
  */
+
+/**
+ * ExpandableListDietHistoryAdapter is used at DietFragment of MainActivity
+ * @param <T>
+ */
 public class ExpandableListDietHistoryAdapter<T extends ParseObject> extends BaseExpandableListAdapter {
 
     private Context _context;
@@ -74,6 +79,15 @@ public class ExpandableListDietHistoryAdapter<T extends ParseObject> extends Bas
         return childPosition;
     }
 
+    /**
+     * inflate the content of the meal. E.g. egg
+     * @param groupPosition
+     * @param childPosition
+     * @param isLastChild
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
@@ -122,6 +136,15 @@ public class ExpandableListDietHistoryAdapter<T extends ParseObject> extends Bas
         return groupPosition;
     }
 
+
+    /**
+     * Header inflater, that takes the time(meal time), meal_type(e.g. Breakfast, and checkbox)
+     * @param groupPosition
+     * @param isExpanded
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
