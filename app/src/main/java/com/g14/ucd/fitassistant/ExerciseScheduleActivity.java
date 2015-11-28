@@ -25,8 +25,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.g14.ucd.fitassistant.models.exercise;
-import com.g14.ucd.fitassistant.models.exerciseEvent;
 import com.g14.ucd.fitassistant.models.Exercise;
 import com.g14.ucd.fitassistant.models.ExerciseEvent;
 import com.g14.ucd.fitassistant.models.FitActivity;
@@ -193,7 +191,7 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
             repeat = (CheckBox) promptView.findViewById(R.id.repeat);
             SpinnerAdapter<Exercise> adapter = new SpinnerAdapter(
                     ExerciseScheduleActivity.this, // The current context (this activity)
-                    R.layout.spinner_item_exercise, // The name of the layout ID.
+                    R.layout.spinner_item_diet, // The name of the layout ID.
                     R.id.textView_spinner_name, // The ID of the textview to populate.
                     exercises);
 

@@ -243,4 +243,13 @@ public class DietScheduleActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * Method that is called everytime the activity is started.
+     * */
+    @Override
+    protected void onStart(){
+        super.onStart();
+        initialize();
+    }
 }
