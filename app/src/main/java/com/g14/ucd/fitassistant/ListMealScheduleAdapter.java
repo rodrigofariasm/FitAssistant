@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Natália on 12/11/2015.
+ * Class representing the list adapter, for the usage of the meal schedule, and its funcionalities
  */
 public class ListMealScheduleAdapter<T extends  ParseObject> extends ArrayAdapter {
 
@@ -41,6 +41,9 @@ public class ListMealScheduleAdapter<T extends  ParseObject> extends ArrayAdapte
     private ParseObject parentObject;
     private SimpleDateFormat dateFormatter;
 
+	/**
+	 * Constructor
+	 * */
     public ListMealScheduleAdapter(Context context, int resource, int textViewResourceId, int editTextViewId,List<T> objects, ParseObject parentObject) {
         super(context, resource, textViewResourceId, objects);
         this.context  = context;
@@ -52,6 +55,9 @@ public class ListMealScheduleAdapter<T extends  ParseObject> extends ArrayAdapte
         dateFormatter = new SimpleDateFormat("H:mm");
     }
 
+	/**
+	 * method that makes the structure of the list.
+	 * */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;

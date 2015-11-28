@@ -22,7 +22,7 @@ import com.parse.ParseObject;
 import java.util.List;
 
 /**
- * Class representing the lista adapter and its funcionalities
+ * Class representing the list adapter and its funcionalities
  */
 public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
 
