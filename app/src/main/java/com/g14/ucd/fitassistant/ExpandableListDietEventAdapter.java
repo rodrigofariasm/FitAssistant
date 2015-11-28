@@ -40,7 +40,6 @@ public class ExpandableListDietEventAdapter<T extends ParseObject> extends BaseE
 
     private Context _context;
     private List<T> _listDataHeader; // header titles
-    // child data in format of header title, child title
     private HashMap<DietEvent,ArrayList<Meal>>_listDataChild;
     private int textViewId;
     private int resourceHeaderId;

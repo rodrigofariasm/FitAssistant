@@ -2,6 +2,7 @@ package com.g14.ucd.fitassistant.models;
 
 /**
  * Created by Leticia on 18/10/2015.
+ * Enum that maps the types of meal with the values from parse
  */
 public enum MealEnum {
     BREAKFAST("Breakfast",1),
@@ -19,6 +20,7 @@ public enum MealEnum {
         this.code = code;
     }
 
+    /*code for the meal stored in parse*/
     public int getCode() {
         return code;
     }
@@ -27,6 +29,7 @@ public enum MealEnum {
         this.code = code;
     }
 
+    /*name of the type of the meal*/
     public String getValue() {
         return value;
     }
@@ -35,10 +38,11 @@ public enum MealEnum {
         this.value = value;
     }
 
+    /*Get the ENUM from the code*/
     public static MealEnum fromCode(int code){
-        for(MealEnum m : values()){
-            if(m.getCode() == code){
-                return m;
+        for(MealEnum m : values()){ //iterates in the values from the enum
+            if(m.getCode() == code){ //if one value has the same code of the paramter
+                return m; //return the enum
             }
         }
         return null;

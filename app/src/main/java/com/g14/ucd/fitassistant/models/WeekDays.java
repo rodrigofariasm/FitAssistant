@@ -2,6 +2,7 @@ package com.g14.ucd.fitassistant.models;
 
 /**
  * Created by Natália on 16/10/2015.
+ * Enum that maps the days of week with the values from parse
  */
 public enum WeekDays {
     SUNDAY("Sun",1),
@@ -20,6 +21,7 @@ public enum WeekDays {
         this.code = code;
     }
 
+    /*code for the day in parse*/
     public int getCode() {
         return code;
     }
@@ -28,6 +30,7 @@ public enum WeekDays {
         this.code = code;
     }
 
+    /*name of the day*/
     public String getValue() {
         return value;
     }
@@ -36,10 +39,11 @@ public enum WeekDays {
         this.value = value;
     }
 
+    /*Get the ENUM from the code*/
     public static WeekDays fromCode(int code){
-        for(WeekDays wd : values()){
-            if(wd.getCode() == code){
-                return wd;
+        for(WeekDays wd : values()){ //iterates in the values from the enum
+            if(wd.getCode() == code){ //if one value has the same code of the paramter
+                return wd; // returns the enum
             }
         }
         return null;
