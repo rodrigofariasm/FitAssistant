@@ -39,16 +39,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Class reprensenting the Exercise Activity, the main screen of the exercise
+ * that lists all the users exercises.
+ */
 public class ExerciseActivity extends AppCompatActivity {
     ArrayList<FitActivity> exercises;
     HashMap<FitActivity, ArrayList<Exercise>> gymExercises;
 
+	/**
+	 * Method that is call everytime the activity is created
+	 */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
     }
 
+	/**
+	 * method that initialize all the values and makes the inicial query
+	 * */
     private void initialize(){
         exercises = new ArrayList<FitActivity>();
         gymExercises = new HashMap<FitActivity, ArrayList<Exercise>>();
@@ -130,6 +140,9 @@ public class ExerciseActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * Method to show the list of exercises
+	 * */
     private void listExercises(List<FitActivity> activities){
         ExpandableListAdapter mAdapter = new ExpandableListAdapter(
                 this, // The current context (this activity)
@@ -153,6 +166,9 @@ public class ExerciseActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * Method that hides the buttons and text message when there's exercise registered
+	 * */
     private void hideButtons(){
         ButtonFloat addButton = (ButtonFloat) findViewById(R.id.button_add_exercise);
         addButton.setVisibility(View.INVISIBLE);
@@ -167,6 +183,9 @@ public class ExerciseActivity extends AppCompatActivity {
         return true;
     }
 
+	/**
+	 * Method that says what will happen if select an item on the action bar
+	 * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -184,16 +203,26 @@ public class ExerciseActivity extends AppCompatActivity {
         }
     }
 
+	/**
+	 * Method to called by the button to create a new exercise 
+	 * */
     public void addNewExercise(View v){
         addNewExercise();
     }
 
+	/**
+	 * Method called to create a new exercise which opens a the NewExerciseActivity
+	 * */
     private void addNewExercise(){
         Intent intent = new Intent(ExerciseActivity.this, NewExerciseActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
+	/**
+	 * Method called by the update button. Open the NewExerciseActivity with
+	 * the selected exercise in order to edit them.
+	 * */
     public void update(View view){
         final String objectId = (String) view.getTag();
         Log.d("TAG: objectId", objectId);
@@ -214,6 +243,9 @@ public class ExerciseActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * Method called by the delete button. Delete the selected exercise.
+	 * */
     public void delete(View v){
         final String objectId = (String) v.getTag();
         Log.d("TAG: objectId", objectId);
@@ -247,6 +279,9 @@ public class ExerciseActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * Method that is called everytime the activity is started.
+	 * */
     @Override
     protected void onStart(){
         super.onStart();

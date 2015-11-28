@@ -35,6 +35,10 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Class reprensenting the New Goal Activity, the screen of the new goal
+ * that have all the information needed to create a new goal.
+ */
 public class NewGoalActivity extends AppCompatActivity {
 
     private Goal newGoal;
@@ -54,11 +58,20 @@ public class NewGoalActivity extends AppCompatActivity {
     private TextView desiredLabel;
     private TextView actualLabel;
 
+	/**
+	 * Method called everytime the activity is created.
+	 * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_goal);
-
+		initialize();
+    }
+    
+    /**
+	 * method that initialize all the values and makes the inicial query
+	 * */
+    private void initialize(){
         newGoal = new Goal();
         goalType = (Spinner) findViewById(R.id.goals_spinner);
         goalTypeUnit = (TextView) findViewById(R.id.textView_goalTypeUnit);
@@ -132,8 +145,11 @@ public class NewGoalActivity extends AppCompatActivity {
                 }
             });
         }
-    }
-
+	}
+	
+	/**
+	 * method that verify if it is an uptade of a goal
+	 * */
     private boolean isUpdate() {
         //Para recuperar os dados do Bundle em outra FitActivity
         Bundle extras = getIntent().getExtras();
@@ -159,6 +175,10 @@ public class NewGoalActivity extends AppCompatActivity {
         return false;
     }
 
+	/**
+	 * method responsable to fill all the fields with the pre-existing
+	 * information if it is an update of a goal.
+	 * */
     private void fillFields() {
         if (newGoal != null) {
             int pos = goalType_adapter.getPosition(newGoal.getType());
@@ -197,6 +217,10 @@ public class NewGoalActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+	/**
+	 * Method called by the button "save" to save the information about
+	 * this goal. 
+	 * */
     public void saveGoal(View view) {
         final ProgressDialog dialog  = new ProgressDialog(this);
         dialog.setTitle(getString(R.string.progress_saving_diet));
@@ -247,6 +271,9 @@ public class NewGoalActivity extends AppCompatActivity {
         }
     }
 
+	/**
+	 * Method called in order to alter the text on the time fields
+	 * */
     private void setDateTimeField(){
         Calendar newCalendar = Calendar.getInstance();
         startDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -270,6 +297,9 @@ public class NewGoalActivity extends AppCompatActivity {
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
+	/**
+	 * Method used to get the date from the date picker
+	 * */
     public static java.util.Date getDateFromDatePicker(DatePicker datePicker){
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth();
@@ -281,6 +311,9 @@ public class NewGoalActivity extends AppCompatActivity {
         return calendar.getTime();
     }
 
+	/**
+	 * Method used to show the date when the text field is clicked
+	 * */
     public void showDate(View v) {
         if (v == start){
             startDatePickerDialog.show();
@@ -295,6 +328,9 @@ public class NewGoalActivity extends AppCompatActivity {
         }
     }
 
+	/**
+	 * Method that automaticaly changes the end date depending on the number of days
+	 * */
     private void changeEndDate(){
         if(actual != null && actual.getText().toString().trim().length() != 0) {
             if (goalType.getSelectedItemPosition() == 3 || goalType.getSelectedItemPosition() == 4) {

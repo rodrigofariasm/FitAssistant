@@ -22,7 +22,7 @@ import com.parse.ParseObject;
 import java.util.List;
 
 /**
- * Created by Natália on 12/11/2015.
+ * Class representing the lista adapter and its funcionalities
  */
 public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
 
@@ -36,6 +36,9 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
     private int button4;
     private int icon;
 
+	/**
+	 * Constructor with eight params
+	 * */
     public ListAdapter(Context context, int resource, int textViewResourceId, int view, int update,
                        int delete, int activate, List<T> objects) {
         super(context, resource, textViewResourceId, objects);
@@ -48,6 +51,10 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
         button3 = view;
         button4 = activate;
     }
+    
+    /**
+	 * Constructor with nine params
+	 * */
     public ListAdapter(Context context, int resource, int textViewResourceId, int view, int update,
                        int delete, int activate, List<T> objects, int icon) {
         super(context, resource, textViewResourceId, objects);
@@ -62,7 +69,9 @@ public class ListAdapter<T extends  ParseObject> extends ArrayAdapter {
         this.icon = icon;
     }
 
-
+	/**
+	 * method that makes the structure of the list.
+	 * */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;

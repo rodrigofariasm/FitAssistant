@@ -26,8 +26,16 @@ import com.parse.SaveCallback;
 
 import java.util.List;
 
+/**
+ * Class reprensenting the Goal Activity, the main screen of the Goal
+ * that lists all the users goals.
+ */
+
 public class GoalActivity extends AppCompatActivity {
 
+	/**
+	 * Method called everytime the activity is created.
+	 * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +43,9 @@ public class GoalActivity extends AppCompatActivity {
         initialize();
     }
 
+	/**
+	 * method that initialize all the values and makes the inicial query
+	 * */
     private void initialize(){
         final ProgressDialog dialog  = new ProgressDialog(this);
         final Dialog error_dialog = new Dialog(this, "No connection detected", "ok");
@@ -60,6 +71,9 @@ public class GoalActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * Method to show the list of goals
+	 * */
     private void listGoals(List<Goal> goals){
 
         ListAdapter mAdapter = new ListAdapter(
@@ -72,6 +86,9 @@ public class GoalActivity extends AppCompatActivity {
         listView.setAdapter(mAdapter);
     }
 
+	/**
+	 * Method that shows the buttons and text message when there's no goal registered
+	 * */
     private void showButtons(){
         ButtonFloat addbutton = (ButtonFloat) findViewById(R.id.button_add_goal);
         addbutton.setVisibility(View.VISIBLE);
@@ -86,6 +103,9 @@ public class GoalActivity extends AppCompatActivity {
         return true;
     }
 
+	/**
+	 * Method that says what will happen if select an item on the action bar
+	 * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -103,15 +123,25 @@ public class GoalActivity extends AppCompatActivity {
         }
     }
 
+	/**
+	 * Method called by the button "+goal" to create a new goal 
+	 * */
     public void addNewGoal(View v){
         addNewGoal();
     }
 
+	/**
+	 * Method called to create a new goal which opens a the NewgoalActivity
+	 * */
     private void addNewGoal(){
         Intent intent = new Intent(GoalActivity.this, NewGoalActivity.class);
         startActivity(intent);
     }
 
+	/**
+	 * Method called by the update button. Open the NewGoalActivity with
+	 * the selected goal in order to edit it.
+	 * */
     public void update(View v){
         final String objectId = (String) v.getTag();
         Log.d("TAG: objectId", objectId);
@@ -132,6 +162,9 @@ public class GoalActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * Method called by the delete button. Delete the selected goal.
+	 * */
     public void delete(View v){
         final String objectId = (String) v.getTag();
         Log.d("TAG: objectId", objectId);
@@ -160,6 +193,9 @@ public class GoalActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * Method called by the activate switch. Activate the selected goal.
+	 * */
     public void activate(View v){
         final String objectId = (String) v.getTag();
         final Switch myswitch = (Switch) v;
@@ -192,6 +228,9 @@ public class GoalActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * Method called by the view button. Visualize the selected goal.
+	 * */
     public void view(View v){
         final String objectId = (String) v.getTag();
         Log.d("TAG: objectId", objectId);
@@ -218,6 +257,9 @@ public class GoalActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * Method that is called everytime the activity is started.
+	 * */
     @Override
     protected void onStart(){
         super.onStart();

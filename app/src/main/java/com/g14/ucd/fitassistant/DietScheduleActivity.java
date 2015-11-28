@@ -31,11 +31,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class reprensenting the schedule of a diet. The creation of a diet event.
+ */
 public class DietScheduleActivity extends AppCompatActivity {
 
     DietEvent newDietEvent;
     HashMap<DietEvent,ArrayList<Meal>> map;
     ArrayList<DietEvent> events;
+    
+    /**
+	 * Method called everytime the activity is created.
+	 * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +50,9 @@ public class DietScheduleActivity extends AppCompatActivity {
         initialize();
     }
 
+	/**
+	 * method that initialize all the values
+	 * */
     private void initialize(){
         newDietEvent = new DietEvent();
         events = new ArrayList<DietEvent>();
@@ -75,6 +85,9 @@ public class DietScheduleActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * method that list all the existing user's diet events
+	 * */
     private void listDietEvents(){
        map = populateMap(events);
 
@@ -94,6 +107,10 @@ public class DietScheduleActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * method that returns the map containing the diet event with its
+	 * respective meals
+	 * */
     public HashMap<DietEvent,ArrayList<Meal>> populateMap(List<DietEvent> events){
         map= new HashMap<DietEvent,ArrayList<Meal>>();
 
@@ -108,10 +125,13 @@ public class DietScheduleActivity extends AppCompatActivity {
                 Log.d("FitAssistant", "Error" + e.getMessage());
             }
         }
-
         return map;
     }
 
+	/**
+	 * method that show the buttons and text message when the user don't
+	 * have diet events
+	 * */
     private void showButtons(){
         ButtonFloat addbutton = (ButtonFloat) findViewById(R.id.button_add_schedule_diet);
         addbutton.setVisibility(View.VISIBLE);
@@ -127,6 +147,10 @@ public class DietScheduleActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * method that hide the buttons and the "no events" text message when the user
+	 * have diet events
+	 * */
     private void hideButtons(){
         ButtonFloat addbutton = (ButtonFloat) findViewById(R.id.button_add_schedule_diet);
         addbutton.setVisibility(View.INVISIBLE);
@@ -142,6 +166,9 @@ public class DietScheduleActivity extends AppCompatActivity {
         return true;
     }
 
+	/**
+	 * Method that says what will happen if select an item on the action bar
+	 * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -155,16 +182,22 @@ public class DietScheduleActivity extends AppCompatActivity {
         }else if (id == R.id.add_diet_event) {
             openNewDietScheduleActivity();
         }
-
         return super.onOptionsItemSelected(item);
     }
 
+	/**
+	 * Method called by the button "+event" to create a new diet event 
+	 * */
     public void openNewDietScheduleActivity(){
         Intent intent = new Intent(DietScheduleActivity.this, NewDietScheduletActivity.class);
         startActivity(intent);
 
     }
 
+	/**
+	 * Method called by the update button. Open the NewDietScheduleActivity with
+	 * the selected diet event in order to edit it.
+	 * */
     public void update(View v){
         final String objectId = (String) v.getTag();
         Log.d("TAG: objectId", objectId);
@@ -185,6 +218,9 @@ public class DietScheduleActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * Method called by the delete button. Delete the selected diet event.
+	 * */
     public void delete(View v){
         final String objectId = (String) v.getTag();
         Log.d("TAG: objectId",objectId);

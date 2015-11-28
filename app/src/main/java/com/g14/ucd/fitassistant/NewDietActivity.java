@@ -44,6 +44,10 @@ import java.util.Map;
 
 import bolts.Task;
 
+/**
+ * Class reprensenting the New Diet Activity, the screen of the new diet
+ * that have all the information needed to create a new diet.
+ */
 public class NewDietActivity extends AppCompatActivity {
 
     private Diet newDiet;
@@ -52,6 +56,9 @@ public class NewDietActivity extends AppCompatActivity {
     EditText descriptionField;
     EditText nameField;
 
+	/**
+	 * Method called everytime the activity is created.
+	 * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +66,9 @@ public class NewDietActivity extends AppCompatActivity {
         initialize();
     }
 
+	/**
+	 * method that initialize all the values and makes the inicial query
+	 * */
     private void initialize(){
         if (!isUpdate()) {
             newDiet = new Diet();
@@ -69,6 +79,9 @@ public class NewDietActivity extends AppCompatActivity {
         }
     }
 
+	/**
+	 * method that verify if it is an uptade of a diet
+	 * */
     private boolean isUpdate() {
         //Para recuperar os dados do Bundle em outra FitActivity
         Bundle extras = getIntent().getExtras();
@@ -94,6 +107,10 @@ public class NewDietActivity extends AppCompatActivity {
         return false;
     }
 
+	/**
+	 * method responsable to fill all the fields with the pre-existing
+	 * information if it is an update of a diet.
+	 * */
     private void fillFields() {
         if (newDiet != null) {
             EditText name = (EditText) findViewById(R.id.editText_name_diet);
@@ -123,7 +140,10 @@ public class NewDietActivity extends AppCompatActivity {
             });
         }
     }
-
+    
+	/**
+	 * method that gets the id of option related to the button
+	 * */
     private int getButtonOptionId(int code) {
         switch (code) {
             case 1:
@@ -164,12 +184,16 @@ public class NewDietActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+	/**
+	 * Method called by the button to add a new option for a meal 
+	 * */
     public void addNewOption(View view) {
         addNewOption(view, null, null);
     }
 
-    /* Method to add new Edit text box for options in the categories of the diet
-    **/
+    /** 
+     * Method to add new Edit text box for options in the categories of the diet
+    * */
     public void addNewOption(View view, String option, String mealId) {
         TableLayout tableoptions = null;
         TableRow newRow = new TableRow(getBaseContext());
@@ -220,12 +244,18 @@ public class NewDietActivity extends AppCompatActivity {
         tableoptions.addView(newRow);
     }
 
+	/**
+	 * Method called by the button "delete" to delete an option for a meal. 
+	 * */
     public void deleteOption(View view) {
         View row = (View) view.getParent();
         TableLayout table = (TableLayout) row.getParent();
         table.removeView(row);
     }
 
+	/**
+	 * Method called by the button "save" to save the information about this diet. 
+	 * */
     public void saveDiet(View view) {
         final ProgressDialog dialog  = new ProgressDialog(this);
         dialog.setTitle(getString(R.string.progress_saving_diet));
@@ -258,6 +288,9 @@ public class NewDietActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * Method that creates the meal with the selected options
+	 * */
     private void createMeal(int id) {
         String mealId = null;
         Meal meal = new Meal();
@@ -287,6 +320,9 @@ public class NewDietActivity extends AppCompatActivity {
         }
     }
 
+	/**
+	 * Method called in order to get the meals by a given id
+	 * */
     public Meal getMealWithId(String mealId){
         for(Meal m : mealsRetreived){
             if(m.getObjectId().equals(mealId)){
@@ -296,6 +332,9 @@ public class NewDietActivity extends AppCompatActivity {
         return null;
     }
 
+	/**
+	 * Method called to delete the meals that don't have dish options
+	 * */
     private List<Meal> getMealsToDelete(List<Meal> mealsUpdated, List<Meal> mealsRetreived){
         List<Meal> mealsDeleted = new ArrayList<Meal>();
         for(Meal mealret : mealsRetreived){

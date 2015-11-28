@@ -25,8 +25,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.g14.ucd.fitassistant.models.Diet;
-import com.g14.ucd.fitassistant.models.DietEvent;
+import com.g14.ucd.fitassistant.models.exercise;
+import com.g14.ucd.fitassistant.models.exerciseEvent;
 import com.g14.ucd.fitassistant.models.Exercise;
 import com.g14.ucd.fitassistant.models.ExerciseEvent;
 import com.g14.ucd.fitassistant.models.FitActivity;
@@ -51,6 +51,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.SimpleTimeZone;
 
+/**
+ * Class reprensenting the schedule of a exercise. The creation of an exercise event.
+ */
 public class ExerciseScheduleActivity extends AppCompatActivity {
 
     private static EditText editText;
@@ -61,6 +64,9 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
     private ExerciseEvent newEvent;
     private List<Integer> weekdays;
 
+	/**
+	 * Method called everytime the activity is created.
+	 * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +74,9 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
         initialize();
     }
 
+	/**
+	 * method that initialize all the values and makes the inicial query
+	 * */
     private void initialize(){
 
         weekdays = new ArrayList<Integer>();
@@ -82,7 +91,7 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
         query.findInBackground(new FindCallback<ExerciseEvent>() {
             @Override
             public void done(List<ExerciseEvent> exerciseEvents, ParseException exception) {
-                if (exception == null) { // found diets
+                if (exception == null) { // found exercises
                     listActivities(exerciseEvents);
                     if (exerciseEvents.size() == 0) {
                         showButtons();
@@ -98,7 +107,9 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
         });
     }
 
-
+	/**
+	 * method that list all the existing user's exercise events
+	 * */
     private void listActivities(List<ExerciseEvent> exerciseEvents){
 
         ListAdapter mAdapter = new ListAdapter(
@@ -112,11 +123,15 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
 
     }
 
+	/**
+	 * method that show the buttons and text message when the user don't
+	 * have exercise events
+	 * */
     private void showButtons(){
         ButtonFloat addbutton = (ButtonFloat) findViewById(R.id.button_add_schedule_exercise);
         addbutton.setVisibility(View.VISIBLE);
-        TextView noDietMessage = (TextView) findViewById(R.id.no_exerciseSchedule_message);
-        noDietMessage.setVisibility(View.VISIBLE);
+        TextView noexerciseMessage = (TextView) findViewById(R.id.no_exerciseSchedule_message);
+        noexerciseMessage.setVisibility(View.VISIBLE);
 
         addbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,13 +141,20 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * method that hides the buttons and "no events" text message when the user
+	 * have exercise events
+	 * */
     private void hideButtons(){
         ButtonFloat addbutton = (ButtonFloat) findViewById(R.id.button_add_schedule_exercise);
         addbutton.setVisibility(View.INVISIBLE);
-        TextView noDietMessage = (TextView) findViewById(R.id.no_exerciseSchedule_message);
-        noDietMessage.setVisibility(View.INVISIBLE);
+        TextView noexerciseMessage = (TextView) findViewById(R.id.no_exerciseSchedule_message);
+        noexerciseMessage.setVisibility(View.INVISIBLE);
     }
 
+	/**
+	 * method that show the popup with the fields to create a new exercise
+	 * */
     private void showInputDialog() {
         final List<FitActivity> exercises = new ArrayList<FitActivity>();
         ParseQuery<Gym> query = ParseQuery.getQuery("Gym");
@@ -171,15 +193,13 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
             repeat = (CheckBox) promptView.findViewById(R.id.repeat);
             SpinnerAdapter<Exercise> adapter = new SpinnerAdapter(
                     ExerciseScheduleActivity.this, // The current context (this activity)
-                    R.layout.spinner_item_diet, // The name of the layout ID.
+                    R.layout.spinner_item_exercise, // The name of the layout ID.
                     R.id.textView_spinner_name, // The ID of the textview to populate.
                     exercises);
 
             spinnerFitActivity.setAdapter(adapter);
             spinnerFitActivity.setVisibility(View.VISIBLE);
             editText.setVisibility(View.VISIBLE);
-
-
         } else {
             final TextView noExercise = (TextView) promptView.findViewById(R.id.text_view_noExercise);
             noExercise.setVisibility(View.VISIBLE);
@@ -207,6 +227,10 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
         alert.show();
     }
 
+	/**
+	 * Method called by the ok button on the pop up. Save the exercise
+	 * that was created on the popup
+	 * */
     private void save() {
         final ProgressDialog dialog  = new ProgressDialog(this);
         dialog.setTitle(getString(R.string.progress_saving_event));
@@ -240,6 +264,11 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
             }
         });
     }
+    
+    /**
+	 * Method called by the popup in order to select which days of the
+	 * the event will happen
+	 * */
     @TargetApi(android.os.Build.VERSION_CODES.LOLLIPOP)
     public void selectWeekDay(View view){
         TextView wd = (TextView) view;
@@ -260,6 +289,9 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
         return true;
     }
 
+	/**
+	 * Method that says what will happen if select an item on the action bar
+	 * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -273,20 +305,28 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
         }else if (id == R.id.add_exercise_event){
             openNewExerciseScheduleActivity();
         }
-
         return super.onOptionsItemSelected(item);
     }
 
+	/**
+	 * Method called by the button "+event" to create a new exercise event 
+	 * */
     public void openNewExerciseScheduleActivity(){
         showInputDialog();
         return;
     }
-
+	
+	/**
+	 * Method that shows the time picker dialog
+	 * */
     public void showTimePickerDialog(View v) {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getFragmentManager(), "timePicker");
     }
 
+	/**
+	 * Class that represents the time picker dialog and its functionalities
+	 * */
     public static class TimePickerFragment extends DialogFragment
             implements TimePickerDialog.OnTimeSetListener {
 
@@ -306,7 +346,9 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
         }
     }
 
-
+	/**
+	 * Method that creat the alarm notification for the exercise event
+	 * */
     public void createAlarms(){
         ArrayList<AlarmManager> notifications = new ArrayList<>();
         for(Integer weekday : weekdays){
@@ -341,6 +383,9 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
 
     }
 
+	/**
+	 * Method called by the delete button. Delete the selected exercise event.
+	 * */
     public void delete(View v){
         final String objectId = (String) v.getTag();
         Log.d("TAG: objectId",objectId);
@@ -350,7 +395,7 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
         query.getInBackground(objectId, new GetCallback<ExerciseEvent>() {
             @Override
             public void done(ExerciseEvent exeEvent, final ParseException exception) {
-                if (exception == null) { // found diets
+                if (exception == null) { // found exercises
                     try {
                         exeEvent.delete();
                         initialize();
@@ -364,6 +409,10 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * Method called by the update button. Open the NewexerciseScheduleActivity with
+	 * the selected exercise event in order to edit it.
+	 * */
     public void update(View v){
         final String objectId = (String) v.getTag();
         Log.d("TAG: objectId",objectId);
@@ -373,7 +422,7 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
         query.getInBackground(objectId, new GetCallback<ExerciseEvent>() {
             @Override
             public void done(ExerciseEvent exeEvent, final ParseException exception) {
-                if (exception == null) { // found diets
+                if (exception == null) { // found exercises
                     showInputDialog();
                     fillFields(exeEvent);
                 } else if (exception != null) {
@@ -382,7 +431,11 @@ public class ExerciseScheduleActivity extends AppCompatActivity {
             }
         });
     }
-
+	
+	/**
+	 * Method that fill the popup fields with pre-existing information 
+	 * if the user wants to update the exercise event
+	 * */
     private void fillFields(ExerciseEvent event){
         spinnerFitActivity.setPrompt(event.getName());
 

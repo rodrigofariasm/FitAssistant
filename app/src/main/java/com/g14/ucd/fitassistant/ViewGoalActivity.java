@@ -37,6 +37,10 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+/**
+ * Class reprensenting the View Goal Activity, the screen of the goal
+ * that have the information about the selected goal.
+ */
 public class ViewGoalActivity extends AppCompatActivity {
 
     private TextView goalTitle;
@@ -46,13 +50,22 @@ public class ViewGoalActivity extends AppCompatActivity {
     SimpleDateFormat dateFormatter;
     private GraphView graph;
     private Button registerHistory;
-
+	
+	/**
+	 * Method called everytime the activity is created.
+	 * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_goal);
-
-        goalTitle = (TextView) findViewById(R.id.textView_goalTitle);
+		initialize();
+    }
+    
+    /**
+	 * method that initialize all the values and makes the inicial query
+	 * */
+    private void initialize(){
+		goalTitle = (TextView) findViewById(R.id.textView_goalTitle);
         dayNumber = (TextView) findViewById(R.id.textView_dayNumber);
         dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -68,6 +81,10 @@ public class ViewGoalActivity extends AppCompatActivity {
         loadGoal();
     }
 
+	/**
+	 * method called when the user click on the button "register history"
+	 * and a popup shows to enter the new information to record.
+	 * */
     public void showInputDialog(){
         LayoutInflater layoutInflater = LayoutInflater.from(ViewGoalActivity.this);
         View promptView = layoutInflater.inflate(R.layout.register_popup, null);
@@ -94,6 +111,9 @@ public class ViewGoalActivity extends AppCompatActivity {
         alert.show();
     }
 
+	/**
+	 * Assitant method to change the label's values depending on the goal type
+	 * */
     private void setValues(View view){
         TextView message = (TextView) view.findViewById(R.id.textView_current);
         TextView unit = (TextView) view.findViewById(R.id.textView_currentUnit);
@@ -114,7 +134,10 @@ public class ViewGoalActivity extends AppCompatActivity {
                 break;
         }
     }
-
+	
+	/**
+	 * Method that loads the information about the goal
+	 * */
     private void loadGoal(){
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -139,6 +162,9 @@ public class ViewGoalActivity extends AppCompatActivity {
         }
     }
 
+	/**
+	 * Method that load the respective title of the goal
+	 * */
     private void loadTitle(){
         if(goalView != null){
             String goalType = goalView.getString("type");
@@ -172,6 +198,9 @@ public class ViewGoalActivity extends AppCompatActivity {
         }
     }
 
+	/**
+	 * Method that loads what day are the user from the begining of the goal
+	 * */
     private void loadDayNumber(){
         Date today = Calendar.getInstance().getTime();
         Date startDay = goalView.getStart();
@@ -197,7 +226,9 @@ public class ViewGoalActivity extends AppCompatActivity {
         dayNumber.setText(message);
     }
 
-
+	/**
+	 * Method called by the ok button which saves the the record of the day.
+	 * */
     private void saveHistory() {
         Map<String,Integer> record = goalView.getRecord();
         record.put(dateFormatter.format(Calendar.getInstance().getTime()),Integer.parseInt(current.getText().toString()));
@@ -215,6 +246,10 @@ public class ViewGoalActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * Method that loads the graph which have the information about the 
+	 * progress of the user
+	 * */
     public void loadGraph(){
         graph = (GraphView) findViewById(R.id.graph);
         Map<String,Integer> record = goalView.getRecord();
@@ -238,7 +273,6 @@ public class ViewGoalActivity extends AppCompatActivity {
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(ViewGoalActivity.this));
         graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
 
-// set manual x bounds to have nice steps
         graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().setScrollable(true);
     }

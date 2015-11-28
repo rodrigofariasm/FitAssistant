@@ -41,8 +41,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class reprensenting the Diet Activity, the main screen of the Diet
+ * that lists all the users diets.
+ */
+
 public class DietActivity extends AppCompatActivity {
 
+	/**
+	 * Method that is call everytime the activity is created
+	 */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +59,9 @@ public class DietActivity extends AppCompatActivity {
         initialize();
     }
 
+	/**
+	 * method that initialize all the values and makes the inicial query
+	 * */
     private void initialize(){
         final ProgressDialog dialog  = new ProgressDialog(this);
         final Dialog error_dialog = new Dialog(this, "No connection detected", "ok");
@@ -75,19 +86,25 @@ public class DietActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * Method to show the list of diets
+	 * */
     private void listDiets(List<Diet> diets){
 
        ListAdapter mAdapter = new ListAdapter(
                 this, // The current context (this activity)
                 R.layout.list_item_diet, // The name of the layout ID.
-                R.id.list_item_name_diet,R.id.button_view, R.id.button_update,R.id.button_delete, -1,// The ID of the textview to populate.
+                R.id.list_item_name_diet,-1, R.id.button_update,R.id.button_delete, -1,// The ID of the textview to populate.
                 diets);
 
         ListView listView = (ListView) findViewById(R.id.listView_diets);
         listView.setAdapter(mAdapter);
 
     }
-
+	
+	/**
+	 * Method that shows the buttons and text message when there's no diet registered
+	 * */
     private void showButtons(){
         ButtonFloat addbutton = (ButtonFloat) findViewById(R.id.button_add_diet);
         addbutton.setVisibility(View.VISIBLE);
@@ -102,6 +119,9 @@ public class DietActivity extends AppCompatActivity {
         return true;
     }
 
+	/**
+	 * Method that says what will happen if select an item on the action bar
+	 * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -119,15 +139,25 @@ public class DietActivity extends AppCompatActivity {
         }
     }
 
+	/**
+	 * Method to called by the button to create a new diet 
+	 * */
     public void addNewDiet(View v){
         addNewDiet();
     }
 
+	/**
+	 * Method called to create a new diet which opens a the NewDietActivity
+	 * */
     private void addNewDiet(){
         Intent intent = new Intent(DietActivity.this, NewDietActivity.class);
         startActivity(intent);
     }
 
+	/**
+	 * Method called by the update button. Open the NewDietActivity with
+	 * the selected diet in order to edit them.
+	 * */
     public void update(View v){
         final String objectId = (String) v.getTag();
         Log.d("TAG: objectId", objectId);
@@ -148,10 +178,9 @@ public class DietActivity extends AppCompatActivity {
         });
     }
 
-    public void view(View v){
-
-    }
-
+	/**
+	 * Method called by the delete button. Delete the selected diet.
+	 * */
     public void delete(View v){
         final String objectId = (String) v.getTag();
         Log.d("TAG: objectId",objectId);
@@ -186,10 +215,12 @@ public class DietActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * Method that is called everytime the activity is started.
+	 * */
     @Override
     protected void onStart(){
         super.onStart();
         initialize();
     }
-
 }

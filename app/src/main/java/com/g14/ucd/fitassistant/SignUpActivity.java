@@ -26,7 +26,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by rodrigofarias on 10/17/15.
+ * Class reprensenting the Sign up Activity, the screen where the user
+ * can register him/her self in order to use the app
  */
 public class SignUpActivity extends FragmentActivity implements DatePickerDialog.OnDateSetListener{
 
@@ -38,13 +39,21 @@ public class SignUpActivity extends FragmentActivity implements DatePickerDialog
     static TextView dateEdit;
     private Installation pInst;
 
-
+	/**
+	 * Method called everytime the activity is created.
+	 * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_signup);
-
+		initialize();
+	}
+	
+	/**
+	 * method that initialize all the values
+	 * */
+    private void initialize(){
         // Set up the signup form.
         emailEditText = (EditText) findViewById(R.id.email_edit_text);
         firstnameEditText= (EditText) findViewById(R.id.first_name_text);
@@ -73,6 +82,10 @@ public class SignUpActivity extends FragmentActivity implements DatePickerDialog
         });
     }
 
+	/**
+	 * method that sign up the user, validates and register her/his
+	 * information
+	 * */
     private void signup() {
         String username = firstnameEditText.getText().toString().trim()+ " " + lastnameEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
@@ -149,14 +162,24 @@ public class SignUpActivity extends FragmentActivity implements DatePickerDialog
             }
         });
     }
+    
+    /**
+	 * method shows the date picker for the date of birth
+	 * */
     public void showDatePickerDialog(View v) {
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getSupportFragmentManager(), "datepicker");
     }
 
+	/**
+	 * method called when the date is selected
+	 * */
     public void onDateSet(DatePicker view, int year, int month, int day) {
     }
 
+	/**
+	 * class that represents the date picker dialog and its functionalities
+	 * */
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
