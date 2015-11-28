@@ -10,6 +10,10 @@ import android.util.Log;
 /**
  * Created by rodrigofarias on 11/23/15.
  */
+
+/**
+ * Notification Broadcast Receiver
+ */
 public class NotificationPublisher extends BroadcastReceiver{
 
 
